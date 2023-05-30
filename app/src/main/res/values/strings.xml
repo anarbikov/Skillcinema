@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SkillCinema</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="skillcinema">Skillcinema</string>
+    <string name="skip">Пропустить</string>
+    <string name="onboarding_1_text">"Узнавай о премьерах"</string>
+    <string name="onboarding_2_text">Создавай коллекции</string>
+    <string name="onboarding_3_text">Делись с друзьями</string>
+</resources>
