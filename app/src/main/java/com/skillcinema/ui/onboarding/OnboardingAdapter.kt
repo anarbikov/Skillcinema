@@ -1,12 +1,12 @@
-package com.example.skillcinema.ui.onboarding
+package com.skillcinema.ui.onboarding
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.skillcinema.R
-import com.example.skillcinema.databinding.FragmentOnboardingPagerBinding
+import com.skillcinema.R
+import com.skillcinema.databinding.FragmentOnboardingPagerBinding
 
 class OnboardingAdapter(private val context: Context) : RecyclerView.Adapter<OnboardingViewHolder>() {
 
