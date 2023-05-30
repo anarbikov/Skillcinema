@@ -1,4 +1,4 @@
-package com.skillcinema.skillcinema
+package skillcinema.skillcinema.skillcinema
 
 import org.junit.Test
 

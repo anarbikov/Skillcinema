@@ -1,4 +1,4 @@
-package com.skillcinema.skillcinema
+package skillcinema.skillcinema.skillcinema
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

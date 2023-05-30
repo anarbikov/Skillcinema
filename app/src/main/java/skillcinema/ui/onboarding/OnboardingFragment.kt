@@ -1,4 +1,4 @@
-package com.skillcinema.ui.onboarding
+package skillcinema.ui.onboarding
 
 import android.os.Bundle
 import android.view.LayoutInflater

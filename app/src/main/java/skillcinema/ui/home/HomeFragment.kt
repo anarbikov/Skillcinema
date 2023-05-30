@@ -1,4 +1,4 @@
-package com.skillcinema.ui.home
+package com.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
+import skillcinema.ui.home.HomeViewModel
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null

@@ -1,4 +1,4 @@
-package com.skillcinema.ui.onboarding
+package skillcinema.ui.onboarding
 
 import android.annotation.SuppressLint
 import android.content.Context
