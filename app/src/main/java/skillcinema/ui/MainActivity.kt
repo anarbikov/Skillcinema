@@ -1,4 +1,4 @@
-package skillcinema
+package skillcinema.ui
 
 import android.os.Bundle
 import android.view.View
