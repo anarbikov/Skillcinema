@@ -12,6 +12,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_numberFragment"
+            app:popUpToSaveState="true"
             app:destination="@id/onboarding_fragment" />
     </fragment>
 
