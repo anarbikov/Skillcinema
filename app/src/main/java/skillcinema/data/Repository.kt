@@ -3,9 +3,7 @@ package skillcinema.data
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
-import skillcinema.entity.Film
 import skillcinema.entity.Films
-import java.sql.Wrapper
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -43,7 +41,7 @@ class Repository @Inject constructor(
     }
 
     suspend fun getPremieres(page: Int): Films {
-        return api.getFilms(page)
+        return api.getPremieres(page)
     }
 
 

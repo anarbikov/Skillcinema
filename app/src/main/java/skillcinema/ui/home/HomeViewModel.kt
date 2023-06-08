@@ -12,7 +12,6 @@ import skillcinema.data.PremierePagingSource
 import skillcinema.domain.GetPremiereUseCase
 import skillcinema.domain.GetSharedPrefsUseCase
 import skillcinema.entity.Film
-import skillcinema.entity.Films
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,12 +24,9 @@ class HomeViewModel @Inject constructor(
     fun checkForOnboarding() {
         onboardingShownFlag = getSharedPrefsUseCase.execute()
     }
-//    val pagedPremiere : Flow<PagingData<Film>> = Pager(
-//        config = PagingConfig(pageSize = 20),
-//        pagingSourceFactory = {PremierePagingSource(getPremiereUseCase)}
-//    ).flow.cachedIn(viewModelScope)
+
     val pagedPremiere : Flow<PagingData<Film>> = Pager(
-        config = PagingConfig(pageSize = 20),
+        config = PagingConfig(pageSize = 4),
         pagingSourceFactory = { PremierePagingSource(getPremiereUseCase) }
     ).flow.cachedIn(viewModelScope)
 

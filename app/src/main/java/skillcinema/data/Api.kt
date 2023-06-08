@@ -1,15 +1,13 @@
 package skillcinema.data
 
-import android.util.Log
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
-import skillcinema.entity.Film
 import skillcinema.entity.Films
-import java.sql.Wrapper
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
@@ -26,24 +24,20 @@ class Api @Inject constructor() {
     interface SearchPremiereApi{
         @Headers(
             "X-API-KEY:$API_KEY",
- //           "Content-Type: application/json"
+            "Content-Type: application/json"
         )
         @GET("api/v2.2/films/premieres")
-        suspend fun getFilmList(
+        suspend fun getPremieresList(
             @Query(value = "year") year: Int,
             @Query(value = "month") month: String,
             @Query(value ="page")page:Int
         ): FilmsDto
     }
 
-    suspend fun getFilms(page: Int): Films {
- //       val year = Calendar.YEAR
-//        val month = Calendar.getInstance().getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.getDefault())
-        try {
-            Log.d("mytag",RetrofitServices.searchPremiereApi.getFilmList(2023,"JUNE",1).toString())
-        }catch (e:Throwable) {Log.d("mytag",e.toString())}
-
-        return RetrofitServices.searchPremiereApi.getFilmList(2023 , "JUNE" , 1)
+    suspend fun getPremieres(page: Int): Films {
+        val year = Calendar.getInstance().get(Calendar.YEAR)
+        val month = Calendar.getInstance().getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.getDefault())
+        return RetrofitServices.searchPremiereApi.getPremieresList(year , month!! , page)
     }
 
 }

@@ -7,9 +7,9 @@ interface Films {
 }
 
 interface Film {
-//    val countries: List<Country>?
+    val countries: List<Country>?
     val duration: Int?
-//    val genres: List<Genre>?
+    val genres: List<Genre>
     val kinopoiskId: Int?
     val nameEn: String?
     val nameRu: String?
@@ -18,10 +18,10 @@ interface Film {
     val premiereRu: String?
     val year: Int?
 }
-//interface Country {
-//    val country: String
-//}
-//
-//interface Genre {
-//    val genre: String?
-//}
+interface Country {
+    val country: String
+}
+
+interface Genre {
+    val genre: String
+}

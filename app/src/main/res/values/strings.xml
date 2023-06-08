@@ -4,8 +4,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="skillcinema">Skillcinema</string>
+    <string name="premieres">Премьеры</string>
     <string name="skip">Пропустить</string>
     <string name="onboarding_1_text">"Узнавай о премьерах"</string>
     <string name="onboarding_2_text">Создавай коллекции</string>
     <string name="onboarding_3_text">Делись с друзьями</string>
+    <string name="all">Все</string>
+    <string name="showAll">Показать все</string>
 </resources>

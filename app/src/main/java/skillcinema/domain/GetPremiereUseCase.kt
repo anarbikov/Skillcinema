@@ -1,8 +1,6 @@
 package skillcinema.domain
 
-import skillcinema.data.FilmDto
 import skillcinema.data.Repository
-import skillcinema.entity.Film
 import skillcinema.entity.Films
 import javax.inject.Inject
 

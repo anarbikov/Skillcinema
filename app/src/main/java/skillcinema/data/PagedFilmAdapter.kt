@@ -11,12 +11,13 @@ import com.skillcinema.databinding.FilmViewBinding
 import skillcinema.entity.Film
 import javax.inject.Inject
 
-class PagedPremiereAdapter @Inject constructor(
-    private val onClick: (Film) -> Unit
-) : PagingDataAdapter<Film, PremiereViewHolder>(DiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PremiereViewHolder {
-        return PremiereViewHolder(
+class PagedFilmAdapter @Inject constructor(
+    private val onClick: (Film) -> Unit
+) : PagingDataAdapter<Film, FilmViewHolder>(DiffUtilCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
+        return FilmViewHolder(
             FilmViewBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -26,15 +27,27 @@ class PagedPremiereAdapter @Inject constructor(
     }
 
     @SuppressLint("ResourceAsColor")
-    override fun onBindViewHolder(holder: PremiereViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
         val item = getItem(position)
         val posterPreviewUrl = item?.posterUrlPreview
-        Glide.with(holder.itemView.context).load(posterPreviewUrl).into(holder.binding.filmImageView)
-
-//        holder.binding.filmNameTextView.text = item?.kinopoiskId.toString()
+        Glide.with(holder.itemView.context).load(posterPreviewUrl)
+            .into(holder.binding.filmImageView)
+        holder.binding.filmNameTextView.text = item?.nameRu
+        var genres = ""
+        if (item?.genres?.size!! == 1) genres += item.genres[0].genre
+        else {
+            for (i in item.genres) {
+                genres += i.genre + ", "
+            }
+        }
+        holder.binding.filmGenreTextView.text =
+            if (item.genres.size != 1) genres.dropLast(2) else genres
+        holder.binding.root.setOnClickListener {
+            onClick(item)
+        }
     }
-
 }
+
 class DiffUtilCallback : DiffUtil.ItemCallback<Film>() {
     override fun areItemsTheSame(oldItem: Film, newItem: Film): Boolean =
         oldItem.kinopoiskId == newItem.kinopoiskId
@@ -42,4 +55,5 @@ class DiffUtilCallback : DiffUtil.ItemCallback<Film>() {
     override fun areContentsTheSame(oldItem: Film, newItem: Film): Boolean =
         oldItem.kinopoiskId == newItem.kinopoiskId
 }
-class PremiereViewHolder(val binding: FilmViewBinding): RecyclerView.ViewHolder(binding.root)
+
+class FilmViewHolder(val binding: FilmViewBinding) : RecyclerView.ViewHolder(binding.root)
