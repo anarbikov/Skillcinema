@@ -11,7 +11,7 @@ class PremierePagingSource @Inject constructor(private val useCase: GetPremiereU
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Film> {
         val page = params.key?: FIRST_PAGE
         return kotlin.runCatching {
-            useCase.execute(page)
+            useCase.execute()
         }.fold(
             onSuccess = {
                 LoadResult.Page(

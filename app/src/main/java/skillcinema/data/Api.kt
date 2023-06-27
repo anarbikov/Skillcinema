@@ -30,14 +30,13 @@ class Api @Inject constructor() {
         suspend fun getPremieresList(
             @Query(value = "year") year: Int,
             @Query(value = "month") month: String,
-            @Query(value ="page")page:Int
         ): FilmsDto
     }
 
-    suspend fun getPremieres(page: Int): Films {
+    suspend fun getPremieres(): FilmsDto {
         val year = Calendar.getInstance().get(Calendar.YEAR)
         val month = Calendar.getInstance().getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.getDefault())
-        return RetrofitServices.searchPremiereApi.getPremieresList(year , month!! , page)
+        return RetrofitServices.searchPremiereApi.getPremieresList(year , month!!)
     }
 
 }
