@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="skillcinema.ui.home.HomeFragment"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="skillcinema.ui.home.HomeFragment">
 
     <TextView
         android:id="@+id/homeTextViewSkillCinema"
@@ -21,11 +17,12 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintVertical_bias="0"
+        tools:ignore="VisualLintOverlap" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -39,8 +36,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/homeTextViewSkillCinema"
-        app:layout_constraintVertical_bias="0"
-         />
+        app:layout_constraintVertical_bias="0" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loadingProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/loader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@id/loadingProgressBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/loader"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
