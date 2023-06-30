@@ -11,4 +11,9 @@
     <string name="onboarding_3_text">Делись с друзьями</string>
     <string name="all">Все</string>
     <string name="showAll">Показать все</string>
+    <string name="Premieres">Премьеры</string>
+    <string name="Popular">Популярное</string>
+    <string name="Series">Сериалы</string>
+    <string name="Comedies">Комедии</string>
+    <string name="Cartoons">Мультфильмы</string>
 </resources>

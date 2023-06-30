@@ -12,7 +12,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="23dp"
         android:gravity="bottom"
-        android:text="@string/premieres"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -41,9 +40,8 @@
         app:layout_constraintVertical_bias="0" />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/premiereRecyclerView"
+        android:id="@+id/childRecyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -60,11 +58,11 @@
         android:layout_height="189dp"
         android:alpha="1"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/premiereRecyclerView"
+        app:layout_constraintBottom_toBottomOf="@id/childRecyclerView"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="@id/premiereRecyclerView"
-        app:layout_constraintEnd_toEndOf="@id/premiereRecyclerView"
-        app:layout_constraintTop_toTopOf="@id/premiereRecyclerView">
+        app:layout_constraintStart_toStartOf="@id/childRecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/childRecyclerView"
+        app:layout_constraintTop_toTopOf="@id/childRecyclerView">
 
         <ImageView
             android:id="@+id/premiereArrowRight"

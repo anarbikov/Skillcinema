@@ -1,5 +1,6 @@
 package skillcinema.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.android.synthetic.main.fragment_home.parentRecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import skillcinema.data.FilmsDto
 import skillcinema.data.ParentFilmAdapter
 
 
@@ -57,8 +60,10 @@ class HomeFragment : Fragment() {
 //        binding.premiereRecyclerView.scrollToPosition(15)
 //    }
     private fun setUpViews() {
+        parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         parentFilmAdapter = ParentFilmAdapter()
         parentRecyclerView.adapter = parentFilmAdapter
+
     }
 
     private fun doObserveWork() {
@@ -77,8 +82,16 @@ class HomeFragment : Fragment() {
             }
         }
         viewModel.movies.onEach {
-            parentFilmAdapter.addData(it)
+            renderFilmsList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+//        viewModel.popular.onEach {
+//            renderFilmsList(it)
+//        }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private fun renderFilmsList(films: List<FilmsDto>) {
+        parentFilmAdapter.addData(films)
+        parentFilmAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

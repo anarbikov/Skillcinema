@@ -4,6 +4,7 @@ package skillcinema.entity
 interface Films {
     val items: List<Film>
     val total: Int
+    val category: String?
 }
 
 interface Film {
@@ -17,6 +18,11 @@ interface Film {
     val posterUrlPreview: String?
     val premiereRu: String?
     val year: Int?
+    val ratingKinopoisk: Double?
+
+
+
+
 }
 interface Country {
     val country: String

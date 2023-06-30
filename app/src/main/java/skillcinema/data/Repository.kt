@@ -3,7 +3,6 @@ package skillcinema.data
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
-import skillcinema.entity.Films
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -43,8 +42,18 @@ class Repository @Inject constructor(
     suspend fun getPremieres(): FilmsDto {
         return api.getPremieres()
     }
-
-
+    suspend fun getPopular(): FilmsDto {
+        return api.getPopular()
+    }
+    suspend fun getSeries(): FilmsDto {
+        return api.getSeries()
+    }
+    suspend fun getComedies(): FilmsDto {
+        return api.getComedies()
+    }
+    suspend fun getCartoons(): FilmsDto {
+        return api.getCartoons()
+    }
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"
         private const val KEY_INT_NAME = "KEY_STRING"

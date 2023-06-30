@@ -4,10 +4,10 @@ import skillcinema.data.FilmsDto
 import skillcinema.data.Repository
 import javax.inject.Inject
 
-class GetPremiereUseCase @Inject constructor(
+class GetPopularUseCase @Inject constructor(
     private val repository: Repository
 ) {
-     suspend fun execute(): FilmsDto {
-        return repository.getPremieres()
+    suspend fun execute(): FilmsDto {
+        return repository.getPopular()
     }
 }
