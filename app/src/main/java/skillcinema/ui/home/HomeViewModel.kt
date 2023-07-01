@@ -46,10 +46,13 @@ class HomeViewModel @Inject constructor(
     init {
         loadAll()
     }
+    fun refresh(){
+        loadAll()
+    }
     fun checkForOnboarding() {
         onboardingShownFlag = getSharedPrefsUseCase.execute()
     }
-    private fun loadAll() {
+     private fun loadAll() {
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true

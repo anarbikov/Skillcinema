@@ -35,7 +35,9 @@ open class ParentFilmAdapter @Inject constructor() :
             itemView.childRecyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             itemView.childRecyclerView.adapter = childMembersAdapter
-            itemView.childRecyclerView.addItemDecoration(RecyclerItemDecoration(21, 8, true))
+            if (itemView.childRecyclerView.itemDecorationCount == 0) {
+                itemView.childRecyclerView.addItemDecoration(RecyclerItemDecoration(21, 8, true))
+            }
             itemView.childRecyclerView.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

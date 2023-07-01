@@ -27,7 +27,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
-
     //    private var pagedPremiereAdapter = PagedFilmAdapter { film -> onItemClick(film) }
     private lateinit var parentFilmAdapter: ParentFilmAdapter
 
@@ -46,7 +45,6 @@ class HomeFragment : Fragment() {
         if (viewModel.onboardingShownFlag == 0) findNavController().navigate(R.id.action_navigation_home_to_numberFragment)
         setUpViews()
         doObserveWork()
-        binding.loadingProgress.visibility
     }
 
 
@@ -71,10 +69,10 @@ class HomeFragment : Fragment() {
             viewModel.isLoading.collect {
                 when (it) {
                     true -> {
-                        binding.loadingProgress.visibility = View.VISIBLE
-                       requireActivity().nav_view.visibility = View.GONE
+                        requireActivity().nav_view.visibility = View.GONE
                     }
                     else -> {
+                        binding.swipeRefresh.isRefreshing = false
                         binding.loadingProgress.visibility = View.GONE
                         requireActivity().nav_view.visibility = View.VISIBLE
                     }
@@ -84,9 +82,15 @@ class HomeFragment : Fragment() {
         viewModel.movies.onEach {
             renderFilmsList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
-//        viewModel.popular.onEach {
-//            renderFilmsList(it)
-//        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refresh()
+            binding.loadingProgress.visibility = View.GONE
+            requireActivity().nav_view.visibility = View.VISIBLE
+            viewModel.movies.onEach {
+                renderFilmsList(it)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
+
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun renderFilmsList(films: List<FilmsDto>) {

@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class GetPremiereUseCase @Inject constructor(
     private val repository: Repository
-) {
-     suspend fun execute(): FilmsDto {
+):GetFilmsUseCase {
+    override suspend fun execute(): FilmsDto {
         return repository.getPremieres()
     }
 }
