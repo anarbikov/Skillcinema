@@ -7,29 +7,32 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="skillcinema.ui.home.HomeFragment"
+        android:name="com.skillcinema.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_numberFragment"
             app:popUpToSaveState="true"
             app:destination="@id/onboarding_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_notifications"
+            app:destination="@id/navigation_notifications" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="skillcinema.ui.dashboard.DashboardFragment"
+        android:name="com.skillcinema.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="skillcinema.ui.notifications.NotificationsFragment"
+        android:name="com.skillcinema.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/onboarding_fragment"
-        android:name="skillcinema.ui.onboarding.OnboardingFragment"
+        android:name="com.skillcinema.ui.onboarding.OnboardingFragment"
         android:label="fragment_number"
         tools:layout="@layout/fragment_onboarding_pager" />
 </navigation>
