@@ -1,5 +1,8 @@
 package com.skillcinema.data
 
+import android.content.Context
+import com.skillcinema.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -17,7 +20,10 @@ private const val API_KEY = "f6570363-6b4d-4775-acad-cb324cb8366b"
 //"10041426-d719-4995-92a1-2c970a2b95fd"
 
 
-class Api @Inject constructor() {
+class Api @Inject constructor(
+    @ApplicationContext
+    val context: Context
+) {
     object RetrofitServices {
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -102,26 +108,38 @@ class Api @Inject constructor() {
         val year = Calendar.getInstance().get(Calendar.YEAR)
         val month = Calendar.getInstance()
             .getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
-        return RetrofitServices.searchPremiereApi.getPremieresList(year, month!!)
+        val premieres = RetrofitServices.searchPremiereApi.getPremieresList(year, month!!)
+        premieres.category =  context.getString(R.string.Premieres)
+        return premieres
     }
 
     suspend fun getPopular(): FilmsDto {
-        return RetrofitServices.searchPopularApi.getPopularList(7)
+        val popular = RetrofitServices.searchPopularApi.getPopularList(7)
+        popular.category = context.getString(R.string.Popular)
+        return popular
     }
 
     suspend fun getComedies(): FilmsDto {
-        return RetrofitServices.searchComedyApi.getComedyList(13)
+        val comedy = RetrofitServices.searchComedyApi.getComedyList(13)
+        comedy.category = context.getString(R.string.Comedies)
+        return comedy
     }
 
     suspend fun getSeries(): FilmsDto {
-        return RetrofitServices.searchSeriesApi.getSeriesList("TV_SERIES")
+        val series = RetrofitServices.searchSeriesApi.getSeriesList("TV_SERIES")
+        series.category = context.getString(R.string.Series)
+        return series
     }
 
     suspend fun getCartoons(): FilmsDto {
-        return RetrofitServices.searchCartoonApi.getCartoonList(18)
+        val cartoon = RetrofitServices.searchCartoonApi.getCartoonList(18)
+        cartoon.category = context.getString(R.string.Cartoons)
+        return cartoon
     }
 
-    suspend fun getRandomGenreFilms(genres: Int): FilmsDto{
-        return RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres)
+    suspend fun getRandomGenreFilms(genres: FilterGenreDto): FilmsDto{
+        val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!)
+        genre.category = genres.genre.toString().replaceFirstChar { it.uppercase() }
+        return genre
     }
 }

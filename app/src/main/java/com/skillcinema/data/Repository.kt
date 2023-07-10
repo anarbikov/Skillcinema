@@ -57,7 +57,7 @@ class Repository @Inject constructor(
     suspend fun getCartoons(): FilmsDto {
         return api.getCartoons()
     }
-    suspend fun getRandomGenreFilms(genres:Int): FilmsDto{
+    suspend fun getRandomGenreFilms(genres:FilterGenreDto): FilmsDto{
         return api.getRandomGenreFilms(genres)
     }
     companion object{

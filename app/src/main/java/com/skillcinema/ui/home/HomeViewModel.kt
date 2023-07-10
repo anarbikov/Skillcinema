@@ -1,10 +1,15 @@
 package com.skillcinema.ui.home
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
+import com.skillcinema.data.FilmFilters
+import com.skillcinema.data.FilmsDto
+import com.skillcinema.domain.GetPopularUseCase
+import com.skillcinema.domain.GetPremiereUseCase
+import com.skillcinema.domain.GetRandomGenreFilmsUseCase
+import com.skillcinema.domain.GetSeriesUseCase
+import com.skillcinema.domain.GetSharedPrefsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,15 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.skillcinema.data.FilmsDto
-import com.skillcinema.domain.GetCartoonsUseCase
-import com.skillcinema.domain.GetComediesUseCase
-import com.skillcinema.domain.GetPopularUseCase
-import com.skillcinema.domain.GetPremiereUseCase
-import com.skillcinema.domain.GetRandomGenreFilmsUseCase
-import com.skillcinema.domain.GetSeriesUseCase
-import com.skillcinema.domain.GetSharedPrefsUseCase
-import com.skillcinema.R
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,11 +26,10 @@ class HomeViewModel @Inject constructor(
     private val getSharedPrefsUseCase: GetSharedPrefsUseCase,
     private val getPopularUseCase: GetPopularUseCase,
     private val getSeriesUseCase: GetSeriesUseCase,
-    private val getComediesUseCase: GetComediesUseCase,
-    private val getCartoonsUseCase: GetCartoonsUseCase,
+//    private val getComediesUseCase: GetComediesUseCase,
+//    private val getCartoonsUseCase: GetCartoonsUseCase,
     private val getRandomGenreFilmsUseCase: GetRandomGenreFilmsUseCase,
-    application: Application
-    ) : AndroidViewModel(application) {
+    ) : ViewModel() {
     var onboardingShownFlag: Int = 0
     private val _movies = MutableStateFlow<List<FilmsDto>>(emptyList())
     val movies : StateFlow<List<FilmsDto>> = _movies.stateIn(
@@ -47,9 +42,10 @@ class HomeViewModel @Inject constructor(
     private val allFilms = mutableMapOf<Int,FilmsDto>().toSortedMap()
 
     init {
-            loadAll()
+        loadAll()
     }
-    fun refresh(){
+
+    fun refresh() {
         loadAll()
     }
     fun checkForOnboarding() {
@@ -64,24 +60,15 @@ class HomeViewModel @Inject constructor(
                 allFilms[1] = getPremiereUseCase.execute()
                 allFilms[2] = getPopularUseCase.execute()
                 allFilms[3] = getSeriesUseCase.execute()
-                allFilms[4] = getComediesUseCase.execute()
-                allFilms[5] = getCartoonsUseCase.execute()
+                allFilms[4] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
+                allFilms[5] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
+
             }.fold(
                 onSuccess = {
-                    allFilms[1]?.category = getApplication<Application>().getString((R.string.Premieres))
-                    allFilms[2]?.category = getApplication<Application>().getString(R.string.Popular)
-                    allFilms[3]?.category = getApplication<Application>().getString(R.string.Series)
-                    allFilms[4]?.category = getApplication<Application>().getString(R.string.Comedies)
-                    allFilms[5]?.category = getApplication<Application>().getString(R.string.Cartoons)
                     _movies.value = allFilms.values.toList() },
-                onFailure = { Log.d("mytag",it.message?:"")}
+                onFailure = { Log.d("mytag",it.message?:"onFailure")}
             )
             _isLoading.value = false
         }
     }
 }
-
-//    val pagedPremiere : Flow<PagingData<Film>> = Pager(
-//        config = PagingConfig(pageSize = 4),
-//        pagingSourceFactory = { PremierePagingSource(getPremiereUseCase) }
-//    ).flow.cachedIn(viewModelScope)
