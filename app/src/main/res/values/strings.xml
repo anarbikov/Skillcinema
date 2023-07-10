@@ -16,4 +16,5 @@
     <string name="Series">Сериалы</string>
     <string name="Comedies">Комедии</string>
     <string name="Cartoons">Мультфильмы</string>
+    <string name="already_watched">Уже просмотрено!</string>
 </resources>

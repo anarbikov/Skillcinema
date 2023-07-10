@@ -43,9 +43,35 @@
         android:textColor="@color/white"
         android:textSize="6sp"
         app:layout_constraintBottom_toBottomOf="@id/ratingFrame"
-
         tools:ignore="SmallSp" />
 
+    <FrameLayout
+        android:id="@+id/alreadyWatched"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/filmImageView"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintHorizontal_bias="0.1"
+        android:visibility="gone"
+        android:background="@color/black"
+        tools:ignore="ContentDescription" >
+    <TextView
+        android:id="@+id/alreadyWatchedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/alreadyWatched"
+        app:layout_constraintEnd_toEndOf="@id/alreadyWatched"
+        app:layout_constraintTop_toTopOf="@id/alreadyWatched"
+        android:layout_gravity="center"
+        android:text="@string/already_watched"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/alreadyWatched"
+        tools:ignore="SmallSp" />
+    </FrameLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/whiteConstraintLayout"
         android:layout_width="0dp"
