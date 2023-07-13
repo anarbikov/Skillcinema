@@ -28,12 +28,12 @@ class FullFilmListViewModel @Inject constructor(
     var category = ""
     val pagedPremiere : Flow<PagingData<FilmDto>> = Pager(
         config = PagingConfig(pageSize = 20),
-        pagingSourceFactory = { FilmPagingSource(getPremiereUseCase,application.getString(R.string.Premieres),0) }
+        pagingSourceFactory = { FilmPagingSource(getPremiereUseCase,application.getString(R.string.Premieres),filterId) }
     ).flow.cachedIn(viewModelScope)
 
     val pagedPopular : Flow<PagingData<FilmDto>> = Pager(
         config = PagingConfig(pageSize = 5),
-        pagingSourceFactory = { FilmPagingSource(getPopularUseCase,application.getString(R.string.Popular),0) }
+        pagingSourceFactory = { FilmPagingSource(getPopularUseCase,application.getString(R.string.Popular),filterId) }
     ).flow.cachedIn(viewModelScope)
 
     val pagedRandom : Flow<PagingData<FilmDto>> = Pager(

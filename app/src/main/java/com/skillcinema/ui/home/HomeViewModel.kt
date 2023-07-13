@@ -56,11 +56,11 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true
-                allFilms[1] = getPremiereUseCase.execute(FilterGenreDto("",0))
-                allFilms[2] = getPopularUseCase.execute(FilterGenreDto("",0))
-                allFilms[3] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
-                allFilms[4] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
-                allFilms[5] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
+                allFilms[1] = getPremiereUseCase.execute(FilterGenreDto("",0),1)
+                allFilms[2] = getPopularUseCase.execute(FilterGenreDto("",0),1)
+                allFilms[3] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
+                allFilms[4] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
+                allFilms[5] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
 
 
             }.fold(

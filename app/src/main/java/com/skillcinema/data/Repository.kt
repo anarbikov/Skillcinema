@@ -45,8 +45,8 @@ class Repository @Inject constructor(
     suspend fun getPremieres(): FilmsDto {
         return api.getPremieres()
     }
-    suspend fun getPopular(): FilmsDto {
-        return api.getPopular()
+    suspend fun getPopular(page:Int): FilmsDto {
+        return api.getPopular(page)
     }
     suspend fun getSeries(): FilmsDto {
         return api.getSeries()
@@ -57,8 +57,8 @@ class Repository @Inject constructor(
     suspend fun getCartoons(): FilmsDto {
         return api.getCartoons()
     }
-    suspend fun getRandomGenreFilms(genres:FilterGenreDto): FilmsDto{
-        return api.getRandomGenreFilms(genres)
+    suspend fun getRandomGenreFilms(genres:FilterGenreDto,page: Int): FilmsDto{
+        return api.getRandomGenreFilms(genres,page)
     }
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"

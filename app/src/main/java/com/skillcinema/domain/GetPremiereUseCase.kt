@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetPremiereUseCase @Inject constructor(
     private val repository: Repository
 ):GetFilmInterface {
-    override suspend fun execute(genre: FilterGenreDto): FilmsDto {
+    override suspend fun execute(genre: FilterGenreDto,page:Int): FilmsDto {
         return repository.getPremieres()
     }
 }

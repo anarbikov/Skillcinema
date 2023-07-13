@@ -4,5 +4,5 @@ import com.skillcinema.data.FilmsDto
 import com.skillcinema.data.FilterGenreDto
 
 interface GetFilmInterface {
-    suspend fun execute(genre: FilterGenreDto): FilmsDto
+    suspend fun execute(genre: FilterGenreDto,page:Int): FilmsDto
 }

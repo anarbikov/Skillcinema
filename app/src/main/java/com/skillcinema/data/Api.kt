@@ -57,6 +57,7 @@ class Api @Inject constructor(
         @GET("api/v2.2/films")
         suspend fun getPopularList(
             @Query(value = "ratingFrom") ratingFrom: Int,
+            @Query(value = "page") page: Int
         ): FilmsDto
     }
 
@@ -100,6 +101,7 @@ class Api @Inject constructor(
         @GET("api/v2.2/films")
         suspend fun getRandomGenreList(
             @Query(value = "genres") genres: Int,
+            @Query(value = "page") page: Int
         ): FilmsDto
     }
 
@@ -113,8 +115,8 @@ class Api @Inject constructor(
         return premieres
     }
 
-    suspend fun getPopular(): FilmsDto {
-        val popular = RetrofitServices.searchPopularApi.getPopularList(7)
+    suspend fun getPopular(page: Int): FilmsDto {
+        val popular = RetrofitServices.searchPopularApi.getPopularList(6,page)
         popular.category = context.getString(R.string.Popular)
         popular.filterCategory = 2222
         return popular
@@ -141,8 +143,8 @@ class Api @Inject constructor(
         return cartoon
     }
 
-    suspend fun getRandomGenreFilms(genres: FilterGenreDto): FilmsDto{
-        val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!)
+    suspend fun getRandomGenreFilms(genres: FilterGenreDto,page:Int): FilmsDto{
+        val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!,page)
         genre.category = genres.genre.toString().replaceFirstChar { it.uppercase() }
         genre.filterCategory = genres.id
         return genre

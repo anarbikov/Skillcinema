@@ -27,7 +27,7 @@ class PagedFilmAdapter @Inject constructor(
 
         val displayMetrics = context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
-        view.root.layoutParams.width = screenWidth / 2-50
+        view.root.layoutParams.width = screenWidth / 2-20
 
         return FilmPagedViewHolder(view)
     }

@@ -24,7 +24,8 @@
         <action
             android:id="@+id/action_navigation_home_to_fullFilmList"
             app:destination="@id/fullFilmList"
-            app:popUpToSaveState="true"/>
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popUpToSaveState="true" />
     </fragment>
 
     <fragment

@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetPopularUseCase @Inject constructor(
     private val repository: Repository
 ):GetFilmInterface {
-    override suspend fun execute(genre:FilterGenreDto): FilmsDto {
-        return repository.getPopular()
+    override suspend fun execute(genre:FilterGenreDto,page:Int): FilmsDto {
+        return repository.getPopular(page)
     }
 }

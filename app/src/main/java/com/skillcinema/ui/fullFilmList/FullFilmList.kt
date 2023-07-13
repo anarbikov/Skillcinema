@@ -38,12 +38,13 @@ class FullFilmList : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val filterId = arguments.let { it?.getInt("id") }
         val filterDescription = arguments.let { it?.getString("description") }
+
         binding.categoryDescription.text = filterDescription
         binding.recyclerView.adapter = pagedFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))
-        binding.recyclerView.layoutParams.width
         viewModel.filterId = filterId!!
         viewModel.category = filterDescription!!
+        Log.d("mytag","fullfilmfragment filterid: ${viewModel.filterId}, description: ${viewModel.category}")
         when (filterId) {
             1111 -> {
                 Log.d("mytag","1111")

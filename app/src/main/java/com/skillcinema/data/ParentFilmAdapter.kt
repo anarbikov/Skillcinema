@@ -39,6 +39,7 @@ open class ParentFilmAdapter @Inject constructor(
                 val bundle = Bundle()
                 bundle.putInt("id", filmCategoriesList[bindingAdapterPosition].filterCategory!!)
                 bundle.putString("description",filmCategoriesList[bindingAdapterPosition].category)
+//                Log.d("mytag","parentfilterid: ${filmCategoriesList[bindingAdapterPosition].filterCategory!!}")
                 itemView.findNavController().navigate(R.id.action_navigation_home_to_fullFilmList,bundle)
 //                onItemClick?.invoke(filmCategoriesList[bindingAdapterPosition])
             }
@@ -59,26 +60,14 @@ open class ParentFilmAdapter @Inject constructor(
                 itemView.childRecyclerView.addItemDecoration(RecyclerItemDecoration(21, 8, true))
             }
             val decorator = OverScrollDecoratorHelper.setUpOverScroll(itemView.childRecyclerView,OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
-            decorator.setOverScrollStateListener { decor, oldState, newState ->
+            decorator.setOverScrollStateListener { _, _, newState ->
                 when (newState) {
-                    STATE_IDLE -> {
-                        Log.d("mytag","overscroll1!")
-//                        itemView.findNavController().navigate(R.id.action_navigation_home_to_navigation_notifications)
-
-//                        Toast.makeText(itemView.context,"overscrolled",Toast.LENGTH_SHORT).show()
-                    }
-                    STATE_DRAG_START_SIDE -> {
-
-                    }
                     STATE_DRAG_END_SIDE -> {
-                        Toast.makeText(itemView.context,"overscrolledEnd",Toast.LENGTH_SHORT).show()
-                    }
-                    STATE_BOUNCE_BACK -> {
-                        if (oldState == STATE_DRAG_START_SIDE) {
-
-                        } else {
-
-                        }
+                        val bundle = Bundle()
+                        bundle.putInt("id", filmCategoriesList[bindingAdapterPosition].filterCategory!!)
+                        bundle.putString("description",filmCategoriesList[bindingAdapterPosition].category)
+//                        Log.d("mytag","parentfilterid: ${filmCategoriesList[bindingAdapterPosition].filterCategory!!}")
+                        itemView.findNavController().navigate(R.id.action_navigation_home_to_fullFilmList,bundle)
                     }
                 }
             }

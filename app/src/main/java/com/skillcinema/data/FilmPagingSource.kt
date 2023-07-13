@@ -1,5 +1,6 @@
 package com.skillcinema.data
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.skillcinema.domain.GetFilmInterface
@@ -14,7 +15,8 @@ class FilmPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FilmDto> {
         val page = params.key ?: FIRST_PAGE
         return kotlin.runCatching {
-            useCase.execute(FilterGenreDto(category,filterId))
+            Log.d("mytag","category pagingsource: $category,filterId: $filterId")
+            useCase.execute(FilterGenreDto(category,filterId),page)
         }.fold(
             onSuccess = {
                 it.category = category
@@ -31,4 +33,3 @@ class FilmPagingSource @Inject constructor(
         private const val FIRST_PAGE = 1
     }
 }
-
