@@ -1,13 +1,15 @@
 package com.skillcinema.data
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
-
 import kotlinx.android.synthetic.main.film_view.view.filmGenreTextView
 import kotlinx.android.synthetic.main.film_view.view.filmImageView
 import kotlinx.android.synthetic.main.film_view.view.filmNameTextView
@@ -16,7 +18,9 @@ import kotlinx.android.synthetic.main.film_view.view.ratingTextView
 import javax.inject.Inject
 
 class ChildFilmAdapter @Inject constructor(
+    val category:String,
     filmData: List<FilmDto>,
+    val context: Context
 ) :
     RecyclerView.Adapter<ChildFilmAdapter.DataViewHolder>() {
 
@@ -26,14 +30,19 @@ class ChildFilmAdapter @Inject constructor(
         this.filmList = filmData
     }
 
-    var onItemClick: ((FilmDto) -> Unit)? = null
+//    var onItemClick: ((FilmDto) -> Unit)? = null
 
     inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val bundle = bundleOf()
         init {
             itemView.setOnClickListener {
-                Log.d("mytag", "clicked2")
-                Log.d("mytag", itemView.toString())
-                onItemClick?.invoke(filmList[bindingAdapterPosition])
+                if (category != context.getString(R.string.Series)){
+                    Log.d("mytag","${context.getString(R.string.Series)}, $category")
+                    bundle.putString("posterUrlPreview", filmList[bindingAdapterPosition].posterUrlPreview)
+                itemView.findNavController().navigate(R.id.action_navigation_home_to_filmFragment,bundle)
+
+                }
+//                onItemClick?.invoke(filmList[bindingAdapterPosition])
             }
         }
 

@@ -5,6 +5,7 @@ interface Films {
     val items: List<Film>
     val total: Int
     val category: String?
+    val filterCategory: Int?
 }
 
 interface Film {
@@ -19,10 +20,6 @@ interface Film {
     val premiereRu: String?
     val year: Int?
     val ratingKinopoisk: Double?
-
-
-
-
 }
 interface Country {
     val country: String

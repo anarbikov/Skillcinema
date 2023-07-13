@@ -1,19 +1,19 @@
 package com.skillcinema.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.skillcinema.entity.Country
 import com.skillcinema.entity.Film
 import com.skillcinema.entity.Films
 import com.skillcinema.entity.Genre
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FilmsDto(
-    @Json(name = "items") override val items: List<FilmDto>,
+    @Json(name = "items") override var items: List<FilmDto>,
     @Json(name = "total") override val total: Int,
-    @Json(name = "category") override var category: String?
+    @Json(name = "category") override var category: String?,
+    @Json(name = "filterCategory") override var filterCategory: Int?
 ): Films
-
 @JsonClass(generateAdapter = true)
 data class FilmDto (
     @Json (name = "kinopoiskId") override val kinopoiskId : Int?,
@@ -38,3 +38,4 @@ data class CountryDto (
 data class GenreDto (
     @Json(name = "genre") override val genre: String
 ):Genre
+

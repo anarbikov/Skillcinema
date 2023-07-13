@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
 
     private fun setUpViews() {
         parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-        parentFilmAdapter = ParentFilmAdapter()
+        parentFilmAdapter = ParentFilmAdapter(requireContext())
         parentRecyclerView.adapter = parentFilmAdapter
 
     }

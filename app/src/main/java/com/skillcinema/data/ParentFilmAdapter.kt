@@ -1,15 +1,20 @@
 package com.skillcinema.data
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.customview.widget.ViewDragHelper.STATE_IDLE
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.skillcinema.R
+import com.skillcinema.ui.home.RecyclerItemDecoration
 import kotlinx.android.synthetic.main.film_recyclerview.view.childRecyclerView
 import kotlinx.android.synthetic.main.film_recyclerview.view.homeTextViewPremieres
 import kotlinx.android.synthetic.main.film_recyclerview.view.premiereShowAllLayout
@@ -17,21 +22,25 @@ import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
-import com.skillcinema.ui.home.RecyclerItemDecoration
-import com.skillcinema.R
 import javax.inject.Inject
 
-open class ParentFilmAdapter @Inject constructor() :
+open class ParentFilmAdapter @Inject constructor(
+    val context: Context
+) :
     RecyclerView.Adapter<ParentFilmAdapter.DataViewHolder>() {
 
     var filmCategoriesList: List<FilmsDto> = listOf()
     var onItemClick: ((FilmsDto) -> Unit)? = null
 
+
     inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
-                Log.d("mytag", "clicked")
-                onItemClick?.invoke(filmCategoriesList[bindingAdapterPosition])
+                val bundle = Bundle()
+                bundle.putInt("id", filmCategoriesList[bindingAdapterPosition].filterCategory!!)
+                bundle.putString("description",filmCategoriesList[bindingAdapterPosition].category)
+                itemView.findNavController().navigate(R.id.action_navigation_home_to_fullFilmList,bundle)
+//                onItemClick?.invoke(filmCategoriesList[bindingAdapterPosition])
             }
 
         }
@@ -39,7 +48,7 @@ open class ParentFilmAdapter @Inject constructor() :
         @SuppressLint("SuspiciousIndentation")
         fun bind(result: FilmsDto) {
             itemView.homeTextViewPremieres.text = result.category
-            val childMembersAdapter = ChildFilmAdapter(result.items.take(20).shuffled())
+            val childMembersAdapter = ChildFilmAdapter(result.category!!,result.items.take(20), context)
             val footerAdapter = FooterAdapter()
             itemView.childRecyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -56,13 +65,13 @@ open class ParentFilmAdapter @Inject constructor() :
                         Log.d("mytag","overscroll1!")
 //                        itemView.findNavController().navigate(R.id.action_navigation_home_to_navigation_notifications)
 
-                        Toast.makeText(itemView.context,"overscrolled",Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(itemView.context,"overscrolled",Toast.LENGTH_SHORT).show()
                     }
                     STATE_DRAG_START_SIDE -> {
 
                     }
                     STATE_DRAG_END_SIDE -> {
-
+                        Toast.makeText(itemView.context,"overscrolledEnd",Toast.LENGTH_SHORT).show()
                     }
                     STATE_BOUNCE_BACK -> {
                         if (oldState == STATE_DRAG_START_SIDE) {

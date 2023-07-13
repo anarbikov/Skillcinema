@@ -104,42 +104,47 @@ class Api @Inject constructor(
     }
 
     suspend fun getPremieres(): FilmsDto {
-
         val year = Calendar.getInstance().get(Calendar.YEAR)
         val month = Calendar.getInstance()
             .getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
         val premieres = RetrofitServices.searchPremiereApi.getPremieresList(year, month!!)
         premieres.category =  context.getString(R.string.Premieres)
+        premieres.filterCategory = 1111
         return premieres
     }
 
     suspend fun getPopular(): FilmsDto {
         val popular = RetrofitServices.searchPopularApi.getPopularList(7)
         popular.category = context.getString(R.string.Popular)
+        popular.filterCategory = 2222
         return popular
     }
 
     suspend fun getComedies(): FilmsDto {
         val comedy = RetrofitServices.searchComedyApi.getComedyList(13)
         comedy.category = context.getString(R.string.Comedies)
+        comedy.filterCategory = 13
         return comedy
     }
 
     suspend fun getSeries(): FilmsDto {
         val series = RetrofitServices.searchSeriesApi.getSeriesList("TV_SERIES")
         series.category = context.getString(R.string.Series)
+        series.filterCategory = 1111
         return series
     }
 
     suspend fun getCartoons(): FilmsDto {
         val cartoon = RetrofitServices.searchCartoonApi.getCartoonList(18)
         cartoon.category = context.getString(R.string.Cartoons)
+        cartoon.filterCategory = 18
         return cartoon
     }
 
     suspend fun getRandomGenreFilms(genres: FilterGenreDto): FilmsDto{
         val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!)
         genre.category = genres.genre.toString().replaceFirstChar { it.uppercase() }
+        genre.filterCategory = genres.id
         return genre
     }
 }

@@ -17,4 +17,5 @@
     <string name="Comedies">Комедии</string>
     <string name="Cartoons">Мультфильмы</string>
     <string name="already_watched">Уже просмотрено!</string>
+    <string name="go_up_button">В начало</string>
 </resources>
