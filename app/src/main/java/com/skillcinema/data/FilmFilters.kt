@@ -1,6 +1,5 @@
 package com.skillcinema.data
 
-import android.util.Log
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonClass
@@ -1164,7 +1163,7 @@ object FilmFilters {
         if (genres.isEmpty()) genres = filters!!.genres.toMutableList() //наполняю список заново,если пустой
         val randGenre = genres.random()
         genres.remove(randGenre)
-        Log.d("mytag", genres.toString())
+//        Log.d("mytag", genres.toString())
         return randGenre
     }
 }

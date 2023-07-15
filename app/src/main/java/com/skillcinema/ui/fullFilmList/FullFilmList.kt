@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import com.skillcinema.R
-import com.skillcinema.data.PagedFilmAdapter
 import com.skillcinema.databinding.FragmentFullFilmListBinding
 import com.skillcinema.entity.Film
 import com.skillcinema.ui.home.RecyclerItemDecoration
@@ -33,18 +31,17 @@ class FullFilmList : Fragment() {
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val pagedFilmAdapter =
-            PagedFilmAdapter({ film: Film -> onItemClick(film) }, requireContext())
-        super.onViewCreated(view, savedInstanceState)
-        val filterId = arguments.let { it?.getInt("id") }
+        val filterId = arguments.let { it?.getInt("filterId") }
         val filterDescription = arguments.let { it?.getString("description") }
-
+        val pagedFilmAdapter =
+            PagedFilmAdapter({ film: Film -> onItemClick(film,filterId!!) }, requireContext())
+        super.onViewCreated(view, savedInstanceState)
         binding.categoryDescription.text = filterDescription
         binding.recyclerView.adapter = pagedFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))
         viewModel.filterId = filterId!!
         viewModel.category = filterDescription!!
-        Log.d("mytag","fullfilmfragment filterid: ${viewModel.filterId}, description: ${viewModel.category}")
+//        Log.d("mytag","fullfilmfragment filterid: ${viewModel.filterId}, description: ${viewModel.category}")
         when (filterId) {
             1111 -> {
                 Log.d("mytag","1111")
@@ -57,6 +54,16 @@ class FullFilmList : Fragment() {
                 pagedFilmAdapter.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
+            3333 -> {viewModel.pagedSeries.onEach {
+                Log.d("mytag","3333")
+                pagedFilmAdapter.submitData(it)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+            }
+            4444 -> {viewModel.pagedTop250.onEach {
+                Log.d("mytag","4444")
+                pagedFilmAdapter.submitData(it)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+            }
             else -> {viewModel.pagedRandom.onEach {
                 Log.d("mytag","other filter")
                 Log.d("mytag","${viewModel.filterId}")
@@ -67,18 +74,16 @@ class FullFilmList : Fragment() {
         binding.goUpButton.setOnClickListener {
             binding.recyclerView.scrollToPosition(0)
         }
-        binding.swipeRefresh.setOnRefreshListener {
-            pagedFilmAdapter.refresh()
-        }
-        pagedFilmAdapter.loadStateFlow.onEach {
-            binding.swipeRefresh.isRefreshing = it.refresh == LoadState.Loading
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun onItemClick(item: Film) {
+    private fun onItemClick(item: Film,filterId:Int) {
         val bundle = Bundle()
         bundle.putString("posterUrlPreview", item.posterUrlPreview)
-        findNavController().navigate(R.id.action_fullFilmList_to_filmFragment,bundle)
+        bundle.putInt("kinopoiskId",item.kinopoiskId!!)
+        if (filterId !=3333) {
+            findNavController().navigate(R.id.action_fullFilmList_to_filmFragment, bundle)
+        }
+  //      else Переход на страницу с сериалами
     }
     override fun onDestroyView() {
         super.onDestroyView()

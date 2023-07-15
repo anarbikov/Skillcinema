@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.data.FilmFilters
-import com.skillcinema.data.FilmsDto
+import com.skillcinema.entity.FilmsDto
 import com.skillcinema.data.FilterGenreDto
 import com.skillcinema.domain.GetPopularUseCase
 import com.skillcinema.domain.GetPremiereUseCase
 import com.skillcinema.domain.GetRandomGenreFilmsUseCase
+import com.skillcinema.domain.GetSeriesUseCase
 import com.skillcinema.domain.GetSharedPrefsUseCase
+import com.skillcinema.domain.GetTop250UseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +27,8 @@ class HomeViewModel @Inject constructor(
     private val getPremiereUseCase: GetPremiereUseCase,
     private val getSharedPrefsUseCase: GetSharedPrefsUseCase,
     private val getPopularUseCase: GetPopularUseCase,
-//    private val getSeriesUseCase: GetSeriesUseCase,
+    private val getSeriesUseCase: GetSeriesUseCase,
+    private val getTop250UseCase: GetTop250UseCase,
 //    private val getComediesUseCase: GetComediesUseCase,
 //    private val getCartoonsUseCase: GetCartoonsUseCase,
     private val getRandomGenreFilmsUseCase: GetRandomGenreFilmsUseCase,
@@ -39,11 +42,10 @@ class HomeViewModel @Inject constructor(
     )
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
-    private val allFilms = mutableMapOf<Int,FilmsDto>().toSortedMap()
+    private val allFilms = mutableMapOf<Int, FilmsDto>().toSortedMap()
     init {
         loadAll()
     }
-
     fun refresh() {
         loadAll()
     }
@@ -61,14 +63,14 @@ class HomeViewModel @Inject constructor(
                 allFilms[3] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
                 allFilms[4] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
                 allFilms[5] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
-
-
+                allFilms[6] = getTop250UseCase.execute(FilterGenreDto("",0),1)
+                allFilms[7] = getSeriesUseCase.execute(FilterGenreDto("",0),1)
             }.fold(
                 onSuccess = {
-                    allFilms.forEach { it.value.items = it.value.items.shuffled() }
+                    allFilms.forEach { it.value.items = it.value.items!!.shuffled() }
                     _movies.value = allFilms.values.toList()
                 },
-                onFailure = { Log.d("mytag", it.message ?: "onFailure") }
+                onFailure = { Log.d("mytag", "onFailure: ${it.message}") }
             )
             _isLoading.value = false
         }

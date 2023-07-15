@@ -5,10 +5,10 @@ import com.skillcinema.data.FilterGenreDto
 import com.skillcinema.data.Repository
 import javax.inject.Inject
 
-class GetRandomGenreFilmsUseCase @Inject constructor(
+class GetTop250UseCase @Inject constructor(
     private val repository: Repository
 ):GetFilmInterface {
-     override suspend fun execute(genre:FilterGenreDto,page:Int): FilmsDto {
-        return repository.getRandomGenreFilms(genre,page)
+    override suspend fun execute(genre:FilterGenreDto,page:Int): FilmsDto {
+        return repository.getTop250(page)
     }
 }

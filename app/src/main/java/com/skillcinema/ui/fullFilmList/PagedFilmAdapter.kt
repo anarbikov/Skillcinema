@@ -1,4 +1,4 @@
-package com.skillcinema.data
+package com.skillcinema.ui.fullFilmList
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.databinding.FilmViewPagedBinding
+import com.skillcinema.entity.FilmDto
 import javax.inject.Inject
 
 

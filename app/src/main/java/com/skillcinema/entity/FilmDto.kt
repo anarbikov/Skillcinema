@@ -1,22 +1,19 @@
-package com.skillcinema.data
+package com.skillcinema.entity
 
-import com.skillcinema.entity.Country
-import com.skillcinema.entity.Film
-import com.skillcinema.entity.Films
-import com.skillcinema.entity.Genre
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FilmsDto(
-    @Json(name = "items") override var items: List<FilmDto>,
-    @Json(name = "total") override val total: Int,
+    @Json(name = "items") override var items: List<FilmDto>?,
+    @Json(name = "total") override val total: Int?,
     @Json(name = "category") override var category: String?,
-    @Json(name = "filterCategory") override var filterCategory: Int?
+    @Json(name = "filterCategory") override var filterCategory: Int?,
+    @Json(name = "films")override var films: List<FilmDto>?
 ): Films
 @JsonClass(generateAdapter = true)
 data class FilmDto (
-    @Json (name = "kinopoiskId") override val kinopoiskId : Int?,
+    @Json (name = "kinopoiskId") override var kinopoiskId : Int?,
     @Json (name = "posterUrlPreview") override var posterUrlPreview: String?,
     @Json (name = "countries")override val countries: List<CountryDto>?,
     @Json (name = "duration")override val duration: Int?,
@@ -26,7 +23,8 @@ data class FilmDto (
     @Json (name = "posterUrl")override val posterUrl: String?,
     @Json (name = "premiereRu")override val premiereRu: String?,
     @Json (name = "year")override val year: Int?,
-    @Json(name = "ratingKinopoisk") override val ratingKinopoisk: Double?
+    @Json(name = "ratingKinopoisk") override val ratingKinopoisk: Double?,
+    @Json(name = "filmId") override val filmId: Int?
 ):Film
 
 @JsonClass(generateAdapter = true)

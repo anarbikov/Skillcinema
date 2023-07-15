@@ -1,13 +1,14 @@
 package com.skillcinema.domain
 
-import com.skillcinema.data.FilmsDto
+import com.skillcinema.data.FilterGenreDto
+import com.skillcinema.entity.FilmsDto
 import com.skillcinema.data.Repository
 import javax.inject.Inject
 
 class GetSeriesUseCase @Inject constructor(
     private val repository: Repository
-) {
-     suspend fun execute(): FilmsDto {
-        return repository.getSeries()
+):GetFilmInterface {
+     override suspend fun execute(genre: FilterGenreDto, page:Int): FilmsDto {
+        return repository.getSeries(page)
     }
 }

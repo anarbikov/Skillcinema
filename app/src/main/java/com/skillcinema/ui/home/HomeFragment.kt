@@ -13,8 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillcinema.R
-import com.skillcinema.data.FilmsDto
-import com.skillcinema.data.ParentFilmAdapter
+import com.skillcinema.entity.FilmsDto
 import com.skillcinema.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
@@ -61,10 +60,14 @@ class HomeFragment : Fragment() {
                 viewModel.isLoading.collect {
                     when (it) {
                         true -> {
+                            binding.swipeRefresh.isRefreshing = false
+                            binding.parentRecyclerView.visibility = View.GONE
+                            binding.loadingProgress.visibility = View.VISIBLE
                             requireActivity().nav_view.visibility = View.GONE
                         }
 
                         else -> {
+                            binding.parentRecyclerView.visibility = View.VISIBLE
                             binding.swipeRefresh.isRefreshing = false
                             binding.loadingProgress.visibility = View.GONE
                             requireActivity().nav_view.visibility = View.VISIBLE

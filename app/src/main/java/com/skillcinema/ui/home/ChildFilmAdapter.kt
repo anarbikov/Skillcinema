@@ -1,4 +1,4 @@
-package com.skillcinema.data
+package com.skillcinema.ui.home
 
 import android.content.Context
 import android.util.Log
@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
+import com.skillcinema.entity.FilmDto
 import kotlinx.android.synthetic.main.film_view.view.filmGenreTextView
 import kotlinx.android.synthetic.main.film_view.view.filmImageView
 import kotlinx.android.synthetic.main.film_view.view.filmNameTextView
@@ -38,10 +39,11 @@ class ChildFilmAdapter @Inject constructor(
             itemView.setOnClickListener {
                 if (category != context.getString(R.string.Series)){
                     Log.d("mytag","${context.getString(R.string.Series)}, $category")
+                    bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
                     bundle.putString("posterUrlPreview", filmList[bindingAdapterPosition].posterUrlPreview)
                 itemView.findNavController().navigate(R.id.action_navigation_home_to_filmFragment,bundle)
-
                 }
+                else Log.d("mytag","сериалы попались!!!!")
 //                onItemClick?.invoke(filmList[bindingAdapterPosition])
             }
         }

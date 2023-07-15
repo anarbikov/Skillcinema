@@ -1,12 +1,16 @@
 package com.skillcinema.data
 
 import android.content.Context
+import android.util.Log
 import com.skillcinema.R
+import com.skillcinema.entity.FilmInfo
+import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.Calendar
 import java.util.Locale
@@ -34,7 +38,9 @@ class Api @Inject constructor(
         val searchComedyApi: SearchComedyApi = retrofit.create(SearchComedyApi::class.java)
         val searchSeriesApi: SearchSeriesApi = retrofit.create(SearchSeriesApi::class.java)
         val searchCartoonApi: SearchCartoonApi = retrofit.create(SearchCartoonApi::class.java)
-        val searchRandomGenreApi:SearchRandomGenreApi = retrofit.create(SearchRandomGenreApi::class.java)
+        val searchRandomGenreApi: SearchRandomGenreApi = retrofit.create(SearchRandomGenreApi::class.java)
+        val searchTop250Api: SearchTop250Api = retrofit.create(SearchTop250Api::class.java)
+        val searchFilmInfoByKinopoiskIdApi: SearchFilmByKinopoiskIdApi = retrofit.create(SearchFilmByKinopoiskIdApi::class.java)
     }
 
     interface SearchPremiereApi {
@@ -80,6 +86,7 @@ class Api @Inject constructor(
         @GET("api/v2.2/films")
         suspend fun getSeriesList(
             @Query(value = "type") type: String,
+            @Query(value = "page") page: Int
         ): FilmsDto
     }
 
@@ -103,6 +110,27 @@ class Api @Inject constructor(
             @Query(value = "genres") genres: Int,
             @Query(value = "page") page: Int
         ): FilmsDto
+    }
+    interface SearchTop250Api {
+        @Headers(
+            "X-API-KEY:$API_KEY",
+            "Content-Type: application/json"
+        )
+        @GET("api/v2.2/films/top")
+        suspend fun getTop250(
+            @Query(value = "type") type: String,
+            @Query(value = "page") page: Int
+        ): FilmsDto
+    }
+    interface SearchFilmByKinopoiskIdApi {
+        @Headers(
+            "X-API-KEY:$API_KEY",
+            "Content-Type: application/json"
+        )
+        @GET("api/v2.2/films")
+        suspend fun getFilmByKinopoiskId(
+            @Path(value = "kinopoiskId") kinopoiskId: Int
+        ): FilmInfo
     }
 
     suspend fun getPremieres(): FilmsDto {
@@ -129,11 +157,19 @@ class Api @Inject constructor(
         return comedy
     }
 
-    suspend fun getSeries(): FilmsDto {
-        val series = RetrofitServices.searchSeriesApi.getSeriesList("TV_SERIES")
+    suspend fun getSeries(page: Int): FilmsDto {
+        val series = RetrofitServices.searchSeriesApi.getSeriesList("TV_SERIES",page)
         series.category = context.getString(R.string.Series)
-        series.filterCategory = 1111
+        series.filterCategory = 3333
         return series
+    }
+    suspend fun getTop250Films (page: Int): FilmsDto {
+        val top250 = RetrofitServices.searchTop250Api.getTop250(type = "TOP_250_BEST_FILMS",page)
+        top250.category = context.getString(R.string.Top250)
+        top250.filterCategory = 4444
+        top250.items= top250.films
+        top250.items?.forEach { it.kinopoiskId = it.filmId }
+        return top250
     }
 
     suspend fun getCartoons(): FilmsDto {
@@ -143,10 +179,14 @@ class Api @Inject constructor(
         return cartoon
     }
 
-    suspend fun getRandomGenreFilms(genres: FilterGenreDto,page:Int): FilmsDto{
-        val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!,page)
+    suspend fun getRandomGenreFilms(genres: FilterGenreDto,page:Int): FilmsDto {
+        val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!,page=page)
         genre.category = genres.genre.toString().replaceFirstChar { it.uppercase() }
         genre.filterCategory = genres.id
+        Log.d("mytag","API genres: $genres")
         return genre
+    }
+    suspend fun getFilmByKinopoiskId (kinopoiskId: Int): FilmInfo{
+        return RetrofitServices.searchFilmInfoByKinopoiskIdApi.getFilmByKinopoiskId(kinopoiskId)
     }
 }

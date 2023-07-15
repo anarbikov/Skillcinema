@@ -1,6 +1,6 @@
 package com.skillcinema.domain
 
-import com.skillcinema.data.FilmsDto
+import com.skillcinema.entity.FilmsDto
 import com.skillcinema.data.FilterGenreDto
 
 interface GetFilmInterface {

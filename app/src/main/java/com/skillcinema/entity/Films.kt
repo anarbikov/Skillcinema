@@ -2,10 +2,11 @@ package com.skillcinema.entity
 
 
 interface Films {
-    val items: List<Film>
-    val total: Int
+    val items: List<Film>?
+    val total: Int?
     val category: String?
     val filterCategory: Int?
+    val films:List<Film>?
 }
 
 interface Film {
@@ -20,6 +21,7 @@ interface Film {
     val premiereRu: String?
     val year: Int?
     val ratingKinopoisk: Double?
+    val filmId: Int?
 }
 interface Country {
     val country: String
