@@ -49,7 +49,7 @@ class ChildFilmAdapter @Inject constructor(
         }
 
         fun bind(result: FilmDto) {
-            itemView.filmNameTextView.text = result.nameRu
+            itemView.filmNameTextView.text = result.nameRu?:(result.nameEn?:"")
             if (result.ratingKinopoisk != null) {
                 itemView.ratingFrame.visibility = View.VISIBLE
                 itemView.ratingTextView.text = result.ratingKinopoisk.toString()

@@ -127,9 +127,9 @@ class Api @Inject constructor(
             "X-API-KEY:$API_KEY",
             "Content-Type: application/json"
         )
-        @GET("api/v2.2/films")
+        @GET("api/v2.2/films/{id}")
         suspend fun getFilmByKinopoiskId(
-            @Path(value = "kinopoiskId") kinopoiskId: Int
+            @Path(value = "id") id: Int
         ): FilmInfo
     }
 
@@ -186,7 +186,7 @@ class Api @Inject constructor(
         Log.d("mytag","API genres: $genres")
         return genre
     }
-    suspend fun getFilmByKinopoiskId (kinopoiskId: Int): FilmInfo{
+    suspend fun getFilmByKinopoiskId(kinopoiskId: Int): FilmInfo {
         return RetrofitServices.searchFilmInfoByKinopoiskIdApi.getFilmByKinopoiskId(kinopoiskId)
     }
 }
