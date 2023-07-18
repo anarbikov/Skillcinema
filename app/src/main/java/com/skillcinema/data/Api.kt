@@ -3,6 +3,7 @@ package com.skillcinema.data
 import android.content.Context
 import android.util.Log
 import com.skillcinema.R
+import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -41,6 +42,7 @@ class Api @Inject constructor(
         val searchRandomGenreApi: SearchRandomGenreApi = retrofit.create(SearchRandomGenreApi::class.java)
         val searchTop250Api: SearchTop250Api = retrofit.create(SearchTop250Api::class.java)
         val searchFilmInfoByKinopoiskIdApi: SearchFilmByKinopoiskIdApi = retrofit.create(SearchFilmByKinopoiskIdApi::class.java)
+        val searchActorsApi: SearchActorsByKinopoiskIdApi = retrofit.create(SearchActorsByKinopoiskIdApi::class.java)
     }
 
     interface SearchPremiereApi {
@@ -132,6 +134,16 @@ class Api @Inject constructor(
             @Path(value = "id") id: Int
         ): FilmInfo
     }
+    interface SearchActorsByKinopoiskIdApi {
+        @Headers(
+            "X-API-KEY:$API_KEY",
+            "Content-Type: application/json"
+        )
+        @GET("api/v1/staff")
+        suspend fun getFilmByKinopoiskId(
+            @Query(value = "filmId") filmId: Int
+        ): List<ActorDto>
+    }
 
     suspend fun getPremieres(): FilmsDto {
         val year = Calendar.getInstance().get(Calendar.YEAR)
@@ -188,5 +200,8 @@ class Api @Inject constructor(
     }
     suspend fun getFilmByKinopoiskId(kinopoiskId: Int): FilmInfo {
         return RetrofitServices.searchFilmInfoByKinopoiskIdApi.getFilmByKinopoiskId(kinopoiskId)
+    }
+    suspend fun getActorsByKinopoiskId(kinopoiskId: Int): List<ActorDto> {
+        return RetrofitServices.searchActorsApi.getFilmByKinopoiskId(kinopoiskId)
     }
 }

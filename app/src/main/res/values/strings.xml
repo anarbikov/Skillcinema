@@ -22,4 +22,5 @@
     <string name="hour">ч</string>
     <string name="minutes">мин</string>
     <string name="actors_header">В фильме снимались</string>
+    <string name="other_staff_header">Над фильмом работали</string>
 </resources>

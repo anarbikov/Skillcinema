@@ -12,7 +12,6 @@ import com.skillcinema.entity.FilmInfo
 import javax.inject.Inject
 
 class FilmGeneralInfoAdapter @Inject constructor(
-//    filmData: FilmInfo,
     val context: Context
 ) : RecyclerView.Adapter<FilmGeneralInfoAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmGeneralInfoViewBinding) :

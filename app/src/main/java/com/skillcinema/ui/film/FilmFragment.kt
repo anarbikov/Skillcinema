@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillcinema.databinding.FragmentFilmBinding
+import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmInfo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
@@ -28,6 +29,7 @@ class FilmFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FilmViewModel by viewModels()
     private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
+    private lateinit var filmActorsAdapter: FilmActorsAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     override fun onCreateView(
@@ -40,17 +42,13 @@ class FilmFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         val url = arguments.let {it?.getString("posterUrlPreview")}
-        val kinopoiskId = 448
-        setUpViews()
+//        val kinopoiskId = 448
         doObserveWork(kinopoiskId)
     }
     private fun setUpViews(){
-        generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
-        concatAdapter = ConcatAdapter(generalInfoAdapter)
-        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.concatRecyclerView.adapter = concatAdapter
+
     }
     private fun doObserveWork(kinopoiskId:Int){
         viewModel.loadAll(kinopoiskId)
@@ -74,15 +72,30 @@ class FilmFragment : Fragment() {
             }
         }
         viewModel.movieInfo.onEach {
-            renderView(it)
+            setupAndRenderView(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
+    @Suppress("UNCHECKED_CAST")
     @SuppressLint("SetTextI18n")
-    private fun renderView(allInfo:List<Any>){
+    private fun setupAndRenderView(allInfo:List<Any>){
         if (allInfo.isEmpty())return
-        Log.d("mytag",allInfo.toString())
+        generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
+        val actorInfo: List<ActorDto> = allInfo[1] as List<ActorDto>
+        val otherStaff: List<ActorDto> = allInfo[2] as List<ActorDto>
+        filmActorsAdapter = FilmActorsAdapter(requireContext())
+        filmActorsAdapter.addData(actorInfo,otherStaff)
         val generalInfo: FilmInfo = allInfo[0] as FilmInfo
         generalInfoAdapter.addData(generalInfo)
+        val config = ConcatAdapter.Config.Builder().apply {
+            setIsolateViewTypes(true)
+        }.build()
+        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmActorsAdapter)
+        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.concatRecyclerView.adapter = concatAdapter
+        Log.d("mytag",allInfo.toString())
+
+
+
 
 
 
