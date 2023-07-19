@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:paddingEnd="6dp"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
         android:id="@+id/actorImageView"
-        android:layout_width="107dp"
-        android:layout_height="144dp"
+        android:layout_width="73dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="6dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:layout_marginTop="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="10dp"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="ContentDescription,ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
@@ -30,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="@id/actorImageView"
         app:layout_constraintStart_toEndOf="@id/actorImageView"
         app:layout_constraintVertical_bias="0.3"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textStyle="bold"
         android:textSize="14sp"
         android:layout_marginStart="10dp"
@@ -44,7 +45,7 @@
         app:layout_constraintStart_toEndOf="@id/actorImageView"
         app:layout_constraintVertical_bias="0.0"
         android:layout_marginTop="6dp"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textSize="12sp"
         android:layout_marginStart="10dp"
         />

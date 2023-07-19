@@ -3,6 +3,7 @@ package com.skillcinema.ui.film
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,10 +16,9 @@ class FilmGeneralInfoAdapter @Inject constructor(
     val context: Context
 ) : RecyclerView.Adapter<FilmGeneralInfoAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmGeneralInfoViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+        RecyclerView.ViewHolder(binding.root)
+
     private lateinit var filmInfo: FilmInfo
-    init {
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -50,7 +50,9 @@ class FilmGeneralInfoAdapter @Inject constructor(
                 R.string.minutes)}" else ""
             val ageRestriction =  if (filmInfo.ratingAgeLimits!=null) ", "+ filmInfo.ratingAgeLimits.toString().drop(3)+"+" else ""
             this.filmNameTextView.text = "$rating $filmName\n$filmYear$filmGenre\n$filmCountries$duration$ageRestriction"
+            this.filmDescriptionHeaderTextView.visibility = if (filmInfo.shortDescription != null) View.VISIBLE else View.GONE
             this.filmDescriptionHeaderTextView.text = if (filmInfo.shortDescription != null) filmInfo.shortDescription.toString() else ""
+            this.filmDescriptionBodyTextView.visibility = if(filmInfo.description != null) View.VISIBLE else View.GONE
             this.filmDescriptionBodyTextView.text = if (filmInfo.description != null) filmInfo.description.toString() else ""
         }
     }

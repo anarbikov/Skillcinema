@@ -15,12 +15,12 @@ class FilmActorsChildAdapter @Inject constructor(
     info: List<ActorDto>
 ) : RecyclerView.Adapter<FilmActorsChildAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmActorsViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+        RecyclerView.ViewHolder(binding.root)
+
     private var actorsList: List<ActorDto>
     init {
         this.actorsList = info
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmActorsChildAdapter.ViewHolder {
         return ViewHolder(
             FilmActorsViewBinding.inflate(
@@ -30,7 +30,6 @@ class FilmActorsChildAdapter @Inject constructor(
             )
         )
     }
-
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: FilmActorsChildAdapter.ViewHolder, position: Int) {
         holder.binding.apply {
@@ -47,5 +46,4 @@ class FilmActorsChildAdapter @Inject constructor(
     override fun getItemCount(): Int {
         return actorsList.size
     }
-
 }

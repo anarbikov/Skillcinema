@@ -29,7 +29,7 @@ class FilmFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FilmViewModel by viewModels()
     private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
-    private lateinit var filmActorsAdapter: FilmActorsAdapter
+    private lateinit var filmActorsParentAdapter: FilmActorsParentAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     override fun onCreateView(
@@ -82,14 +82,14 @@ class FilmFragment : Fragment() {
         generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
         val actorInfo: List<ActorDto> = allInfo[1] as List<ActorDto>
         val otherStaff: List<ActorDto> = allInfo[2] as List<ActorDto>
-        filmActorsAdapter = FilmActorsAdapter(requireContext())
-        filmActorsAdapter.addData(actorInfo,otherStaff)
+        filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
+        filmActorsParentAdapter.addData(actorInfo,otherStaff)
         val generalInfo: FilmInfo = allInfo[0] as FilmInfo
         generalInfoAdapter.addData(generalInfo)
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)
         }.build()
-        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmActorsAdapter)
+        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmActorsParentAdapter)
         binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.concatRecyclerView.adapter = concatAdapter
         Log.d("mytag",allInfo.toString())

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.data.FilmFilters
-import com.skillcinema.entity.FilmsDto
 import com.skillcinema.data.FilterGenreDto
 import com.skillcinema.domain.GetPopularUseCase
 import com.skillcinema.domain.GetPremiereUseCase
@@ -12,6 +11,7 @@ import com.skillcinema.domain.GetRandomGenreFilmsUseCase
 import com.skillcinema.domain.GetSeriesUseCase
 import com.skillcinema.domain.GetSharedPrefsUseCase
 import com.skillcinema.domain.GetTop250UseCase
+import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

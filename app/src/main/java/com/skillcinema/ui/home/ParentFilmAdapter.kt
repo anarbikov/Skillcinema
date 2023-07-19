@@ -33,7 +33,7 @@ open class ParentFilmAdapter @Inject constructor(
     inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {saveArgsAndNavigate()}
-//                Log.d("mytag","parentfilterid: ${filmCategoriesList[bindingAdapterPosition].filterCategory!!}")
+//                Log.d("mytag","prefiltered: ${filmCategoriesList[bindingAdapterPosition].filterCategory!!}")
 //                onItemClick?.invoke(filmCategoriesList[bindingAdapterPosition])
         }
 
@@ -53,11 +53,6 @@ open class ParentFilmAdapter @Inject constructor(
             val decorator = OverScrollDecoratorHelper.setUpOverScroll(itemView.childRecyclerView,OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             decorator.setOverScrollStateListener { _, oldState, newState ->
                 if (newState == STATE_BOUNCE_BACK && oldState != STATE_DRAG_START_SIDE) saveArgsAndNavigate()
-
-//Log.d("mytag","parentfilterid: ${filmCategoriesList[bindingAdapterPosition].filterCategory!!}")
-
-
-
             }
             itemView.childRecyclerView.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
