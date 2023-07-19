@@ -3,6 +3,7 @@ package com.skillcinema.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.skillcinema.entity.ActorDto
+import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -54,12 +55,6 @@ class Repository @Inject constructor(
     suspend fun getSeries(page:Int): FilmsDto {
         return api.getSeries(page)
     }
-    suspend fun getComedies(): FilmsDto {
-        return api.getComedies()
-    }
-    suspend fun getCartoons(): FilmsDto {
-        return api.getCartoons()
-    }
     suspend fun getRandomGenreFilms(genres:FilterGenreDto,page: Int): FilmsDto {
         return api.getRandomGenreFilms(genres,page)
     }
@@ -71,6 +66,9 @@ class Repository @Inject constructor(
     }
     suspend fun getActorsByKinopoiskId (kinopoiskId: Int): List<ActorDto> {
         return api.getActorsByKinopoiskId(kinopoiskId)
+    }
+    suspend fun getImagesByKinopoiskId (kinopoiskId: Int): FilmGalleryDto {
+        return api.getImagesByKinopoiskId(kinopoiskId)
     }
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"

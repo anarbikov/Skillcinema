@@ -29,8 +29,6 @@ class HomeViewModel @Inject constructor(
     private val getPopularUseCase: GetPopularUseCase,
     private val getSeriesUseCase: GetSeriesUseCase,
     private val getTop250UseCase: GetTop250UseCase,
-//    private val getComediesUseCase: GetComediesUseCase,
-//    private val getCartoonsUseCase: GetCartoonsUseCase,
     private val getRandomGenreFilmsUseCase: GetRandomGenreFilmsUseCase,
     ) : ViewModel() {
     var onboardingShownFlag: Int = 0
