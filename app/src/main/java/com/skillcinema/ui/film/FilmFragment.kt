@@ -87,6 +87,7 @@ class FilmFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setupAndRenderView(allInfo:List<Any>){
         if (allInfo.isEmpty())return
+        Log.d("mytag",allInfo.toString())
         val generalInfo: FilmInfo = allInfo[0] as FilmInfo
         generalInfoAdapter.addData(generalInfo)
         val actorInfo: List<ActorDto> = allInfo[1] as List<ActorDto>

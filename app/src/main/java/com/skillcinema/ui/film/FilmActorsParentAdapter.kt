@@ -27,8 +27,13 @@ class FilmActorsParentAdapter @Inject constructor(
             itemView.childRecyclerView.adapter =
                 FilmActorsChildAdapter(context, takenStaff)
             val spanCount = if (position == 0) 4 else 2
+            val spanCountActual = when {
+                result.isEmpty() -> 1
+                result.size > spanCount -> spanCount
+                else -> result.size
+            }
             itemView.childRecyclerView.layoutManager =
-                GridLayoutManager(context, spanCount, GridLayoutManager.HORIZONTAL, false)
+                GridLayoutManager(context, spanCountActual, GridLayoutManager.HORIZONTAL, false)
             itemView.actorsAll.text = if(takenStaff.size<result.size) "${result.size} >" else ""
             itemView.actorsAll.visibility = if (result.isNotEmpty())View.VISIBLE else View.GONE
             val header = if (position == 0) context.getString(R.string.actors_header) else context.getString(
