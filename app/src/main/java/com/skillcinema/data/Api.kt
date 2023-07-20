@@ -1,11 +1,11 @@
 package com.skillcinema.data
 
 import android.content.Context
-import android.util.Log
 import com.skillcinema.R
 import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Retrofit
@@ -19,7 +19,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
-private const val API_KEY = "f6570363-6b4d-4775-acad-cb324cb8366b"
+private const val API_KEY = "10041426-d719-4995-92a1-2c970a2b95fd"
 
 //KEYS:
 //"f6570363-6b4d-4775-acad-cb324cb8366b"
@@ -43,6 +43,7 @@ class Api @Inject constructor(
         val searchFilmInfoByKinopoiskIdApi: SearchFilmByKinopoiskIdApi = retrofit.create(SearchFilmByKinopoiskIdApi::class.java)
         val searchActorsApi: SearchActorsByKinopoiskIdApi = retrofit.create(SearchActorsByKinopoiskIdApi::class.java)
         val searchImagesByKinopoiskIdApi: SearchImagesByKinopoiskIdApi = retrofit.create(SearchImagesByKinopoiskIdApi::class.java)
+        val searchSimilarByKinopoiskIdApi: SearchSimilarByKinopoiskIdApi = retrofit.create(SearchSimilarByKinopoiskIdApi::class.java)
     }
 
     interface SearchPremiereApi {
@@ -131,6 +132,16 @@ class Api @Inject constructor(
             @Path(value = "id") id: Int
         ): FilmGalleryDto
     }
+    interface SearchSimilarByKinopoiskIdApi {
+        @Headers(
+            "X-API-KEY:$API_KEY",
+            "Content-Type: application/json"
+        )
+        @GET("api/v2.2/films/{id}/similars")
+        suspend fun getSimilarByKinopoiskId(
+            @Path(value = "id") id: Int
+        ): FilmSimilarsDto
+    }
 
     suspend fun getPremieres(): FilmsDto {
         val year = Calendar.getInstance().get(Calendar.YEAR)
@@ -166,7 +177,6 @@ class Api @Inject constructor(
         val genre = RetrofitServices.searchRandomGenreApi.getRandomGenreList(genres.id!!,page=page)
         genre.category = genres.genre.toString().replaceFirstChar { it.uppercase() }
         genre.filterCategory = genres.id
-        Log.d("mytag","API genres: $genres")
         return genre
     }
     suspend fun getFilmByKinopoiskId(kinopoiskId: Int): FilmInfo {
@@ -177,5 +187,8 @@ class Api @Inject constructor(
     }
     suspend fun getImagesByKinopoiskId(kinopoiskId: Int): FilmGalleryDto {
         return RetrofitServices.searchImagesByKinopoiskIdApi.getImagesByKinopoiskId(kinopoiskId)
+    }
+    suspend fun getSimilarByKinopoiskId(kinopoiskId: Int): FilmSimilarsDto {
+        return RetrofitServices.searchSimilarByKinopoiskIdApi.getSimilarByKinopoiskId(kinopoiskId)
     }
 }

@@ -24,4 +24,5 @@
     <string name="actors_header">В фильме снимались</string>
     <string name="other_staff_header">Над фильмом работали</string>
     <string name="gallery_header">Галерея</string>
+    <string name="similar_header">Похожие фильмы</string>
 </resources>

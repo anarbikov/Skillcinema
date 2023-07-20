@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.GetActorsByKinopoiskIdUseCase
 import com.skillcinema.domain.GetFilmInfoByKinopoiskIdUseCase
 import com.skillcinema.domain.GetImagesByKinopoiskIdUseCase
+import com.skillcinema.domain.GetSimilarByKinopoiskIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class FilmViewModel @Inject constructor(
     private val getFilmInfoByKinopoiskIdUseCase: GetFilmInfoByKinopoiskIdUseCase,
     private val getActorsByKinopoiskIdUseCase: GetActorsByKinopoiskIdUseCase,
-    private val getImagesByKinopoiskIdUseCase: GetImagesByKinopoiskIdUseCase
+    private val getImagesByKinopoiskIdUseCase: GetImagesByKinopoiskIdUseCase,
+    private val getSimilarByKinopoiskIdUseCase: GetSimilarByKinopoiskIdUseCase
 ) : ViewModel() {
     private val _movieInfo = MutableStateFlow<List<Any>>(emptyList())
     val movieInfo : StateFlow<List<Any>> = _movieInfo.stateIn(
@@ -40,6 +42,7 @@ class FilmViewModel @Inject constructor(
                 allInfo[1] = actors.filter { it.professionKey == "ACTOR" }
                 allInfo[2] = actors.filter { it.professionKey != "ACTOR" }
                 allInfo[3] = getImagesByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[4] = getSimilarByKinopoiskIdUseCase.execute(kinopoiskId)
             }.fold(
                 onSuccess = {
                     Log.d("mytag", "OnSuccess Film")

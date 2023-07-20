@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -69,6 +70,9 @@ class Repository @Inject constructor(
     }
     suspend fun getImagesByKinopoiskId (kinopoiskId: Int): FilmGalleryDto {
         return api.getImagesByKinopoiskId(kinopoiskId)
+    }
+    suspend fun getSimilarByKinopoiskId (kinopoiskId: Int): FilmSimilarsDto {
+        return api.getSimilarByKinopoiskId(kinopoiskId)
     }
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"

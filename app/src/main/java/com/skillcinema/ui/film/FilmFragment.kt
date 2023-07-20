@@ -2,6 +2,7 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.skillcinema.databinding.FragmentFilmBinding
 import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.entity.FilmSimilarsDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
@@ -31,6 +33,7 @@ class FilmFragment : Fragment() {
     private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
     private lateinit var filmActorsParentAdapter: FilmActorsParentAdapter
     private lateinit var filmGalleryParentAdapter: FilmGalleryParentAdapter
+    private lateinit var filmSimilarParentAdapter: FilmSimilarParentAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     override fun onCreateView(
@@ -53,12 +56,7 @@ class FilmFragment : Fragment() {
         generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
         filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
         filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
-        val config = ConcatAdapter.Config.Builder().apply {
-            setIsolateViewTypes(true)
-        }.build()
-        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmActorsParentAdapter,filmGalleryParentAdapter)
-        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-        binding.concatRecyclerView.adapter = concatAdapter
+        filmSimilarParentAdapter = FilmSimilarParentAdapter(requireContext())
     }
     private fun doObserveWork(kinopoiskId:Int){
         viewModel.loadAll(kinopoiskId)
@@ -96,7 +94,15 @@ class FilmFragment : Fragment() {
         filmActorsParentAdapter.addData(actorInfo,otherStaff)
         val gallery: FilmGalleryDto = allInfo[3] as FilmGalleryDto
         filmGalleryParentAdapter.addData(gallery)
-
+        val similar: FilmSimilarsDto = allInfo[4] as FilmSimilarsDto
+        filmSimilarParentAdapter.addData(similar)
+        Log.d("mytag",similar.toString())
+        val config = ConcatAdapter.Config.Builder().apply {
+            setIsolateViewTypes(true)
+        }.build()
+        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmActorsParentAdapter,filmGalleryParentAdapter,filmSimilarParentAdapter)
+        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.concatRecyclerView.adapter = concatAdapter
     }
     override fun onDestroyView() {
         super.onDestroyView()

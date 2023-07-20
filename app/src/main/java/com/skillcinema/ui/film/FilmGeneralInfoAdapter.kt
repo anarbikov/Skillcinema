@@ -33,27 +33,42 @@ class FilmGeneralInfoAdapter @Inject constructor(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            Glide.with(holder.itemView.context)
-                .load( filmInfo.posterUrlPreview)
-                .centerCrop()
-                .into(this.posterImageView)
-            val rating = filmInfo.ratingKinopoisk?:""
-            val filmName = filmInfo.nameRu ?: (filmInfo.nameOriginal?:"")
-            val filmYear = filmInfo.year?:""
-            val filmGenre = if (filmInfo.genres.isNotEmpty() && filmInfo.genres.size == 1 )", " + filmInfo.genres[0].genre
-            else (", " + filmInfo.genres[0].genre + ", " + filmInfo.genres[1].genre)
-            val filmCountries = if (filmInfo.countries.isNotEmpty() && filmInfo.countries.size == 1 ) filmInfo.countries[0].country
-            else filmInfo.countries[0].country+", "+filmInfo.countries[1].country
-            val durationHours = if(filmInfo.filmLength != null) (filmInfo.filmLength!! /60) else 0
-            val durationMinutes = if (filmInfo.filmLength != null) filmInfo.filmLength!! - durationHours * 60 else 0
-            val duration = if (filmInfo.filmLength != null) ", $durationHours ${context.getString(R.string.hour)} $durationMinutes ${context.getString(
-                R.string.minutes)}" else ""
-            val ageRestriction =  if (filmInfo.ratingAgeLimits!=null) ", "+ filmInfo.ratingAgeLimits.toString().drop(3)+"+" else ""
-            this.filmNameTextView.text = "$rating $filmName\n$filmYear$filmGenre\n$filmCountries$duration$ageRestriction"
-            this.filmDescriptionHeaderTextView.visibility = if (filmInfo.shortDescription != null) View.VISIBLE else View.GONE
-            this.filmDescriptionHeaderTextView.text = if (filmInfo.shortDescription != null) filmInfo.shortDescription.toString() else ""
-            this.filmDescriptionBodyTextView.visibility = if(filmInfo.description != null) View.VISIBLE else View.GONE
-            this.filmDescriptionBodyTextView.text = if (filmInfo.description != null) filmInfo.description.toString() else ""
+                Glide.with(holder.itemView.context)
+                    .load(filmInfo.posterUrlPreview)
+                    .centerCrop()
+                    .into(this.posterImageView)
+                val rating = filmInfo.ratingKinopoisk ?: ""
+                val filmName = filmInfo.nameRu ?: (filmInfo.nameOriginal ?: "")
+                val filmYear = filmInfo.year ?: ""
+                val filmGenre =
+                    if (filmInfo.genres.isNotEmpty() && filmInfo.genres.size == 1) ", " + filmInfo.genres[0].genre
+                    else (", " + filmInfo.genres[0].genre + ", " + filmInfo.genres[1].genre)
+                val filmCountries =
+                    if (filmInfo.countries.isNotEmpty() && filmInfo.countries.size == 1) filmInfo.countries[0].country
+                    else filmInfo.countries[0].country + ", " + filmInfo.countries[1].country
+                val durationHours =
+                    if (filmInfo.filmLength != null) (filmInfo.filmLength!! / 60) else 0
+                val durationMinutes =
+                    if (filmInfo.filmLength != null) filmInfo.filmLength!! - durationHours * 60 else 0
+                val duration =
+                    if (filmInfo.filmLength != null) ", $durationHours ${context.getString(R.string.hour)} $durationMinutes ${
+                        context.getString(
+                            R.string.minutes
+                        )
+                    }" else ""
+                val ageRestriction =
+                    if (filmInfo.ratingAgeLimits != null) ", " + filmInfo.ratingAgeLimits.toString()
+                        .drop(3) + "+" else ""
+                this.filmNameTextView.text =
+                    "$rating $filmName\n$filmYear$filmGenre\n$filmCountries$duration$ageRestriction"
+                this.filmDescriptionHeaderTextView.visibility =
+                    if (filmInfo.shortDescription != null) View.VISIBLE else View.GONE
+                this.filmDescriptionHeaderTextView.text =
+                    if (filmInfo.shortDescription != null) filmInfo.shortDescription.toString() else ""
+                this.filmDescriptionBodyTextView.visibility =
+                    if (filmInfo.description != null) View.VISIBLE else View.GONE
+                this.filmDescriptionBodyTextView.text =
+                    if (filmInfo.description != null) filmInfo.description.toString() else ""
         }
     }
 
@@ -62,6 +77,7 @@ class FilmGeneralInfoAdapter @Inject constructor(
     }
     @SuppressLint("NotifyDataSetChanged")
     fun addData(info: FilmInfo) {
+//        Log.d("mytag",info.toString())
         this.filmInfo = info
         notifyDataSetChanged()
     }

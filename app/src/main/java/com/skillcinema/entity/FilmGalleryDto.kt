@@ -5,12 +5,12 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FilmGalleryDto(
-    @Json val items: List<ItemDto>?,
+    @Json val items: List<FilmGalleryItemDto>?,
     @Json val total: Int?,
     @Json val totalPages: Int?
 )
 @JsonClass(generateAdapter = true)
-data class ItemDto(
+data class FilmGalleryItemDto(
     @Json val imageUrl: String?,
     @Json val previewUrl: String?
 )
