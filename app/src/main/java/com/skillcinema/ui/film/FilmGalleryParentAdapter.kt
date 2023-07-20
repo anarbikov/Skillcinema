@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.entity.FilmGalleryDto
-import kotlinx.android.synthetic.main.actors_child_rv.view.childRecyclerView
-import kotlinx.android.synthetic.main.gallery_child_rv.view.galleryAll
-import kotlinx.android.synthetic.main.gallery_child_rv.view.galleryHeader
+import kotlinx.android.synthetic.main.film_actors_child_rv.view.childRecyclerView
+import kotlinx.android.synthetic.main.film_gallery_child_rv.view.galleryAll
+import kotlinx.android.synthetic.main.film_gallery_child_rv.view.galleryHeader
 import javax.inject.Inject
 
 class FilmGalleryParentAdapter @Inject constructor(
@@ -36,7 +36,7 @@ class FilmGalleryParentAdapter @Inject constructor(
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderGallery = ViewHolderGallery (
         LayoutInflater.from(parent.context).inflate(
-            R.layout.gallery_child_rv, parent,
+            R.layout.film_gallery_child_rv, parent,
             false
         )
     )

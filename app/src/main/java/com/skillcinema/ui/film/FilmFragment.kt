@@ -17,6 +17,7 @@ import com.skillcinema.databinding.FragmentFilmBinding
 import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.entity.FilmSeasonsDto
 import com.skillcinema.entity.FilmSimilarsDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
@@ -31,6 +32,7 @@ class FilmFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FilmViewModel by viewModels()
     private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
+    private lateinit var filmSeasonsAdapter: FilmSeasonsAdapter
     private lateinit var filmActorsParentAdapter: FilmActorsParentAdapter
     private lateinit var filmGalleryParentAdapter: FilmGalleryParentAdapter
     private lateinit var filmSimilarParentAdapter: FilmSimilarParentAdapter
@@ -48,12 +50,13 @@ class FilmFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         val url = arguments.let {it?.getString("posterUrlPreview")}
-//        val kinopoiskId = 448
+ //       val kinopoiskId = 401522
         setUpViews()
         doObserveWork(kinopoiskId)
     }
     private fun setUpViews(){
         generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
+        filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
         filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
         filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
         filmSimilarParentAdapter = FilmSimilarParentAdapter(requireContext())
@@ -89,19 +92,22 @@ class FilmFragment : Fragment() {
         if (allInfo.isEmpty())return
         Log.d("mytag",allInfo.toString())
         val generalInfo: FilmInfo = allInfo[0] as FilmInfo
+        val isSeries = generalInfo.serial
         generalInfoAdapter.addData(generalInfo)
-        val actorInfo: List<ActorDto> = allInfo[1] as List<ActorDto>
-        val otherStaff: List<ActorDto> = allInfo[2] as List<ActorDto>
-        filmActorsParentAdapter.addData(actorInfo,otherStaff)
-        val gallery: FilmGalleryDto = allInfo[3] as FilmGalleryDto
+        val seasons: FilmSeasonsDto = allInfo[1] as FilmSeasonsDto
+        filmSeasonsAdapter.addData(seasons)
+        val actorInfo: List<ActorDto> = allInfo[2] as List<ActorDto>
+        val otherStaff: List<ActorDto> = allInfo[3] as List<ActorDto>
+        filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!)
+        val gallery: FilmGalleryDto = allInfo[4] as FilmGalleryDto
         filmGalleryParentAdapter.addData(gallery)
-        val similar: FilmSimilarsDto = allInfo[4] as FilmSimilarsDto
+        val similar: FilmSimilarsDto = allInfo[5] as FilmSimilarsDto
         filmSimilarParentAdapter.addData(similar)
         Log.d("mytag",similar.toString())
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)
         }.build()
-        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmActorsParentAdapter,filmGalleryParentAdapter,filmSimilarParentAdapter)
+        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmSeasonsAdapter,filmActorsParentAdapter,filmGalleryParentAdapter,filmSimilarParentAdapter)
         binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.concatRecyclerView.adapter = concatAdapter
     }

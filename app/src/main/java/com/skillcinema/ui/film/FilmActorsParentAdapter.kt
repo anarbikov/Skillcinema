@@ -9,16 +9,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.entity.ActorDto
-import kotlinx.android.synthetic.main.actors_child_rv.view.actorsAll
-import kotlinx.android.synthetic.main.actors_child_rv.view.actorsHeader
-import kotlinx.android.synthetic.main.actors_child_rv.view.childRecyclerView
+import kotlinx.android.synthetic.main.film_actors_child_rv.view.actorsAll
+import kotlinx.android.synthetic.main.film_actors_child_rv.view.actorsHeader
+import kotlinx.android.synthetic.main.film_actors_child_rv.view.childRecyclerView
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class FilmActorsParentAdapter @Inject constructor(
     val context: Context,
 ) : RecyclerView.Adapter<FilmActorsParentAdapter.ViewHolderActors>() {
     private lateinit var actorsList: List<ActorDto>
     private lateinit var otherStaff: List<ActorDto>
+    private var isSeries by Delegates.notNull<Boolean>()
+
     inner class ViewHolderActors(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         fun bind(result: List<ActorDto>, position: Int) {
@@ -36,9 +39,13 @@ class FilmActorsParentAdapter @Inject constructor(
                 GridLayoutManager(context, spanCountActual, GridLayoutManager.HORIZONTAL, false)
             itemView.actorsAll.text = if(takenStaff.size<result.size) "${result.size} >" else ""
             itemView.actorsAll.visibility = if (result.isNotEmpty())View.VISIBLE else View.GONE
-            val header = if (position == 0) context.getString(R.string.actors_header) else context.getString(
-                R.string.other_staff_header
-            )
+            val header = when {
+                position == 0 && isSeries -> context.getString(R.string.series_actors_header)
+                position == 0 && !isSeries -> context.getString(R.string.actors_header)
+                position == 1 && isSeries -> context.getString(R.string.series_other_staff_header)
+                position == 1 && !isSeries -> context.getString(R.string.other_staff_header)
+                else -> ""
+            }
             itemView.actorsHeader.text = if (result.isNotEmpty()) header else ""
             itemView.actorsHeader.visibility = if (result.isNotEmpty()) View.VISIBLE else View.GONE
 
@@ -46,7 +53,7 @@ class FilmActorsParentAdapter @Inject constructor(
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderActors = ViewHolderActors (
         LayoutInflater.from(parent.context).inflate(
-            R.layout.actors_child_rv, parent,
+            R.layout.film_actors_child_rv, parent,
             false
         )
     )
@@ -56,9 +63,10 @@ class FilmActorsParentAdapter @Inject constructor(
 
     override fun getItemCount(): Int = 2
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(actors: List<ActorDto>,others: List<ActorDto>) {
+    fun addData(actors: List<ActorDto>,others: List<ActorDto>,series: Boolean) {
         actorsList = actors
         otherStaff = others
+        isSeries = series
         notifyDataSetChanged()
     }
 }

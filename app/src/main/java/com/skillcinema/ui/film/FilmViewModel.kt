@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.GetActorsByKinopoiskIdUseCase
 import com.skillcinema.domain.GetFilmInfoByKinopoiskIdUseCase
 import com.skillcinema.domain.GetImagesByKinopoiskIdUseCase
+import com.skillcinema.domain.GetSeasonsByKinopoiskIdUseCase
 import com.skillcinema.domain.GetSimilarByKinopoiskIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,8 @@ class FilmViewModel @Inject constructor(
     private val getFilmInfoByKinopoiskIdUseCase: GetFilmInfoByKinopoiskIdUseCase,
     private val getActorsByKinopoiskIdUseCase: GetActorsByKinopoiskIdUseCase,
     private val getImagesByKinopoiskIdUseCase: GetImagesByKinopoiskIdUseCase,
-    private val getSimilarByKinopoiskIdUseCase: GetSimilarByKinopoiskIdUseCase
+    private val getSimilarByKinopoiskIdUseCase: GetSimilarByKinopoiskIdUseCase,
+    private val getSeasonsByKinopoiskIdUseCase: GetSeasonsByKinopoiskIdUseCase
 ) : ViewModel() {
     private val _movieInfo = MutableStateFlow<List<Any>>(emptyList())
     val movieInfo : StateFlow<List<Any>> = _movieInfo.stateIn(
@@ -38,11 +40,13 @@ class FilmViewModel @Inject constructor(
             kotlin.runCatching {
                 _isLoading.value = true
                 allInfo[0] = getFilmInfoByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[1] = getSeasonsByKinopoiskIdUseCase.execute(kinopoiskId)
                 val actors = getActorsByKinopoiskIdUseCase.execute(kinopoiskId)
-                allInfo[1] = actors.filter { it.professionKey == "ACTOR" }
-                allInfo[2] = actors.filter { it.professionKey != "ACTOR" }
-                allInfo[3] = getImagesByKinopoiskIdUseCase.execute(kinopoiskId)
-                allInfo[4] = getSimilarByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[2] = actors.filter { it.professionKey == "ACTOR" }
+                allInfo[3] = actors.filter { it.professionKey != "ACTOR" }
+                allInfo[4] = getImagesByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[5] = getSimilarByKinopoiskIdUseCase.execute(kinopoiskId)
+
             }.fold(
                 onSuccess = {
                     Log.d("mytag", "OnSuccess Film")

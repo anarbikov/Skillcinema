@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.entity.FilmsDto
 import com.skillcinema.data.FooterAdapter
-import kotlinx.android.synthetic.main.film_recyclerview.view.childRecyclerView
-import kotlinx.android.synthetic.main.film_recyclerview.view.homeTextViewPremieres
-import kotlinx.android.synthetic.main.film_recyclerview.view.premiereShowAllLayout
+import kotlinx.android.synthetic.main.home_film_recyclerview.view.childRecyclerView
+import kotlinx.android.synthetic.main.home_film_recyclerview.view.homeTextViewPremieres
+import kotlinx.android.synthetic.main.home_film_recyclerview.view.premiereShowAllLayout
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
@@ -79,7 +79,7 @@ open class ParentFilmAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.film_recyclerview, parent,
+            R.layout.home_film_recyclerview, parent,
             false
         )
     )

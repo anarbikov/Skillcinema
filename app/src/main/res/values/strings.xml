@@ -22,7 +22,11 @@
     <string name="hour">ч</string>
     <string name="minutes">мин</string>
     <string name="actors_header">В фильме снимались</string>
+    <string name="series_actors_header">В сериале снимались</string>
     <string name="other_staff_header">Над фильмом работали</string>
+    <string name="series_other_staff_header">Над сериалом работали</string>
     <string name="gallery_header">Галерея</string>
     <string name="similar_header">Похожие фильмы</string>
+    <string name="series_similar_header">Похожие сериалы</string>
+    <string name="seasons_header">Сезоны и серии</string>
 </resources>

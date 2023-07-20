@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.entity.FilmSimilarsItemDto
-import kotlinx.android.synthetic.main.film_view.view.filmImageView
-import kotlinx.android.synthetic.main.film_view.view.filmNameTextView
+import kotlinx.android.synthetic.main.home_film_view.view.filmImageView
+import kotlinx.android.synthetic.main.home_film_view.view.filmNameTextView
 import javax.inject.Inject
 
 class FilmSimilarChildAdapter @Inject constructor(
@@ -54,7 +54,7 @@ class FilmSimilarChildAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.similar_film_view, parent,
+            R.layout.film_similar_film_view, parent,
             false
         )
     )
