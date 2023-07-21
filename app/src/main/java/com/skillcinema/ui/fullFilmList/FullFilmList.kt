@@ -29,40 +29,21 @@ class FullFilmList : Fragment() {
         _binding = FragmentFullFilmListBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val filterId = arguments.let { it?.getInt("filterId") }
         val filterDescription = arguments.let { it?.getString("description") }
         val pagedFilmAdapter =
-            PagedFilmAdapter({ film: Film -> onItemClick(film,filterId!!) }, requireContext())
+            PagedFilmAdapter({ film: Film -> onItemClick(film, filterId!!) }, requireContext())
         super.onViewCreated(view, savedInstanceState)
         binding.categoryDescription.text = filterDescription
         binding.recyclerView.adapter = pagedFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))
         viewModel.filterId = filterId!!
         viewModel.category = filterDescription!!
-        when (filterId) {
-            1111 -> {
-                viewModel.pagedPremiere.onEach {
-                    pagedFilmAdapter.submitData(it)
-                }.launchIn(viewLifecycleOwner.lifecycleScope)
-            }
-            2222 -> {viewModel.pagedPopular.onEach {
-                pagedFilmAdapter.submitData(it)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-        }
-            3333 -> {viewModel.pagedSeries.onEach {
-                pagedFilmAdapter.submitData(it)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-            }
-            4444 -> {viewModel.pagedTop250.onEach {
-                pagedFilmAdapter.submitData(it)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-            }
-            else -> {viewModel.pagedRandom.onEach {
-                pagedFilmAdapter.submitData(it)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-            }
-    }
+        viewModel.pagedFilm.onEach {
+            pagedFilmAdapter.submitData(it)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
         binding.goUpButton.setOnClickListener {
             binding.recyclerView.scrollToPosition(0)
         }
@@ -70,7 +51,6 @@ class FullFilmList : Fragment() {
 
     private fun onItemClick(item: Film, filterId: Int) {
         val bundle = Bundle()
-        bundle.putString("posterUrlPreview", item.posterUrlPreview)
         bundle.putInt("kinopoiskId", item.kinopoiskId!!)
         findNavController().navigate(R.id.action_fullFilmList_to_filmFragment, bundle)
     }
