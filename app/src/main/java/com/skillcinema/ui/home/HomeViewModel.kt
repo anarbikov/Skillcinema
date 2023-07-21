@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.data.FilmFilters
-import com.skillcinema.data.FilterGenreDto
 import com.skillcinema.domain.GetPopularUseCase
 import com.skillcinema.domain.GetPremiereUseCase
 import com.skillcinema.domain.GetRandomGenreFilmsUseCase
@@ -56,13 +55,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true
-                allFilms[1] = getPremiereUseCase.execute(FilterGenreDto("",0),1)
-                allFilms[2] = getPopularUseCase.execute(FilterGenreDto("",0),1)
-                allFilms[3] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
-                allFilms[4] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
-                allFilms[5] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre(),1)
-                allFilms[6] = getTop250UseCase.execute(FilterGenreDto("",0),1)
-                allFilms[7] = getSeriesUseCase.execute(FilterGenreDto("",0),1)
+                allFilms[1] = getPremiereUseCase.execute()
+                allFilms[2] = getPopularUseCase.execute()
+                allFilms[3] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
+                allFilms[4] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
+                allFilms[5] = getRandomGenreFilmsUseCase.execute(FilmFilters.getRandomGenre())
+                allFilms[6] = getTop250UseCase.execute()
+                allFilms[7] = getSeriesUseCase.execute()
             }.fold(
                 onSuccess = {
                     allFilms.forEach { it.value.items = it.value.items!!.shuffled() }

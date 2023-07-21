@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class GetRandomGenreFilmsUseCase @Inject constructor(
     private val repository: Repository
-):GetFilmInterface {
-     override suspend fun execute(genre:FilterGenreDto,page:Int): FilmsDto {
-        return repository.getRandomGenreFilms(genre,page)
+){
+     suspend fun execute(genre:FilterGenreDto): FilmsDto {
+        return repository.getRandomGenreFilms(genre)
     }
 }

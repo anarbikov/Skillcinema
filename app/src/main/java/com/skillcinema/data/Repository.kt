@@ -51,19 +51,31 @@ class Repository @Inject constructor(
     suspend fun getPremieres(): FilmsDto {
         return api.getPremieres()
     }
-    suspend fun getPopular(page:Int): FilmsDto {
+    suspend fun getPopular(): FilmsDto {
+        return api.getPopular(1)
+    }
+    suspend fun getPopularPaged(page:Int): FilmsDto {
         return api.getPopular(page)
     }
-    suspend fun getSeries(page:Int): FilmsDto {
+    suspend fun getSeries(): FilmsDto {
+        return api.getSeries(1)
+    }
+    suspend fun getSeriesPaged(page:Int): FilmsDto {
         return api.getSeries(page)
     }
-    suspend fun getRandomGenreFilms(genres:FilterGenreDto,page: Int): FilmsDto {
+    suspend fun getRandomGenreFilms(genres:FilterGenreDto): FilmsDto {
+        return api.getRandomGenreFilms(genres,page=1)
+    }
+    suspend fun getRandomGenreFilmsPaged(genres:FilterGenreDto, page: Int): FilmsDto {
         return api.getRandomGenreFilms(genres,page)
     }
     suspend fun getFilmByKinopoiskId (kinopoiskId: Int): FilmInfo {
         return api.getFilmByKinopoiskId(kinopoiskId)
     }
-    suspend fun getTop250(page: Int): FilmsDto {
+    suspend fun getTop250(): FilmsDto {
+        return api.getTop250Films(1)
+    }
+    suspend fun getTop250Paged(page: Int): FilmsDto {
         return api.getTop250Films(page)
     }
     suspend fun getActorsByKinopoiskId (kinopoiskId: Int): List<ActorDto> {

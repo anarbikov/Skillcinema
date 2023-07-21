@@ -1,7 +1,6 @@
 package com.skillcinema.ui.fullFilmList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,32 +40,25 @@ class FullFilmList : Fragment() {
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))
         viewModel.filterId = filterId!!
         viewModel.category = filterDescription!!
-//        Log.d("mytag","fullfilmfragment filterid: ${viewModel.filterId}, description: ${viewModel.category}")
         when (filterId) {
             1111 -> {
-                Log.d("mytag","1111")
                 viewModel.pagedPremiere.onEach {
                     pagedFilmAdapter.submitData(it)
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
             2222 -> {viewModel.pagedPopular.onEach {
-                Log.d("mytag","2222")
                 pagedFilmAdapter.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
             3333 -> {viewModel.pagedSeries.onEach {
-                Log.d("mytag","3333")
                 pagedFilmAdapter.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
             4444 -> {viewModel.pagedTop250.onEach {
-                Log.d("mytag","4444")
                 pagedFilmAdapter.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
             else -> {viewModel.pagedRandom.onEach {
-                Log.d("mytag","other filter")
-                Log.d("mytag","${viewModel.filterId}")
                 pagedFilmAdapter.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
@@ -76,14 +68,11 @@ class FullFilmList : Fragment() {
         }
     }
 
-    private fun onItemClick(item: Film,filterId:Int) {
+    private fun onItemClick(item: Film, filterId: Int) {
         val bundle = Bundle()
         bundle.putString("posterUrlPreview", item.posterUrlPreview)
-        bundle.putInt("kinopoiskId",item.kinopoiskId!!)
-        if (filterId !=3333) {
-            findNavController().navigate(R.id.action_fullFilmList_to_filmFragment, bundle)
-        }
-  //      else Переход на страницу с сериалами
+        bundle.putInt("kinopoiskId", item.kinopoiskId!!)
+        findNavController().navigate(R.id.action_fullFilmList_to_filmFragment, bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()
