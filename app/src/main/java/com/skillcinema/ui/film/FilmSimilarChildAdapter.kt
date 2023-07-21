@@ -45,7 +45,7 @@ class FilmSimilarChildAdapter @Inject constructor(
 
         fun bind(result: FilmSimilarsItemDto) {
             itemView.filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
-            val url = if(result.posterUrlPreview != null) result.posterUrlPreview else result.posterUrl
+            val url = result.posterUrlPreview ?: result.posterUrl
             Glide.with(itemView.context)
                 .load(url)
                 .into(itemView.filmImageView)

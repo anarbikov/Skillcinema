@@ -2,6 +2,7 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,16 +38,17 @@ class FilmSeasonsAdapter @Inject constructor(
             this.seasonsAll.text = if(seasonsInfo.items.isNotEmpty()) context.getString(R.string.all) else ""
             this.seasonsAll.visibility = if (seasonsInfo.items.isNotEmpty())View.VISIBLE else View.GONE
             val seasonsQty:String = if (seasonsInfo.total != 0) seasonsInfo.total.toString() else ""
-            var count = 0
-            if(seasonsInfo.items.isNotEmpty()) for (season in seasonsInfo.items) count+= season.episodes!!.size
-            val seriesQty = if (seasonsInfo.total != 0) count.toString() else ""
+            var seriesCounter = 0
+            if(seasonsInfo.items.isNotEmpty()) for (season in seasonsInfo.items) seriesCounter+= season.episodes!!.size
+            val seriesQty = if (seasonsInfo.total != 0) seriesCounter.toString() else ""
+            Log.d("mytag","seriesCounter: $seriesCounter")
             val season = when(seasonsInfo.items.size%10){
                 1 -> "сезон"
                 in 2..4 -> "сезона"
                 in 5..9, 0 -> "сезонов"
                 else -> "сезонов"
             }
-            val series = when(seasonsInfo.items.size%10){
+            val series = when(seriesCounter%10){
                 1 -> "серия"
                 in 2..4 -> "серии"
                 in 5..9, 0 -> "серий"
