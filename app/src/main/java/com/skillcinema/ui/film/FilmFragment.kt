@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillcinema.databinding.FragmentFilmBinding
@@ -48,9 +49,9 @@ class FilmFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+//        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         val url = arguments.let {it?.getString("posterUrlPreview")}
- //       val kinopoiskId = 401522
+        val kinopoiskId = 448
         setUpViews()
         doObserveWork(kinopoiskId)
     }
@@ -90,18 +91,25 @@ class FilmFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setupAndRenderView(allInfo:List<Any>){
         if (allInfo.isEmpty())return
+        val isLoaded = allInfo[0] as Boolean
+        if (!isLoaded) {
+            binding.loadingErrorPage.visibility = View.VISIBLE
+            binding.button.setOnClickListener { findNavController().popBackStack() }
+            return
+        }
+            else binding.loadingErrorPage.visibility = View.GONE
         Log.d("mytag",allInfo.toString())
-        val generalInfo: FilmInfo = allInfo[0] as FilmInfo
+        val generalInfo: FilmInfo = allInfo[1] as FilmInfo
         val isSeries = generalInfo.serial
         generalInfoAdapter.addData(generalInfo)
-        val seasons: FilmSeasonsDto = allInfo[1] as FilmSeasonsDto
+        val seasons: FilmSeasonsDto = allInfo[2] as FilmSeasonsDto
         filmSeasonsAdapter.addData(seasons)
-        val actorInfo: List<ActorDto> = allInfo[2] as List<ActorDto>
-        val otherStaff: List<ActorDto> = allInfo[3] as List<ActorDto>
+        val actorInfo: List<ActorDto> = allInfo[3] as List<ActorDto>
+        val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
         filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!)
-        val gallery: FilmGalleryDto = allInfo[4] as FilmGalleryDto
+        val gallery: FilmGalleryDto = allInfo[5] as FilmGalleryDto
         filmGalleryParentAdapter.addData(gallery)
-        val similar: FilmSimilarsDto = allInfo[5] as FilmSimilarsDto
+        val similar: FilmSimilarsDto = allInfo[6] as FilmSimilarsDto
         filmSimilarParentAdapter.addData(similar)
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)

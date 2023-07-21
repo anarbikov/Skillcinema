@@ -39,20 +39,25 @@ class FilmViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true
-                allInfo[0] = getFilmInfoByKinopoiskIdUseCase.execute(kinopoiskId)
-                allInfo[1] = getSeasonsByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[1] = getFilmInfoByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[2] = getSeasonsByKinopoiskIdUseCase.execute(kinopoiskId)
                 val actors = getActorsByKinopoiskIdUseCase.execute(kinopoiskId)
-                allInfo[2] = actors.filter { it.professionKey == "ACTOR" }
-                allInfo[3] = actors.filter { it.professionKey != "ACTOR" }
-                allInfo[4] = getImagesByKinopoiskIdUseCase.execute(kinopoiskId)
-                allInfo[5] = getSimilarByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[3] = actors.filter { it.professionKey == "ACTOR" }
+                allInfo[4] = actors.filter { it.professionKey != "ACTOR" }
+                allInfo[5] = getImagesByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[6] = getSimilarByKinopoiskIdUseCase.execute(kinopoiskId)
+                allInfo[0] = true
 
             }.fold(
                 onSuccess = {
                     Log.d("mytag", "OnSuccess Film")
                     _movieInfo.value = allInfo.values.toList()
                 },
-                onFailure = { Log.d("mytag", "onFailureFilmVM: ${it.message}") }
+                onFailure = {
+                    allInfo[0] = false
+                    _movieInfo.value = allInfo.values.toList()
+                    Log.d("mytag", "onFailureFilmVM: ${it.message}")
+                }
             )
             _isLoading.value = false
         }

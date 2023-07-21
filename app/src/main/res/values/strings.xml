@@ -29,4 +29,6 @@
     <string name="similar_header">Похожие фильмы</string>
     <string name="series_similar_header">Похожие сериалы</string>
     <string name="seasons_header">Сезоны и серии</string>
+    <string name="load_error_message">При загрузке данных произошла ошибка</string>
+    <string name="back">Назад</string>
 </resources>
