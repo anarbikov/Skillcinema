@@ -19,6 +19,7 @@ class FilmGeneralInfoAdapter @Inject constructor(
         RecyclerView.ViewHolder(binding.root)
 
     private lateinit var filmInfo: FilmInfo
+    private var isCollapsed = INITIAL_IS_COLLAPSED
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -67,8 +68,16 @@ class FilmGeneralInfoAdapter @Inject constructor(
                     if (filmInfo.shortDescription != null) filmInfo.shortDescription.toString() else ""
                 this.filmDescriptionBodyTextView.visibility =
                     if (filmInfo.description != null) View.VISIBLE else View.GONE
-                this.filmDescriptionBodyTextView.text =
-                    if (filmInfo.description != null) filmInfo.description.toString() else ""
+                val description = if (filmInfo.description != null) filmInfo.description.toString() else ""
+                this.filmDescriptionBodyTextView.text = description
+
+            this.filmDescriptionBodyTextView.setOnClickListener {
+                if (isCollapsed){
+                    this.filmDescriptionBodyTextView.maxLines = 20
+                }
+                else {this.filmDescriptionBodyTextView.maxLines = MAX_LINES_COLLAPSED}
+                isCollapsed = !isCollapsed
+            }
         }
     }
 
@@ -77,8 +86,12 @@ class FilmGeneralInfoAdapter @Inject constructor(
     }
     @SuppressLint("NotifyDataSetChanged")
     fun addData(info: FilmInfo) {
-//        Log.d("mytag",info.toString())
         this.filmInfo = info
         notifyDataSetChanged()
+    }
+
+    companion object{
+        private const val MAX_LINES_COLLAPSED = 3
+        private const val INITIAL_IS_COLLAPSED = true
     }
 }

@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.onboarding_fragment) {
 //                toolbar.visibility = View.GONE

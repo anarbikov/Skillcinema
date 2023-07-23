@@ -37,7 +37,6 @@ class ChildFilmAdapter @Inject constructor(
         init {
             itemView.setOnClickListener {
                 bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
-                bundle.putString("posterUrlPreview", filmList[bindingAdapterPosition].posterUrlPreview)
                 itemView.findNavController().navigate(R.id.action_navigation_home_to_filmFragment,bundle)
             }
         }

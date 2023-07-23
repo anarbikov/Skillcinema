@@ -33,7 +33,6 @@ open class ParentFilmAdapter @Inject constructor(
     inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {saveArgsAndNavigate()}
-//                Log.d("mytag","prefiltered: ${filmCategoriesList[bindingAdapterPosition].filterCategory!!}")
 //                onItemClick?.invoke(filmCategoriesList[bindingAdapterPosition])
         }
 

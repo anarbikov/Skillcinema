@@ -50,8 +50,7 @@ class FilmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
-        val url = arguments.let {it?.getString("posterUrlPreview")}
- //       val kinopoiskId = 448
+//        val kinopoiskId = 448
         setUpViews()
         doObserveWork(kinopoiskId)
     }
