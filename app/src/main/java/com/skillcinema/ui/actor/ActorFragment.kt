@@ -1,6 +1,5 @@
-package com.skillcinema.ui.film
+package com.skillcinema.ui.actor
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +12,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.skillcinema.databinding.FragmentFilmBinding
-import com.skillcinema.entity.ActorDto
-import com.skillcinema.entity.FilmGalleryDto
+import com.skillcinema.databinding.FragmentActorBinding
+import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
-import com.skillcinema.entity.FilmSeasonsDto
-import com.skillcinema.entity.FilmSimilarsDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
@@ -26,16 +22,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FilmFragment : Fragment() {
+class ActorFragment : Fragment() {
 
-    private var _binding: FragmentFilmBinding? = null
+    private var _binding: FragmentActorBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FilmViewModel by viewModels()
-    private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
-    private lateinit var filmSeasonsAdapter: FilmSeasonsAdapter
-    private lateinit var filmActorsParentAdapter: FilmActorsParentAdapter
-    private lateinit var filmGalleryParentAdapter: FilmGalleryParentAdapter
-    private lateinit var filmSimilarParentAdapter: FilmSimilarParentAdapter
+    private val viewModel: ActorViewModel by viewModels()
+    private lateinit var actorGeneralInfoAdapter: ActorGeneralInfoAdapter
+    private lateinit var actorBestParentAdapter: ActorBestParentAdapter
+    private lateinit var filmographyAdapter: ActorFilmographyAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     override fun onCreateView(
@@ -43,25 +37,18 @@ class FilmFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFilmBinding.inflate(inflater, container, false)
+        _binding = FragmentActorBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
- //       val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
-        val kinopoiskId = 448
+        val staffId = arguments.let { it?.getInt("staffId") }
         setUpViews()
-        doObserveWork(kinopoiskId)
+        doObserveWork(staffId!!)
     }
-    private fun setUpViews(){
-        generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
-        filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
-        filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
-        filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
-        filmSimilarParentAdapter = FilmSimilarParentAdapter(requireContext())
-    }
-    private fun doObserveWork(kinopoiskId:Int){
-        viewModel.loadAll(kinopoiskId)
+    private fun doObserveWork(staffId:Int){
+        viewModel.loadAll(staffId)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {
@@ -81,13 +68,12 @@ class FilmFragment : Fragment() {
                 }
             }
         }
-        viewModel.movieInfo.onEach {
+        viewModel.actorInfo.onEach {
             setupAndRenderView(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
     @Suppress("UNCHECKED_CAST")
-    @SuppressLint("SetTextI18n")
-    private fun setupAndRenderView(allInfo:List<Any>){
+    private fun setupAndRenderView (allInfo:List<Any>){
         if (allInfo.isEmpty())return
         val isLoaded = allInfo[0] as Boolean
         if (!isLoaded) {
@@ -95,26 +81,27 @@ class FilmFragment : Fragment() {
             binding.button.setOnClickListener { findNavController().popBackStack() }
             return
         }
-            else binding.loadingErrorPage.visibility = View.GONE
-        val generalInfo: FilmInfo = allInfo[1] as FilmInfo
-        val isSeries = generalInfo.serial
-        generalInfoAdapter.addData(generalInfo)
-        val seasons: FilmSeasonsDto = allInfo[2] as FilmSeasonsDto
-        filmSeasonsAdapter.addData(seasons)
-        val actorInfo: List<ActorDto> = allInfo[3] as List<ActorDto>
-        val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
-        filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!)
-        val gallery: FilmGalleryDto = allInfo[5] as FilmGalleryDto
-        filmGalleryParentAdapter.addData(gallery)
-        val similar: FilmSimilarsDto = allInfo[6] as FilmSimilarsDto
-        filmSimilarParentAdapter.addData(similar)
+        else binding.loadingErrorPage.visibility = View.GONE
+        val generalInfo: ActorGeneralInfoDto = allInfo[1] as ActorGeneralInfoDto
+        actorGeneralInfoAdapter.addData(generalInfo)
+        val filmListByActor:List<FilmInfo> = allInfo[2] as List<FilmInfo>
+        actorBestParentAdapter.addData(filmListByActor,generalInfo)
+        filmographyAdapter.addData(generalInfo)
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)
         }.build()
-        concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmSeasonsAdapter,filmActorsParentAdapter,filmGalleryParentAdapter,filmSimilarParentAdapter)
-        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        concatAdapter = ConcatAdapter(config, actorGeneralInfoAdapter,actorBestParentAdapter,filmographyAdapter)
+        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.VERTICAL,false)
         binding.concatRecyclerView.adapter = concatAdapter
     }
+    private fun setUpViews(){
+        actorGeneralInfoAdapter = ActorGeneralInfoAdapter(requireContext())
+        actorBestParentAdapter = ActorBestParentAdapter(requireContext())
+        filmographyAdapter = ActorFilmographyAdapter(requireContext())
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -1,4 +1,4 @@
-package com.skillcinema.ui.notifications
+package com.skillcinema.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.skillcinema.databinding.FragmentNotificationsBinding
+import com.skillcinema.databinding.FragmentProfileBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class NotificationsFragment : Fragment() {
+@AndroidEntryPoint
+class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
-    private val viewModel: NotificationsViewModel by viewModels()
+    private var _binding: FragmentProfileBinding? = null
+    private val viewModel: ProfileViewModel by viewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +22,7 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textNotifications

@@ -31,4 +31,7 @@
     <string name="seasons_header">Сезоны и серии</string>
     <string name="load_error_message">При загрузке данных произошла ошибка</string>
     <string name="back">Назад</string>
+    <string name="best">Лучшее</string>
+    <string name="filmography_header">Фильмография</string>
+    <string name="filmography_all">К списку ></string>
 </resources>

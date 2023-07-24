@@ -1,11 +1,11 @@
-package com.skillcinema.ui.dashboard
+package com.skillcinema.ui.search
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DashboardViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
 

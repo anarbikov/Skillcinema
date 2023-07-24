@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/filmFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -15,8 +15,8 @@
             app:popUpToSaveState="true"
             app:destination="@id/onboarding_fragment" />
         <action
-            android:id="@+id/action_navigation_home_to_navigation_notifications"
-            app:destination="@id/navigation_notifications" />
+            android:id="@+id/action_navigation_home_to_profile_fragment"
+            app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_navigation_home_to_filmFragment"
             app:destination="@id/filmFragment"
@@ -29,16 +29,16 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.skillcinema.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/searchFragment"
+        android:name="com.skillcinema.ui.search.SearchFragment"
+        android:label=""
+        tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.skillcinema.ui.notifications.NotificationsFragment"
+        android:id="@+id/profileFragment"
+        android:name="com.skillcinema.ui.profile.ProfileFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/onboarding_fragment"
         android:name="com.skillcinema.ui.onboarding.OnboardingFragment"
@@ -61,6 +61,10 @@
             app:restoreState="true"
             app:popUpTo="@id/filmFragment"
             app:destination="@id/fullFilmList" />
+        <action
+            android:id="@+id/action_filmFragment_to_actorFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/actorFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -78,5 +82,37 @@
             android:id="@+id/action_fullFilmList_to_filmFragment"
             app:popUpToSaveState="true"
             app:destination="@id/filmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/actorFragment"
+        android:name="com.skillcinema.ui.actor.ActorFragment"
+        android:label="fragment_actor"
+        tools:layout="@layout/fragment_actor" >
+        <argument
+            android:name="staffId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_actorFragment_to_filmographyFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/filmographyFragment" />
+        <action
+            android:id="@+id/action_actorFragment_to_filmFragment"
+            app:popUpTo="@id/filmFragment"
+            app:restoreState="true"
+            app:destination="@id/filmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filmographyFragment"
+        android:name="com.skillcinema.ui.filmography.FilmographyFragment"
+        android:label="fragment_filmography"
+        tools:layout="@layout/fragment_filmography" >
+        <argument
+            android:name="staffId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_filmographyFragment_to_actorFragment"
+            app:popUpTo="@id/actorFragment"
+            app:restoreState="true"
+            app:destination="@id/actorFragment" />
     </fragment>
 </navigation>

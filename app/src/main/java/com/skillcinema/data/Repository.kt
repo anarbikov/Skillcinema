@@ -3,6 +3,7 @@ package com.skillcinema.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.skillcinema.entity.ActorDto
+import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmSeasonsDto
@@ -89,6 +90,9 @@ class Repository @Inject constructor(
     }
     suspend fun getSeasonsByKinopoiskId (kinopoiskId: Int): FilmSeasonsDto {
         return api.getSeasonsByKinopoiskId(kinopoiskId)
+    }
+    suspend fun getActorInfoByKinopoiskId (staffId: Int): ActorGeneralInfoDto {
+        return api.getActorInfoByKinopoiskId(staffId)
     }
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"

@@ -3,6 +3,7 @@ package com.skillcinema.data
 import android.content.Context
 import com.skillcinema.R
 import com.skillcinema.entity.ActorDto
+import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmSeasonsDto
@@ -46,6 +47,7 @@ class Api @Inject constructor(
         val searchImagesByKinopoiskIdApi: SearchImagesByKinopoiskIdApi = retrofit.create(SearchImagesByKinopoiskIdApi::class.java)
         val searchSimilarByKinopoiskIdApi: SearchSimilarByKinopoiskIdApi = retrofit.create(SearchSimilarByKinopoiskIdApi::class.java)
         val searchSeasonsByKinopoiskIdApi: SearchSeasonsByKinopoiskIdApi = retrofit.create(SearchSeasonsByKinopoiskIdApi::class.java)
+        val searchActorInfoByKinopoiskStaffIdApi: SearchActorInfoByKinopoiskStaffIdApi = retrofit.create(SearchActorInfoByKinopoiskStaffIdApi::class.java)
     }
 
     interface SearchPremiereApi {
@@ -154,6 +156,16 @@ class Api @Inject constructor(
             @Path(value = "id") id: Int
         ): FilmSeasonsDto
     }
+    interface SearchActorInfoByKinopoiskStaffIdApi {
+        @Headers(
+            "X-API-KEY:$API_KEY",
+            "Content-Type: application/json"
+        )
+        @GET("api/v1/staff/{id}")
+        suspend fun getActorInfoByKinopoiskId(
+            @Path(value = "id") id: Int
+        ): ActorGeneralInfoDto
+    }
 
     suspend fun getPremieres(): FilmsDto {
         val year = Calendar.getInstance().get(Calendar.YEAR)
@@ -205,5 +217,8 @@ class Api @Inject constructor(
     }
     suspend fun getSeasonsByKinopoiskId(kinopoiskId: Int): FilmSeasonsDto {
         return RetrofitServices.searchSeasonsByKinopoiskIdApi.getSeasonsByKinopoiskId(kinopoiskId)
+    }
+    suspend fun getActorInfoByKinopoiskId(staffId: Int): ActorGeneralInfoDto {
+        return RetrofitServices.searchActorInfoByKinopoiskStaffIdApi.getActorInfoByKinopoiskId(staffId)
     }
 }

@@ -1,4 +1,4 @@
-package com.skillcinema.ui.dashboard
+package com.skillcinema.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,23 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.skillcinema.databinding.FragmentDashboardBinding
+import com.skillcinema.databinding.FragmentSearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class DashboardFragment : Fragment() {
+@AndroidEntryPoint
+class SearchFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentSearchBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val dashboardViewModel:DashboardViewModel by viewModels()
+    private val searchViewModel:SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 

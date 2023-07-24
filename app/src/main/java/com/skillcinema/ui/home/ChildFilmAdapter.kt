@@ -23,15 +23,10 @@ class ChildFilmAdapter @Inject constructor(
     val context: Context
 ) :
     RecyclerView.Adapter<ChildFilmAdapter.DataViewHolder>() {
-
     private var filmList: List<FilmDto> = ArrayList()
-
     init {
         this.filmList = filmData
     }
-
-//    var onItemClick: ((FilmDto) -> Unit)? = null
-
     inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bundle = bundleOf()
         init {

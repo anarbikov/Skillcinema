@@ -3,36 +3,48 @@ package com.skillcinema.ui.film
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.databinding.FilmActorsViewBinding
+import com.skillcinema.R
 import com.skillcinema.entity.ActorDto
+import kotlinx.android.synthetic.main.film_actors_view.view.actorImageView
+import kotlinx.android.synthetic.main.film_actors_view.view.actorNameTextView
+import kotlinx.android.synthetic.main.film_actors_view.view.actorNickTextView
 import javax.inject.Inject
 
 class FilmActorsChildAdapter @Inject constructor(
     val context: Context,
     info: List<ActorDto>
-) : RecyclerView.Adapter<FilmActorsChildAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: FilmActorsViewBinding) :
-        RecyclerView.ViewHolder(binding.root)
-
+) : RecyclerView.Adapter<FilmActorsChildAdapter.ActorViewHolder>() {
     private var actorsList: List<ActorDto>
     init {
-        this.actorsList = info
+        actorsList = info
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmActorsChildAdapter.ViewHolder {
-        return ViewHolder(
-            FilmActorsViewBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+    inner class ActorViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView){
+        private val bundle = bundleOf()
+            init {
+                itemView.setOnClickListener{
+                    bundle.putInt("staffId",actorsList[bindingAdapterPosition].staffId!!)
+                    itemView.findNavController().navigate(R.id.action_filmFragment_to_actorFragment,bundle)
+                }
+            }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int) = ActorViewHolder(
+        LayoutInflater.from(parent.context).inflate(
+            R.layout.film_actors_view,
+            parent,
+            false
         )
-    }
+    )
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: FilmActorsChildAdapter.ViewHolder, position: Int) {
-        holder.binding.apply {
+    override fun onBindViewHolder(holder: FilmActorsChildAdapter.ActorViewHolder, position: Int) {
+        holder.itemView.apply {
             Glide.with(holder.itemView.context)
                 .load(actorsList[position].posterUrl)
                 .centerCrop()
