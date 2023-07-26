@@ -32,9 +32,9 @@ class FilmographyViewModel @Inject constructor(
         fun loadAll(staffId:Int) {
             viewModelScope.launch (Dispatchers.IO) {
                 kotlin.runCatching {
-//                    _isLoading.value = true
-//                    val generalInfo = getActorInfoByKinopoiskIdUseCase.execute(staffId)
-//                    allInfo[1] = generalInfo
+                    _isLoading.value = true
+                    val generalInfo = getActorInfoByKinopoiskIdUseCase.execute(staffId)
+                    allInfo[1] = generalInfo
 //                    val filmListBasic = generalInfo.films?.sortedBy { it.rating }?.take(10)
 //                    val idList = mutableListOf<Int>()
 //                    for (film in filmListBasic!!) {film.filmId?.let { idList.add(it)}}
@@ -43,7 +43,7 @@ class FilmographyViewModel @Inject constructor(
 //                    allInfo[2] = filmListDetailed.toList()
 //
 //
-//                    allInfo[0] = true
+                    allInfo[0] = true
                 }.fold(
                     onSuccess = {
                         Log.d("mytag", "OnSuccess Film")
