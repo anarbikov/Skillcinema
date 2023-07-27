@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
@@ -32,10 +33,10 @@ class ActorBestChildAdapter @Inject constructor(
     inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bundle = bundleOf()
         init {
-//            itemView.setOnClickListener {
-//                bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
-//                itemView.findNavController().navigate(R.id.action_navigation_home_to_filmFragment,bundle)
-//            }
+            itemView.setOnClickListener {
+                bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
+                itemView.findNavController().navigate(R.id.action_actorFragment_to_filmFragment,bundle)
+            }
         }
 
         fun bind(result: FilmInfo) {

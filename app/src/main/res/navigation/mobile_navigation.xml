@@ -65,6 +65,11 @@
             android:id="@+id/action_filmFragment_to_actorFragment"
             app:popUpToSaveState="true"
             app:destination="@id/actorFragment" />
+        <action
+            android:id="@+id/action_filmFragment_self"
+            app:popUpTo="@id/filmFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/filmFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -98,6 +103,7 @@
         <action
             android:id="@+id/action_actorFragment_to_filmFragment"
             app:popUpTo="@id/filmFragment"
+            app:popUpToInclusive="true"
             app:restoreState="true"
             app:destination="@id/filmFragment" />
     </fragment>
@@ -114,5 +120,10 @@
             app:popUpTo="@id/actorFragment"
             app:restoreState="true"
             app:destination="@id/actorFragment" />
+        <action
+            android:id="@+id/action_filmographyFragment_to_filmFragment"
+            app:popUpTo="@id/filmFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/filmFragment" />
     </fragment>
 </navigation>
