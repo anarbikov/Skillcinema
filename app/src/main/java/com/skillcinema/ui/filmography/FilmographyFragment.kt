@@ -35,7 +35,7 @@ class FilmographyFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FilmographyViewModel by viewModels()
     private lateinit var chipGroup: ChipGroup
-    private val chipList = mutableListOf<Chip>()
+    private val chipList = mutableMapOf<Chip,String>()
     private lateinit var filmographyChippedAdapter: FilmographyChippedAdapter
     private lateinit var generalInfo: ActorGeneralInfoDto
 
@@ -105,44 +105,46 @@ class FilmographyFragment : Fragment() {
     }
     @SuppressLint("ResourceType")
     private fun startListener(generalInfo: ActorGeneralInfoDto){
-        val staffId = generalInfo.personId!!
+        val id = generalInfo.personId!!
             chipGroup.check(1)
-            val chipInitial: Chip = chipList[0]
+            val chipInitial: Chip = chipGroup.findViewById(1)
                 chipInitial.chipBackgroundColor =
                     ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
-                viewModel.loadByChip(staffId = staffId,chipInitial.text.toString())
+                viewModel.loadByChip(staffId = id,chipList.getValue((chipGroup.findViewById(chipInitial.id))))
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             Log.d("mytag",checkedIds.toString())
             val chip:Chip? = if (checkedIds.isNotEmpty()) group.findViewById(checkedIds[0]) else null
             if (checkedIds.isNotEmpty()) {
-                for (i in chipList) {
+                for (i in chipList.keys) {
                     i.chipBackgroundColor = ColorStateList.valueOf(
                         requireContext().getColor(R.color.grey))
                 }
                 chip!!.chipBackgroundColor =
                     ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
-                viewModel.loadByChip(staffId = staffId,chipList[(checkedIds[0]-1)].text.toString())
+                viewModel.loadByChip(staffId = id,chipList.getValue((chipGroup.findViewById(checkedIds[0]))))
             }
             else {
-                for (i in chipList)i.chipBackgroundColor = ColorStateList.valueOf(
+                for (i in chipList.keys)i.chipBackgroundColor = ColorStateList.valueOf(
                     requireContext().getColor(R.color.grey))
                 filmographyChippedAdapter.removeData()
             }
         }
     }
+    @SuppressLint("SetTextI18n")
     private fun addChips(generalInfo:ActorGeneralInfoDto){
         val roles = mutableListOf<String>()
         for (role in generalInfo.films!!) role.professionKey?.let { roles.add(it) }
         val rolesDistincted = roles.distinct()
         var chipIdCounter = 1
         for (chipText in rolesDistincted) {
+            val filmsQuantity = generalInfo.films.filter{it.professionKey == chipText }.size
             val chip = Chip(requireContext())
-            chip.text = chipText
+            chip.text = "$chipText $filmsQuantity"
             chip.id = chipIdCounter
             chip.isCheckable = true
             chip.chipBackgroundColor = ColorStateList.valueOf(
                 requireContext().getColor(R.color.grey))
-            chipList.add(chip)
+            chipList[chip] = chipText
             chipGroup.addView(chip)
             chipIdCounter ++
         }
