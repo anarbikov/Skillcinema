@@ -103,7 +103,7 @@ class FilmFragment : Fragment() {
         filmSeasonsAdapter.addData(seasons)
         val actorInfo: List<ActorDto> = allInfo[3] as List<ActorDto>
         val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
-        filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!)
+        filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!,generalInfo.kinopoiskId!!)
         val gallery: FilmGalleryDto = allInfo[5] as FilmGalleryDto
         filmGalleryParentAdapter.addData(gallery)
         val similar: FilmSimilarsDto = allInfo[6] as FilmSimilarsDto

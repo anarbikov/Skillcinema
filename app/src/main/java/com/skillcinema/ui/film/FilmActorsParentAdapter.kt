@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
@@ -13,14 +15,15 @@ import kotlinx.android.synthetic.main.film_actors_child_rv.view.actorsAll
 import kotlinx.android.synthetic.main.film_actors_child_rv.view.actorsHeader
 import kotlinx.android.synthetic.main.film_actors_child_rv.view.childRecyclerView
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class FilmActorsParentAdapter @Inject constructor(
     val context: Context,
 ) : RecyclerView.Adapter<FilmActorsParentAdapter.ViewHolderActors>() {
-    private lateinit var actorsList: List<ActorDto>
-    private lateinit var otherStaff: List<ActorDto>
-    private var isSeries by Delegates.notNull<Boolean>()
+    private var actorsList: List<ActorDto> = listOf()
+    private var otherStaff: List<ActorDto> = listOf()
+    private var isSeries = false
+    private val bundle = bundleOf()
+    private var kinopoiskFilmId = 0
 
     inner class ViewHolderActors(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
@@ -39,6 +42,12 @@ class FilmActorsParentAdapter @Inject constructor(
                 GridLayoutManager(context, spanCountActual, GridLayoutManager.HORIZONTAL, false)
             itemView.actorsAll.text = if(takenStaff.size<result.size) "${result.size} >" else ""
             itemView.actorsAll.visibility = if (result.isNotEmpty())View.VISIBLE else View.GONE
+            itemView.actorsAll.setOnClickListener{
+                bundle.putInt("kinopoiskId",kinopoiskFilmId)
+                bundle.putBoolean("isActor", position == 0)
+                bundle.putBoolean("isSeries",isSeries)
+                it.findNavController().navigate(R.id.action_filmFragment_to_actorsFullFragment,bundle)
+            }
             val header = when {
                 position == 0 && isSeries -> context.getString(R.string.series_actors_header)
                 position == 0 && !isSeries -> context.getString(R.string.actors_header)
@@ -63,10 +72,11 @@ class FilmActorsParentAdapter @Inject constructor(
 
     override fun getItemCount(): Int = 2
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(actors: List<ActorDto>,others: List<ActorDto>,series: Boolean) {
+    fun addData(actors: List<ActorDto>,others: List<ActorDto>,series: Boolean,filmId:Int) {
         actorsList = actors
         otherStaff = others
         isSeries = series
+        kinopoiskFilmId = filmId
         notifyDataSetChanged()
     }
 }

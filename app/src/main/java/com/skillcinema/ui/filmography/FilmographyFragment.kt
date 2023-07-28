@@ -103,7 +103,7 @@ class FilmographyFragment : Fragment() {
             LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         startListener(generalInfo)
     }
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "SuspiciousIndentation")
     private fun startListener(generalInfo: ActorGeneralInfoDto){
         val currentStaffId = generalInfo.personId!!
             chipGroup.check(1)

@@ -50,4 +50,8 @@
     <string name="ACTOR">Актер</string>
     <string name="VOICE_DIRECTOR">Звукорежиссер</string>
     <string name="UNKNOWN">Неизвестно</string>
+    <string name="actors_full_title_1">В сериале снимались</string>
+    <string name="actors_full_title_2">Над сериалом работали</string>
+    <string name="actors_full_title_3">В фильме снимались</string>
+    <string name="actors_full_title_4">Над фильмом работали</string>
 </resources>

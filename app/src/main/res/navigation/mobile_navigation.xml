@@ -70,6 +70,10 @@
             app:popUpTo="@id/filmFragment"
             app:popUpToInclusive="true"
             app:destination="@id/filmFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_actorsFullFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/actorsFullFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -106,6 +110,11 @@
             app:popUpToInclusive="true"
             app:restoreState="true"
             app:destination="@id/filmFragment" />
+        <action
+            android:id="@+id/action_actorFragment_to_actorsFullFragment"
+            app:popUpTo="@id/actorsFullFragment"
+            app:restoreState="true"
+            app:destination="@id/actorsFullFragment" />
     </fragment>
     <fragment
         android:id="@+id/filmographyFragment"
@@ -125,5 +134,24 @@
             app:popUpTo="@id/filmFragment"
             app:popUpToInclusive="true"
             app:destination="@id/filmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/actorsFullFragment"
+        android:name="com.skillcinema.ui.actorsFull.ActorsFullFragment"
+        android:label="fragment_actors_full"
+        tools:layout="@layout/fragment_actors_full" >
+        <action
+            android:id="@+id/action_actorsFullFragment_to_actorFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/actorFragment" />
+        <action
+            android:id="@+id/action_actorsFullFragment_to_filmFragment"
+            app:popUpTo="@id/filmFragment"
+            app:popUpToInclusive="true"
+            app:restoreState="true"
+            app:destination="@id/filmFragment" />
+        <argument
+            android:name="bundle"
+            app:argType="android.os.Bundle" />
     </fragment>
 </navigation>
