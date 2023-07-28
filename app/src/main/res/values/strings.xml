@@ -34,4 +34,20 @@
     <string name="best">Лучшее</string>
     <string name="filmography_header">Фильмография</string>
     <string name="filmography_all">К списку ></string>
+    <string name="WRITER">Сценарист</string>
+    <string name="OPERATOR">Оператор</string>
+    <string name="EDITOR">Редактор</string>
+    <string name="COMPOSER">Композитор</string>
+    <string name="PRODUCER_USSR">Продюсер</string>
+    <string name="HIMSELF">Актер: играет самого себя</string>
+    <string name="HERSELF">Актриса: играет саму себя</string>
+    <string name="HRONO_TITR_MALE">Титры</string>
+    <string name="HRONO_TITR_FEMALE">Титры</string>
+    <string name="TRANSLATOR">Переводчик</string>
+    <string name="DIRECTOR">Режиссер</string>
+    <string name="DESIGN">Дизайнер</string>
+    <string name="PRODUCER">Продюсер</string>
+    <string name="ACTOR">Актер</string>
+    <string name="VOICE_DIRECTOR">Звукорежиссер</string>
+    <string name="UNKNOWN">Неизвестно</string>
 </resources>

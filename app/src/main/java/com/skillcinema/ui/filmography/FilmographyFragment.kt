@@ -105,12 +105,12 @@ class FilmographyFragment : Fragment() {
     }
     @SuppressLint("ResourceType")
     private fun startListener(generalInfo: ActorGeneralInfoDto){
-        val id = generalInfo.personId!!
+        val currentStaffId = generalInfo.personId!!
             chipGroup.check(1)
             val chipInitial: Chip = chipGroup.findViewById(1)
                 chipInitial.chipBackgroundColor =
                     ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
-                viewModel.loadByChip(staffId = id,chipList.getValue((chipGroup.findViewById(chipInitial.id))))
+                viewModel.loadByChip(staffId = currentStaffId,chipList.getValue((chipGroup.findViewById(chipInitial.id))))
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             Log.d("mytag",checkedIds.toString())
             val chip:Chip? = if (checkedIds.isNotEmpty()) group.findViewById(checkedIds[0]) else null
@@ -121,7 +121,7 @@ class FilmographyFragment : Fragment() {
                 }
                 chip!!.chipBackgroundColor =
                     ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
-                viewModel.loadByChip(staffId = id,chipList.getValue((chipGroup.findViewById(checkedIds[0]))))
+                viewModel.loadByChip(staffId = currentStaffId,chipList.getValue((chipGroup.findViewById(checkedIds[0]))))
             }
             else {
                 for (i in chipList.keys)i.chipBackgroundColor = ColorStateList.valueOf(
@@ -137,9 +137,27 @@ class FilmographyFragment : Fragment() {
         val rolesDistincted = roles.distinct()
         var chipIdCounter = 1
         for (chipText in rolesDistincted) {
+            val translatedText = when(chipText){
+                "WRITER" -> requireContext().getString(R.string.WRITER)
+                "OPERATOR" -> requireContext().getString(R.string.OPERATOR)
+                "EDITOR" -> requireContext().getString(R.string.EDITOR)
+                "COMPOSER" -> requireContext().getString(R.string.COMPOSER)
+                "PRODUCER_USSR" -> requireContext().getString(R.string.PRODUCER_USSR)
+                "HIMSELF" -> requireContext().getString(R.string.HIMSELF)
+                "HERSELF" -> requireContext().getString(R.string.HERSELF)
+                "HRONO_TITR_MALE" -> requireContext().getString(R.string.HRONO_TITR_MALE)
+                "HRONO_TITR_FEMALE" -> requireContext().getString(R.string.HRONO_TITR_FEMALE)
+                "TRANSLATOR" -> requireContext().getString(R.string.TRANSLATOR)
+                "DIRECTOR" -> requireContext().getString(R.string.DIRECTOR)
+                "DESIGN" -> requireContext().getString(R.string.DESIGN)
+                "PRODUCER" -> requireContext().getString(R.string.PRODUCER)
+                "ACTOR" -> requireContext().getString(R.string.ACTOR)
+                "VOICE_DIRECTOR" -> requireContext().getString(R.string.VOICE_DIRECTOR)
+                else -> requireContext().getString(R.string.UNKNOWN)
+            }
             val filmsQuantity = generalInfo.films.filter{it.professionKey == chipText }.size
             val chip = Chip(requireContext())
-            chip.text = "$chipText $filmsQuantity"
+            chip.text = "$translatedText $filmsQuantity"
             chip.id = chipIdCounter
             chip.isCheckable = true
             chip.chipBackgroundColor = ColorStateList.valueOf(
