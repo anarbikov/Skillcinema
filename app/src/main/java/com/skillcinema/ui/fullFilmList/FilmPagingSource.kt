@@ -24,7 +24,9 @@ class FilmPagingSource @Inject constructor(
                 LoadResult.Page(
                     data = it.items!!,
                     prevKey = null,
-                    nextKey = if(it.items!!.isEmpty())null else page+1
+                    nextKey = if (it.category == "Премьеры") null
+                    else{
+                    if(it.items!!.isEmpty())null else page+1}
                 )
             }, onFailure = {
                 Log.d("mytag","onfailure")

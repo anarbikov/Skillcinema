@@ -32,10 +32,8 @@ class PagedFilmAdapter @Inject constructor(
 
         return FilmPagedViewHolder(view)
     }
-
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: FilmPagedViewHolder, position: Int) {
-
         val item = getItem(position)
         val posterPreviewUrl = item?.posterUrlPreview
         Glide.with(holder.itemView.context).load(posterPreviewUrl)

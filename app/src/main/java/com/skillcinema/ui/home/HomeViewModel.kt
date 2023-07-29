@@ -39,6 +39,8 @@ class HomeViewModel @Inject constructor(
     )
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+    private val _isError = MutableStateFlow(false)
+    val isError = _isError.asStateFlow()
     private val allFilms = mutableMapOf<Int, FilmsDto>().toSortedMap()
     init {
         loadAll()
@@ -67,7 +69,10 @@ class HomeViewModel @Inject constructor(
                     allFilms.forEach { it.value.items = it.value.items!!.shuffled() }
                     _movies.value = allFilms.values.toList()
                 },
-                onFailure = { Log.d("mytag", "onFailure: ${it.message}") }
+                onFailure = {
+                    Log.d("mytag", "onFailure: ${it.message}")
+                    _isError.value = true
+                }
             )
             _isLoading.value = false
         }

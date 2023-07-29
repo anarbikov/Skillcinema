@@ -1,6 +1,7 @@
 package com.skillcinema.ui.fullFilmList
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentFullFilmListBinding
 import com.skillcinema.entity.Film
@@ -34,7 +36,13 @@ class FullFilmList : Fragment() {
         val filterId = arguments.let { it?.getInt("filterId") }
         val filterDescription = arguments.let { it?.getString("description") }
         val pagedFilmAdapter =
-            PagedFilmAdapter({ film: Film -> onItemClick(film, filterId!!) }, requireContext())
+            PagedFilmAdapter({ film: Film -> onItemClick(film) }, requireContext())
+        pagedFilmAdapter.addLoadStateListener {
+            Log.d("mytag", "FULLFILMLIST ERROR LISTENER: ${it.refresh}")
+            binding.recyclerView.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
+            binding.goUpButton.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
+        binding.loadingErrorPage.visibility = if (it.refresh is LoadState.Error)  View.VISIBLE else View.GONE
+        }
         super.onViewCreated(view, savedInstanceState)
         binding.categoryDescription.text = filterDescription
         binding.recyclerView.adapter = pagedFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
@@ -49,7 +57,7 @@ class FullFilmList : Fragment() {
         }
     }
 
-    private fun onItemClick(item: Film, filterId: Int) {
+    private fun onItemClick(item: Film) {
         val bundle = Bundle()
         bundle.putInt("kinopoiskId", item.kinopoiskId!!)
         findNavController().navigate(R.id.action_fullFilmList_to_filmFragment, bundle)

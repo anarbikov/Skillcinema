@@ -49,8 +49,8 @@ class Repository @Inject constructor(
         editor.apply()
     }
 
-    suspend fun getPremieres(): FilmsDto {
-        return api.getPremieres()
+    suspend fun getPremieres(page: Int): FilmsDto {
+        return api.getPremieres(page)
     }
     suspend fun getPopular(): FilmsDto {
         return api.getPopular(1)

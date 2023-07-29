@@ -8,6 +8,6 @@ class GetPremiereUseCase @Inject constructor(
     private val repository: Repository
 ){
     suspend fun execute(): FilmsDto {
-        return repository.getPremieres()
+        return repository.getPremieres(1)
     }
 }

@@ -60,6 +60,7 @@ class Api @Inject constructor(
         suspend fun getPremieresList(
             @Query(value = "year") year: Int,
             @Query(value = "month") month: String,
+            @Query(value = "page") page: Int
         ): FilmsDto
     }
 
@@ -168,11 +169,11 @@ class Api @Inject constructor(
         ): ActorGeneralInfoDto
     }
 
-    suspend fun getPremieres(): FilmsDto {
+    suspend fun getPremieres(page: Int): FilmsDto {
         val year = Calendar.getInstance().get(Calendar.YEAR)
         val month = Calendar.getInstance()
             .getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
-        val premieres = RetrofitServices.searchPremiereApi.getPremieresList(year, month!!)
+        val premieres = RetrofitServices.searchPremiereApi.getPremieresList(year, month!!,page)
         premieres.category =  context.getString(R.string.Premieres)
         premieres.filterCategory = 1111
         return premieres

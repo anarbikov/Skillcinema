@@ -79,6 +79,12 @@ class HomeFragment : Fragment() {
         viewModel.movies.onEach {
             renderFilmsList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.isError.onEach {
+            if (it) {
+                binding.loadingErrorPage.visibility = View.VISIBLE
+                binding.button.setOnClickListener { findNavController().popBackStack() }
+            }else binding.loadingErrorPage.visibility = View.GONE
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
             binding.loadingProgress.visibility = View.GONE
@@ -91,6 +97,7 @@ class HomeFragment : Fragment() {
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun renderFilmsList(films: List<FilmsDto>) {
+        if (films.isEmpty())return
         parentFilmAdapter.addData(films)
         parentFilmAdapter.notifyDataSetChanged()
     }
