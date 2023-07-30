@@ -81,9 +81,14 @@ class HomeFragment : Fragment() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.isError.onEach {
             if (it) {
+                binding.parentRecyclerView.visibility = View.GONE
                 binding.loadingErrorPage.visibility = View.VISIBLE
-                binding.button.setOnClickListener { findNavController().popBackStack() }
-            }else binding.loadingErrorPage.visibility = View.GONE
+                binding.swipeRefresh.isRefreshing = false
+                binding.button.setOnClickListener { requireActivity().finish() }
+            }else {
+                binding.loadingErrorPage.visibility = View.GONE
+                binding.parentRecyclerView.visibility = View.VISIBLE
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refresh()

@@ -26,6 +26,7 @@
             app:destination="@id/fullFilmList"
             app:enterAnim="@android:anim/slide_in_left"
             app:popUpToSaveState="true" />
+
     </fragment>
 
     <fragment
@@ -107,7 +108,6 @@
         <action
             android:id="@+id/action_actorFragment_to_filmFragment"
             app:popUpTo="@id/filmFragment"
-            app:popUpToInclusive="true"
             app:restoreState="true"
             app:destination="@id/filmFragment" />
         <action
@@ -147,7 +147,6 @@
         <action
             android:id="@+id/action_actorsFullFragment_to_filmFragment"
             app:popUpTo="@id/filmFragment"
-            app:popUpToInclusive="true"
             app:restoreState="true"
             app:destination="@id/filmFragment" />
         <argument

@@ -42,11 +42,13 @@ class FilmGeneralInfoAdapter @Inject constructor(
                 val filmName = filmInfo.nameRu ?: (filmInfo.nameOriginal ?: "")
                 val filmYear = filmInfo.year ?: ""
                 val filmGenre =
-                    if (filmInfo.genres.isNotEmpty() && filmInfo.genres.size == 1) ", " + filmInfo.genres[0].genre
-                    else (", " + filmInfo.genres[0].genre + ", " + filmInfo.genres[1].genre)
+                    if (filmInfo.genres.size == 1) ", " + filmInfo.genres[0].genre
+                    else if (filmInfo.genres.size > 1) (", " + filmInfo.genres[0].genre + ", " + filmInfo.genres[1].genre)
+                    else ""
                 val filmCountries =
-                    if (filmInfo.countries.isNotEmpty() && filmInfo.countries.size == 1) filmInfo.countries[0].country
-                    else filmInfo.countries[0].country + ", " + filmInfo.countries[1].country
+                    if (filmInfo.countries.size == 1) {filmInfo.countries[0].country}
+                    else if (filmInfo.countries.size > 1) filmInfo.countries[0].country + ", " + filmInfo.countries[1].country
+                    else ""
                 val durationHours =
                     if (filmInfo.filmLength != null) (filmInfo.filmLength!! / 60) else 0
                 val durationMinutes =
