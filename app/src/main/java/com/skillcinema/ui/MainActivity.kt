@@ -32,6 +32,22 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        navView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_home -> {
+                    navController.popBackStack(R.id.navigation_home, false)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.searchFragment -> {
+                    navController.navigate(R.id.searchFragment)
+                    return@setOnItemSelectedListener true
+                }
+                else -> {
+                    navController.navigate(R.id.profileFragment)
+                    return@setOnItemSelectedListener true
+                }
+            }
+ }
 
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
