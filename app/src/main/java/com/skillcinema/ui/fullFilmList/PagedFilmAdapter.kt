@@ -8,7 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.databinding.FilmViewPagedBinding
+import com.skillcinema.databinding.FullFilmListFilmViewBinding
 import com.skillcinema.entity.FilmDto
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class PagedFilmAdapter @Inject constructor(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmPagedViewHolder {
-        val view = FilmViewPagedBinding.inflate(
+        val view = FullFilmListFilmViewBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -62,4 +62,4 @@ class DiffUtilCallback : DiffUtil.ItemCallback<FilmDto>() {
         oldItem.kinopoiskId == newItem.kinopoiskId
 }
 
-class FilmPagedViewHolder(val binding: FilmViewPagedBinding) : RecyclerView.ViewHolder(binding.root)
+class FilmPagedViewHolder(val binding: FullFilmListFilmViewBinding) : RecyclerView.ViewHolder(binding.root)

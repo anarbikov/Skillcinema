@@ -56,7 +56,6 @@ class FilmographyViewModel @Inject constructor(
             }
         }
     fun loadByChip(staffId: Int,profession:String){
-        Log.d("mytag","loadbyChip: $profession")
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true
@@ -72,7 +71,6 @@ class FilmographyViewModel @Inject constructor(
                 onSuccess = {
 
                     _films.send(allFilms.values.toList())
-  //                  Log.d("mytag","Sender _films.value.size${_films.}")
                 },
                 onFailure = {
                     allFilms[0] = false

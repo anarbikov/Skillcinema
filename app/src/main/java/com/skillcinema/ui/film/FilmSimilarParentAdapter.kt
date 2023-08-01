@@ -31,7 +31,7 @@ class FilmSimilarParentAdapter @Inject constructor(
                 FilmSimilarChildAdapter(context= context, filmData = takenImages!!)
             itemView.similarChildRecyclerView.layoutManager =
                 GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-            itemView.similarAll.text = if(takenImages.size < result.items.size &&result.items.size >1) "${result.total} >" else ""
+            itemView.similarAll.text = if(result.items.size >10) "${result.total} >" else ""
             itemView.similarAll.visibility = if (result.items.isNotEmpty())View.VISIBLE else View.GONE
             itemView.similarAll.setOnClickListener{
                 bundle.putInt("kinopoiskId", kinopoiskId)

@@ -85,6 +85,7 @@
         <action
             android:id="@+id/action_filmFragment_to_similarFullFragment"
             app:popUpToSaveState="true"
+            app:restoreState="true"
             app:destination="@id/similarFullFragment" />
         <action
             android:id="@+id/action_filmFragment_to_filmographyFragment"
@@ -168,6 +169,7 @@
         <action
             android:id="@+id/action_similarFullFragment_to_filmFragment"
             app:restoreState="true"
+            app:popUpToSaveState="true"
             app:destination="@id/filmFragment" />
         <argument
             android:name="kinopoiskId"

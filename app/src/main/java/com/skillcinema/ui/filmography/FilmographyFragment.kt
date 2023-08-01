@@ -3,7 +3,6 @@ package com.skillcinema.ui.filmography
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,14 +26,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlin.collections.List
-import kotlin.collections.distinct
-import kotlin.collections.filter
-import kotlin.collections.forEach
-import kotlin.collections.getValue
-import kotlin.collections.isNotEmpty
-import kotlin.collections.mutableListOf
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
 
 
@@ -93,7 +84,6 @@ class FilmographyFragment : Fragment() {
             setupAndRenderView(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.films.receiveAsFlow().onEach {
-            Log.d("mytag","receiverIt: ${it.size}")
             launchRecycler(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
@@ -118,7 +108,6 @@ class FilmographyFragment : Fragment() {
     private fun startListener(generalInfo: ActorGeneralInfoDto){
         val currentStaffId = generalInfo.personId!!
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
-            Log.d("mytag",checkedIds.toString())
             val chip:Chip? = if (checkedIds.isNotEmpty()) group.findViewById(checkedIds[0]) else null
             if (checkedIds.isNotEmpty()) {
                 for (i in chipList.keys) {
@@ -201,7 +190,6 @@ class FilmographyFragment : Fragment() {
         }
         else {binding.loadingErrorPage.visibility = View.GONE}
         val chippedFilms: List<FilmInfo> = allFilms[1] as List<FilmInfo>
-        Log.d("mytag","chipped Films: ${chippedFilms.size}")
         filmographyChippedAdapter.removeData()
         filmographyChippedAdapter.addData(chippedFilms)
     }
