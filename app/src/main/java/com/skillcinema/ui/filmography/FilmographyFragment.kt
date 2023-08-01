@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -26,6 +27,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlin.collections.List
+import kotlin.collections.distinct
+import kotlin.collections.filter
+import kotlin.collections.forEach
+import kotlin.collections.getValue
+import kotlin.collections.isNotEmpty
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 
 
 @AndroidEntryPoint
@@ -52,10 +62,12 @@ class FilmographyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val staffId = arguments.let { it?.getInt("staffId") }
  //       val staffId = 9144
+        chipGroup = binding.chipGroup
         filmographyChippedAdapter = FilmographyChippedAdapter(requireContext())
         binding.chippedRecyclerView.adapter = filmographyChippedAdapter
         doObserveWork(staffId!!)
     }
+
     private fun doObserveWork(staffId:Int){
         viewModel.loadInitial(staffId)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -95,10 +107,9 @@ class FilmographyFragment : Fragment() {
             return
         }
         else binding.loadingErrorPage.visibility = View.GONE
-        chipGroup = binding.chipGroup
         generalInfo = allInfo[1] as ActorGeneralInfoDto
         binding.actorNameTextView.text = generalInfo.nameRu ?: generalInfo.nameEn
-        if (chipList.isEmpty()) {addChips(generalInfo)}
+        addChips(generalInfo)
         binding.chippedRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         startListener(generalInfo)
@@ -106,11 +117,6 @@ class FilmographyFragment : Fragment() {
     @SuppressLint("ResourceType", "SuspiciousIndentation")
     private fun startListener(generalInfo: ActorGeneralInfoDto){
         val currentStaffId = generalInfo.personId!!
-            chipGroup.check(1)
-            val chipInitial: Chip = chipGroup.findViewById(1)
-                chipInitial.chipBackgroundColor =
-                    ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
-                viewModel.loadByChip(staffId = currentStaffId,chipList.getValue((chipGroup.findViewById(chipInitial.id))))
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             Log.d("mytag",checkedIds.toString())
             val chip:Chip? = if (checkedIds.isNotEmpty()) group.findViewById(checkedIds[0]) else null
@@ -130,42 +136,59 @@ class FilmographyFragment : Fragment() {
             }
         }
     }
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceType")
     private fun addChips(generalInfo:ActorGeneralInfoDto){
-        val roles = mutableListOf<String>()
-        for (role in generalInfo.films!!) role.professionKey?.let { roles.add(it) }
-        val rolesDistincted = roles.distinct()
-        var chipIdCounter = 1
-        for (chipText in rolesDistincted) {
-            val translatedText = when(chipText){
-                "WRITER" -> requireContext().getString(R.string.WRITER)
-                "OPERATOR" -> requireContext().getString(R.string.OPERATOR)
-                "EDITOR" -> requireContext().getString(R.string.EDITOR)
-                "COMPOSER" -> requireContext().getString(R.string.COMPOSER)
-                "PRODUCER_USSR" -> requireContext().getString(R.string.PRODUCER_USSR)
-                "HIMSELF" -> requireContext().getString(R.string.HIMSELF)
-                "HERSELF" -> requireContext().getString(R.string.HERSELF)
-                "HRONO_TITR_MALE" -> requireContext().getString(R.string.HRONO_TITR_MALE)
-                "HRONO_TITR_FEMALE" -> requireContext().getString(R.string.HRONO_TITR_FEMALE)
-                "TRANSLATOR" -> requireContext().getString(R.string.TRANSLATOR)
-                "DIRECTOR" -> requireContext().getString(R.string.DIRECTOR)
-                "DESIGN" -> requireContext().getString(R.string.DESIGN)
-                "PRODUCER" -> requireContext().getString(R.string.PRODUCER)
-                "ACTOR" -> requireContext().getString(R.string.ACTOR)
-                "VOICE_DIRECTOR" -> requireContext().getString(R.string.VOICE_DIRECTOR)
-                else -> requireContext().getString(R.string.UNKNOWN)
+        if (chipList.isEmpty()) {
+            val roles = mutableListOf<String>()
+            for (role in generalInfo.films!!) role.professionKey?.let { roles.add(it) }
+            val rolesDistincted = roles.distinct()
+            var chipIdCounter = 1
+            for (chipText in rolesDistincted) {
+                val translatedText = when (chipText) {
+                    "WRITER" -> requireContext().getString(R.string.WRITER)
+                    "OPERATOR" -> requireContext().getString(R.string.OPERATOR)
+                    "EDITOR" -> requireContext().getString(R.string.EDITOR)
+                    "COMPOSER" -> requireContext().getString(R.string.COMPOSER)
+                    "PRODUCER_USSR" -> requireContext().getString(R.string.PRODUCER_USSR)
+                    "HIMSELF" -> requireContext().getString(R.string.HIMSELF)
+                    "HERSELF" -> requireContext().getString(R.string.HERSELF)
+                    "HRONO_TITR_MALE" -> requireContext().getString(R.string.HRONO_TITR_MALE)
+                    "HRONO_TITR_FEMALE" -> requireContext().getString(R.string.HRONO_TITR_FEMALE)
+                    "TRANSLATOR" -> requireContext().getString(R.string.TRANSLATOR)
+                    "DIRECTOR" -> requireContext().getString(R.string.DIRECTOR)
+                    "DESIGN" -> requireContext().getString(R.string.DESIGN)
+                    "PRODUCER" -> requireContext().getString(R.string.PRODUCER)
+                    "ACTOR" -> requireContext().getString(R.string.ACTOR)
+                    "VOICE_DIRECTOR" -> requireContext().getString(R.string.VOICE_DIRECTOR)
+                    else -> requireContext().getString(R.string.UNKNOWN)
+                }
+                val filmsQuantity = generalInfo.films.filter { it.professionKey == chipText }.size
+                val chip = Chip(requireContext())
+                chip.text = "$translatedText $filmsQuantity"
+                chip.id = chipIdCounter
+                chip.isCheckable = true
+                chip.chipBackgroundColor = ColorStateList.valueOf(
+                    requireContext().getColor(R.color.grey)
+                )
+                chipList[chip] = chipText
+                chipGroup.addView(chip)
+                chipIdCounter++
             }
-            val filmsQuantity = generalInfo.films.filter{it.professionKey == chipText }.size
-            val chip = Chip(requireContext())
-            chip.text = "$translatedText $filmsQuantity"
-            chip.id = chipIdCounter
-            chip.isCheckable = true
-            chip.chipBackgroundColor = ColorStateList.valueOf(
-                requireContext().getColor(R.color.grey))
-            chipList[chip] = chipText
-            chipGroup.addView(chip)
-            chipIdCounter ++
         }
+        if (chipGroup.size == 0) {
+            chipList.keys.forEach { (it.parent as ViewGroup).removeView(it) }
+            for (i in chipList.keys) chipGroup.addView(i)
+        }
+        if (chipGroup.checkedChipId == -1) {
+            chipGroup.check(1)
+            val chipInitial: Chip = chipGroup.findViewById(1)
+            chipInitial.chipBackgroundColor =
+                ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
+            viewModel.loadByChip(generalInfo.personId!!, chipList.getValue(chipInitial))
+        } else viewModel.loadByChip(
+            staffId = generalInfo.personId!!,
+            chipList.getValue((chipGroup.findViewById(chipGroup.checkedChipId)))
+        )
     }
     @Suppress("UNCHECKED_CAST")
     private fun launchRecycler(allFilms: List<Any>){
@@ -181,7 +204,6 @@ class FilmographyFragment : Fragment() {
         Log.d("mytag","chipped Films: ${chippedFilms.size}")
         filmographyChippedAdapter.removeData()
         filmographyChippedAdapter.addData(chippedFilms)
-
     }
     override fun onDestroyView() {
         super.onDestroyView()

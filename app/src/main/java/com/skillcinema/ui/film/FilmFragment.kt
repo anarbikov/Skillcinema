@@ -107,7 +107,7 @@ class FilmFragment : Fragment() {
         val gallery: FilmGalleryDto = allInfo[5] as FilmGalleryDto
         filmGalleryParentAdapter.addData(gallery)
         val similar: FilmSimilarsDto = allInfo[6] as FilmSimilarsDto
-        filmSimilarParentAdapter.addData(similar)
+        filmSimilarParentAdapter.addData(similar,generalInfo.kinopoiskId)
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)
         }.build()

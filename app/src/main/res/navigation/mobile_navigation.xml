@@ -37,7 +37,6 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_navigation_home"
-            app:popUpTo="@id/navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
 
@@ -48,7 +47,6 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_navigation_home"
-            app:popUpTo="@id/navigation_home"
             app:restoreState="true"
             app:destination="@id/navigation_home" />
     </fragment>
@@ -72,7 +70,6 @@
         <action
             android:id="@+id/action_filmFragment_to_fullFilmList"
             app:restoreState="true"
-            app:popUpTo="@id/filmFragment"
             app:destination="@id/fullFilmList" />
         <action
             android:id="@+id/action_filmFragment_to_actorFragment"
@@ -80,13 +77,19 @@
             app:destination="@id/actorFragment" />
         <action
             android:id="@+id/action_filmFragment_self"
-            app:popUpTo="@id/filmFragment"
-            app:popUpToInclusive="true"
             app:destination="@id/filmFragment" />
         <action
             android:id="@+id/action_filmFragment_to_actorsFullFragment"
             app:popUpToSaveState="true"
             app:destination="@id/actorsFullFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_similarFullFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/similarFullFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_filmographyFragment"
+            app:restoreState="true"
+            app:destination="@id/filmographyFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -119,14 +122,8 @@
             app:destination="@id/filmographyFragment" />
         <action
             android:id="@+id/action_actorFragment_to_filmFragment"
-            app:popUpTo="@id/filmFragment"
             app:restoreState="true"
             app:destination="@id/filmFragment" />
-        <action
-            android:id="@+id/action_actorFragment_to_actorsFullFragment"
-            app:popUpTo="@id/actorsFullFragment"
-            app:restoreState="true"
-            app:destination="@id/actorsFullFragment" />
     </fragment>
     <fragment
         android:id="@+id/filmographyFragment"
@@ -143,8 +140,7 @@
             app:destination="@id/actorFragment" />
         <action
             android:id="@+id/action_filmographyFragment_to_filmFragment"
-            app:popUpTo="@id/filmFragment"
-            app:popUpToInclusive="true"
+            app:popUpToSaveState="true"
             app:destination="@id/filmFragment" />
     </fragment>
     <fragment
@@ -158,11 +154,23 @@
             app:destination="@id/actorFragment" />
         <action
             android:id="@+id/action_actorsFullFragment_to_filmFragment"
-            app:popUpTo="@id/filmFragment"
             app:restoreState="true"
             app:destination="@id/filmFragment" />
         <argument
             android:name="bundle"
             app:argType="android.os.Bundle" />
+    </fragment>
+    <fragment
+        android:id="@+id/similarFullFragment"
+        android:name="com.skillcinema.ui.similarFull.SimilarFullFragment"
+        android:label="fragment_similar_full"
+        tools:layout="@layout/fragment_similar_full" >
+        <action
+            android:id="@+id/action_similarFullFragment_to_filmFragment"
+            app:restoreState="true"
+            app:destination="@id/filmFragment" />
+        <argument
+            android:name="kinopoiskId"
+            app:argType="integer" />
     </fragment>
 </navigation>

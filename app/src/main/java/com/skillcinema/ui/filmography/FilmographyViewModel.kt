@@ -56,6 +56,7 @@ class FilmographyViewModel @Inject constructor(
             }
         }
     fun loadByChip(staffId: Int,profession:String){
+        Log.d("mytag","loadbyChip: $profession")
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true

@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
@@ -18,7 +20,10 @@ class FilmSimilarParentAdapter @Inject constructor(
     val context: Context,
 ) : RecyclerView.Adapter<FilmSimilarParentAdapter.ViewHolderSimilar>() {
     private lateinit var similarFilms: FilmSimilarsDto
+    private var kinopoiskId = 0
+    private val bundle = bundleOf()
     inner class ViewHolderSimilar(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         @SuppressLint("SetTextI18n")
         fun bind(result: FilmSimilarsDto) {
             val takenImages = result.items?.shuffled()?.take(20)
@@ -26,8 +31,12 @@ class FilmSimilarParentAdapter @Inject constructor(
                 FilmSimilarChildAdapter(context= context, filmData = takenImages!!)
             itemView.similarChildRecyclerView.layoutManager =
                 GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-            itemView.similarAll.text = if(takenImages.size < result.total!!) "${result.total} >" else ""
+            itemView.similarAll.text = if(takenImages.size < result.items.size &&result.items.size >1) "${result.total} >" else ""
             itemView.similarAll.visibility = if (result.items.isNotEmpty())View.VISIBLE else View.GONE
+            itemView.similarAll.setOnClickListener{
+                bundle.putInt("kinopoiskId", kinopoiskId)
+                itemView.findNavController().navigate(R.id.action_filmFragment_to_similarFullFragment,bundle)
+            }
             val header = context.getString(R.string.similar_header)
             itemView.similarHeader.text = if (result.items.isNotEmpty()) header else ""
             itemView.similarHeader.visibility = if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
@@ -47,8 +56,9 @@ class FilmSimilarParentAdapter @Inject constructor(
     override fun getItemCount(): Int = 1
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(similar: FilmSimilarsDto) {
+    fun addData(similar: FilmSimilarsDto,filmId:Int) {
         similarFilms = similar
+        kinopoiskId = filmId
         notifyDataSetChanged()
     }
 }
