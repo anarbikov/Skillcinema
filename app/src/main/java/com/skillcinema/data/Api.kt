@@ -135,7 +135,9 @@ class Api @Inject constructor(
         )
         @GET("api/v2.2/films/{id}/images")
         suspend fun getImagesByKinopoiskId(
-            @Path(value = "id") id: Int
+            @Path(value = "id") id: Int,
+            @Query (value = "type") type: String,
+            @Query(value = "page") page: Int
         ): FilmGalleryDto
     }
     interface SearchSimilarByKinopoiskIdApi {
@@ -211,8 +213,8 @@ class Api @Inject constructor(
     suspend fun getActorsByKinopoiskId(kinopoiskId: Int): List<ActorDto> {
         return RetrofitServices.searchActorsApi.getFilmByKinopoiskId(kinopoiskId)
     }
-    suspend fun getImagesByKinopoiskId(kinopoiskId: Int): FilmGalleryDto {
-        return RetrofitServices.searchImagesByKinopoiskIdApi.getImagesByKinopoiskId(kinopoiskId)
+    suspend fun getImagesByKinopoiskId(kinopoiskId: Int,type: String,page: Int): FilmGalleryDto {
+        return RetrofitServices.searchImagesByKinopoiskIdApi.getImagesByKinopoiskId(kinopoiskId,type,page)
     }
     suspend fun getSimilarByKinopoiskId(kinopoiskId: Int): FilmSimilarsDto {
         return RetrofitServices.searchSimilarByKinopoiskIdApi.getSimilarByKinopoiskId(kinopoiskId)

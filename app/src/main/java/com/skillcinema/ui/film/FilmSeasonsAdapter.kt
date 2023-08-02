@@ -2,7 +2,6 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,6 @@ class FilmSeasonsAdapter @Inject constructor(
             var seriesCounter = 0
             if(seasonsInfo.items.isNotEmpty()) for (season in seasonsInfo.items) seriesCounter+= season.episodes!!.size
             val seriesQty = if (seasonsInfo.total != 0) seriesCounter.toString() else ""
-            Log.d("mytag","seriesCounter: $seriesCounter")
             val season = when(seasonsInfo.items.size%10){
                 1 -> "сезон"
                 in 2..4 -> "сезона"

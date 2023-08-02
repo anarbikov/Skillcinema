@@ -54,4 +54,14 @@
     <string name="actors_full_title_2">Над сериалом работали</string>
     <string name="actors_full_title_3">В фильме снимались</string>
     <string name="actors_full_title_4">Над фильмом работали</string>
+    <string name="STILL">Кадры</string>
+    <string name="SHOOTING">Со съемок</string>
+    <string name="POSTER">Постеры</string>
+    <string name="FAN_ART">Фан-арты</string>
+    <string name="PROMO">Промо</string>
+    <string name="CONCEPT">Концепт-арты</string>
+    <string name="WALLPAPER">Обои</string>
+    <string name="COVER">Обложки</string>
+    <string name="SCREENSHOT">Скриншоты</string>
+
 </resources>

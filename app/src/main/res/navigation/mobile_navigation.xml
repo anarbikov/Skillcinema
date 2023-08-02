@@ -91,6 +91,10 @@
             android:id="@+id/action_filmFragment_to_filmographyFragment"
             app:restoreState="true"
             app:destination="@id/filmographyFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_galleryFullFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/galleryFullFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -174,5 +178,16 @@
         <argument
             android:name="kinopoiskId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleryFullFragment"
+        android:name="com.skillcinema.ui.galleryFull.GalleryFullFragment"
+        android:label="fragment_gallery_full"
+        tools:layout="@layout/fragment_gallery_full" >
+        <action
+            android:id="@+id/action_galleryFullFragment_to_filmFragment"
+            app:restoreState="true"
+            app:popUpTo="@id/filmFragment"
+            app:destination="@id/filmFragment" />
     </fragment>
 </navigation>

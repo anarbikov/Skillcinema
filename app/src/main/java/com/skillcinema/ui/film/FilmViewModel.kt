@@ -44,7 +44,19 @@ class FilmViewModel @Inject constructor(
                 val actors = getActorsByKinopoiskIdUseCase.execute(kinopoiskId)
                 allInfo[3] = actors.filter { it.professionKey == "ACTOR" }
                 allInfo[4] = actors.filter { it.professionKey != "ACTOR" }
-                allInfo[5] = getImagesByKinopoiskIdUseCase.execute(kinopoiskId)
+                val images = when{
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"STILL",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"STILL",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"SHOOTING",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"SHOOTING",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"POSTER",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"POSTER",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"FAN_ART",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"FAN_ART",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"PROMO",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"PROMO",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"CONCEPT",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"CONCEPT",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"WALLPAPER",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"WALLPAPER",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"COVER",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"COVER",1)
+                    getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"SCREENSHOT",1).items!!.isNotEmpty() -> getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"SCREENSHOT",1)
+                    else -> {getImagesByKinopoiskIdUseCase.execute(kinopoiskId,"STILL",1)}
+                }
+                allInfo[5] = images
                 allInfo[6] = getSimilarByKinopoiskIdUseCase.execute(kinopoiskId)
                 allInfo[0] = true
 

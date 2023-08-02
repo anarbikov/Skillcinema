@@ -33,6 +33,7 @@ class FullFilmList : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val filterId = arguments.let { it?.getInt("filterId") }
         val filterDescription = arguments.let { it?.getString("description") }
         val pagedFilmAdapter =
@@ -43,7 +44,7 @@ class FullFilmList : Fragment() {
             binding.goUpButton.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
         binding.loadingErrorPage.visibility = if (it.refresh is LoadState.Error)  View.VISIBLE else View.GONE
         }
-        super.onViewCreated(view, savedInstanceState)
+
         binding.categoryDescription.text = filterDescription
         binding.recyclerView.adapter = pagedFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))

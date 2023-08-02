@@ -82,8 +82,8 @@ class Repository @Inject constructor(
     suspend fun getActorsByKinopoiskId (kinopoiskId: Int): List<ActorDto> {
         return api.getActorsByKinopoiskId(kinopoiskId)
     }
-    suspend fun getImagesByKinopoiskId (kinopoiskId: Int): FilmGalleryDto {
-        return api.getImagesByKinopoiskId(kinopoiskId)
+    suspend fun getImagesByKinopoiskId (kinopoiskId: Int,type:String,page: Int): FilmGalleryDto {
+        return api.getImagesByKinopoiskId(kinopoiskId,type,page)
     }
     suspend fun getSimilarByKinopoiskId (kinopoiskId: Int): FilmSimilarsDto {
         return api.getSimilarByKinopoiskId(kinopoiskId)

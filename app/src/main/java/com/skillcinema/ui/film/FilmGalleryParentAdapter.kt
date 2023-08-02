@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
@@ -18,6 +20,8 @@ class FilmGalleryParentAdapter @Inject constructor(
     val context: Context,
 ) : RecyclerView.Adapter<FilmGalleryParentAdapter.ViewHolderGallery>() {
     private lateinit var images: FilmGalleryDto
+    private val bundle = bundleOf()
+    private var kinopoiskId = 0
     inner class ViewHolderGallery(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         fun bind(result: FilmGalleryDto) {
@@ -26,8 +30,12 @@ class FilmGalleryParentAdapter @Inject constructor(
                 FilmGalleryChildAdapter(context, takenImages!!)
             itemView.childRecyclerView.layoutManager =
                 GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-            itemView.galleryAll.text = if(takenImages.size < result.total!!) "${result.total} >" else ""
+            itemView.galleryAll.text = if(result.total!!>10) "${result.total} >" else ""
             itemView.galleryAll.visibility = if (result.items.isNotEmpty())View.VISIBLE else View.GONE
+            itemView.galleryAll.setOnClickListener{
+                bundle.putInt("kinopoiskId", kinopoiskId)
+                itemView.findNavController().navigate(R.id.action_filmFragment_to_galleryFullFragment,bundle)
+            }
             val header = context.getString(R.string.gallery_header)
             itemView.galleryHeader.text = if (result.items.isNotEmpty()) header else ""
             itemView.galleryHeader.visibility = if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
@@ -47,8 +55,9 @@ class FilmGalleryParentAdapter @Inject constructor(
     override fun getItemCount(): Int = 1
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(gallery: FilmGalleryDto) {
+    fun addData(gallery: FilmGalleryDto,filmId:Int) {
         images = gallery
+        kinopoiskId = filmId
         notifyDataSetChanged()
     }
 }

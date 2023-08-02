@@ -2,6 +2,7 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,7 @@ class FilmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+        Log.d("mytag","FilmID: $kinopoiskId")
  //       val kinopoiskId = 448
         setUpViews()
         doObserveWork(kinopoiskId)
@@ -105,7 +107,7 @@ class FilmFragment : Fragment() {
         val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
         filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!,generalInfo.kinopoiskId!!)
         val gallery: FilmGalleryDto = allInfo[5] as FilmGalleryDto
-        filmGalleryParentAdapter.addData(gallery)
+        filmGalleryParentAdapter.addData(gallery,generalInfo.kinopoiskId)
         val similar: FilmSimilarsDto = allInfo[6] as FilmSimilarsDto
         filmSimilarParentAdapter.addData(similar,generalInfo.kinopoiskId)
         val config = ConcatAdapter.Config.Builder().apply {
