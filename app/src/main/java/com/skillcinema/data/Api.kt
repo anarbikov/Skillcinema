@@ -21,12 +21,13 @@ import java.util.Locale
 import javax.inject.Inject
 
 private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
-private const val API_KEY = "10041426-d719-4995-92a1-2c970a2b95fd"
+private const val API_KEY = "f6570363-6b4d-4775-acad-cb324cb8366b"
 
 //KEYS:
 //"f6570363-6b4d-4775-acad-cb324cb8366b"
 //"10041426-d719-4995-92a1-2c970a2b95fd"
 //"44a56416-3d5a-47cf-b9bb-6e425daa7bfe"
+//"4ccdea18-8ddb-4d61-92e4-b08869511b34"
 
 
 class Api @Inject constructor(

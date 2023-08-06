@@ -2,7 +2,6 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,9 +48,9 @@ class FilmFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
-        Log.d("mytag","FilmID: $kinopoiskId")
- //       val kinopoiskId = 448
+        //val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+//        Log.d("mytag","FilmID: $kinopoiskId")
+        val kinopoiskId = 77044
         setUpViews()
         doObserveWork(kinopoiskId)
     }

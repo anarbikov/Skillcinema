@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/filmFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -95,6 +95,10 @@
             android:id="@+id/action_filmFragment_to_galleryFullFragment"
             app:popUpToSaveState="true"
             app:destination="@id/galleryFullFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_galleryFullScreenFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/galleryFullScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -186,6 +190,29 @@
         tools:layout="@layout/fragment_gallery_full" >
         <action
             android:id="@+id/action_galleryFullFragment_to_filmFragment"
+            app:restoreState="true"
+            app:popUpTo="@id/filmFragment"
+            app:destination="@id/filmFragment" />
+        <action
+            android:id="@+id/action_galleryFullFragment_to_galleryFullScreenFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/galleryFullScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleryFullScreenFragment"
+        android:name="com.skillcinema.ui.galleryFullScreen.GalleryFullScreenFragment"
+        android:label="fragment_gallery_full_screen"
+        tools:layout="@layout/fragment_gallery_full_screen" >
+        <argument
+            android:name="imageUrl"
+            app:argType="android.os.Bundle" />
+        <action
+            android:id="@+id/action_galleryFullScreenFragment_to_galleryFullFragment"
+            app:popUpTo="@id/galleryFullFragment"
+            app:restoreState="true"
+            app:destination="@id/galleryFullFragment" />
+        <action
+            android:id="@+id/action_galleryFullScreenFragment_to_filmFragment"
             app:restoreState="true"
             app:popUpTo="@id/filmFragment"
             app:destination="@id/filmFragment" />

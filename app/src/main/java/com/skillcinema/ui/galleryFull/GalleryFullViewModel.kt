@@ -78,5 +78,4 @@ class GalleryFullViewModel @Inject constructor(
         pagingSourceFactory = {GalleryPagingSource(getImagesByKinopoiskIdUseCase,kinopoiskId,filterId)
         }
     ).flow
-
 }

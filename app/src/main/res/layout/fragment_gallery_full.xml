@@ -41,14 +41,14 @@
     </HorizontalScrollView>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chippedRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="7dp"
         android:layout_marginTop="10dp"
-        android:paddingStart="10dp"
-        android:paddingBottom="30dp"
-        android:paddingEnd="10dp"
+        android:paddingBottom="120dp"
         app:layout_constraintTop_toBottomOf="@id/chipScroller"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlSymmetry" />
     <Button
         android:id="@+id/goUpButton"
         android:layout_width="120dp"

@@ -15,14 +15,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentGalleryFullBinding
 import com.skillcinema.entity.FilmGalleryItemDto
 import com.skillcinema.ui.fullFilmList.MyLoadStateAdapter
-import com.skillcinema.ui.home.RecyclerItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
@@ -53,13 +52,9 @@ class GalleryFullFragment : Fragment() {
         kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         viewModel.kinopoiskId = kinopoiskId
         chipGroup = binding.chipGroup
-        doObserveWork(kinopoiskId)
-
-
-
         galleryChippedAdapter = GalleryChippedAdapter({ item: FilmGalleryItemDto -> onItemClick(item) }, requireContext())
+        binding.chippedRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.chippedRecyclerView.adapter = galleryChippedAdapter.withLoadStateFooter(MyLoadStateAdapter())
-        binding.chippedRecyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))
         galleryChippedAdapter.addLoadStateListener {
             binding.chippedRecyclerView.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
             binding.goUpButton.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
@@ -69,7 +64,7 @@ class GalleryFullFragment : Fragment() {
         binding.goUpButton.setOnClickListener {
             binding.chippedRecyclerView.scrollToPosition(0)
         }
-
+        doObserveWork(kinopoiskId)
     }
     private fun doObserveWork(staffId:Int){
         viewModel.loadChips(staffId)
@@ -111,8 +106,6 @@ class GalleryFullFragment : Fragment() {
         if (chipInfo.isEmpty()){return}
         binding.header.text = requireContext().getString(R.string.gallery_header)
         addChips(chipInfo)
-        binding.chippedRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         startListener()
     }
     @SuppressLint("SetTextI18n", "ResourceType")
@@ -155,14 +148,18 @@ class GalleryFullFragment : Fragment() {
             chipInitial.chipBackgroundColor =
                 ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
             viewModel.filterId = chipList.getValue(chipInitial)
+            galleryChippedAdapter.submitData(lifecycle, PagingData.empty())
             viewModel.pagedImages.onEach {
                 galleryChippedAdapter.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
-        else viewModel.filterId = chipList.getValue((chipGroup.findViewById(chipGroup.checkedChipId)))
-        viewModel.pagedImages.onEach {
-            galleryChippedAdapter.submitData(it)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        else {
+            viewModel.filterId =
+                chipList.getValue((chipGroup.findViewById(chipGroup.checkedChipId)))
+            viewModel.pagedImages.onEach {
+                galleryChippedAdapter.submitData(it)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
     @SuppressLint("ResourceType", "SuspiciousIndentation")
     private fun startListener(){
@@ -190,7 +187,7 @@ class GalleryFullFragment : Fragment() {
     private fun onItemClick(item: FilmGalleryItemDto) {
         val bundle = Bundle()
         bundle.putString("imageUrl", item.imageUrl!!)
-//        findNavController().navigate(R.id.action_fullFilmList_to_filmFragment, bundle)
+        findNavController().navigate(R.id.action_galleryFullFragment_to_galleryFullScreenFragment, bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()

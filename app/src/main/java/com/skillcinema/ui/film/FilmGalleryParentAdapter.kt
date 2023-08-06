@@ -30,7 +30,7 @@ class FilmGalleryParentAdapter @Inject constructor(
                 FilmGalleryChildAdapter(context, takenImages!!)
             itemView.childRecyclerView.layoutManager =
                 GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-            itemView.galleryAll.text = if(result.total!!>10) "${result.total} >" else ""
+            itemView.galleryAll.text = if(result.total!!>4) "${result.total} >" else ""
             itemView.galleryAll.visibility = if (result.items.isNotEmpty())View.VISIBLE else View.GONE
             itemView.galleryAll.setOnClickListener{
                 bundle.putInt("kinopoiskId", kinopoiskId)
