@@ -26,7 +26,7 @@ class FilmSimilarParentAdapter @Inject constructor(
 
         @SuppressLint("SetTextI18n")
         fun bind(result: FilmSimilarsDto) {
-            val takenImages = result.items?.shuffled()?.take(20)
+            val takenImages = result.items?.shuffled()?.take(1)
             itemView.similarChildRecyclerView.adapter =
                 FilmSimilarChildAdapter(context= context, filmData = takenImages!!)
             itemView.similarChildRecyclerView.layoutManager =

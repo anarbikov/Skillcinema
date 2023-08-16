@@ -82,6 +82,9 @@ class SimilarFullFragment : Fragment() {
         similarFullAdapter = SimilarFullAdapter(requireContext())
         binding.recyclerView.adapter = similarFullAdapter
         similarFullAdapter.addData(similar,kinopoiskId)
+        binding.goUpButton.setOnClickListener{
+            binding.recyclerView.scrollToPosition(0)
+        }
     }
 
     override fun onDestroyView() {
