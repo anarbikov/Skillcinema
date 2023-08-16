@@ -42,19 +42,18 @@ class ActorsFullFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+//        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         isActor = arguments.let { it!!.getBoolean("isActor") }
         isSeries = arguments.let { it!!.getBoolean("isSeries") }
 
         setUpViews()
-        doObserveWork(kinopoiskId)
+        doObserveWork()
     }
     private fun setUpViews() {
         actorsAdapter = ActorsAdapter(requireContext())
         binding.recyclerView.adapter = actorsAdapter
     }
-    private fun doObserveWork(kinopoiskId:Int){
-        viewModel.loadAll(kinopoiskId)
+    private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {

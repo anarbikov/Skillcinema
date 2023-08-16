@@ -1,6 +1,7 @@
 package com.skillcinema.ui.actorsFull
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.GetActorsByKinopoiskIdUseCase
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActorsFullViewModel @Inject constructor(
+    state: SavedStateHandle,
     private val getActorsByKinopoiskIdUseCase: GetActorsByKinopoiskIdUseCase
 ) : ViewModel() {
     private val _actorInfo = MutableStateFlow<List<Any>>(emptyList())
@@ -27,7 +29,11 @@ class ActorsFullViewModel @Inject constructor(
     private val allInfo = mutableMapOf<Int, Any>().toSortedMap()
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
-    fun loadAll(kinopoiskId:Int) {
+    init {
+        val id: Int = state["kinopoiskId"]!!
+        loadAll(id)
+    }
+    private fun loadAll(kinopoiskId:Int) {
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
                 _isLoading.value = true

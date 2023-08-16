@@ -51,16 +51,15 @@ class FilmographyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val staffId = arguments.let { it?.getInt("staffId") }
+//        val staffId = arguments.let { it?.getInt("staffId") }
  //       val staffId = 9144
         chipGroup = binding.chipGroup
         filmographyChippedAdapter = FilmographyChippedAdapter(requireContext())
         binding.chippedRecyclerView.adapter = filmographyChippedAdapter
-        doObserveWork(staffId!!)
+        doObserveWork()
     }
 
-    private fun doObserveWork(staffId:Int){
-        viewModel.loadInitial(staffId)
+    private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {

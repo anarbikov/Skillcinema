@@ -43,12 +43,11 @@ class ActorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val staffId = arguments.let { it?.getInt("staffId") }
+//        val staffId = arguments.let { it?.getInt("staffId") }
         setUpViews()
-        doObserveWork(staffId!!)
+        doObserveWork()
     }
-    private fun doObserveWork(staffId:Int){
-        viewModel.loadAll(staffId)
+    private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {

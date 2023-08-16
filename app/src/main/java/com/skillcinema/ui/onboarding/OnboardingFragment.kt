@@ -25,11 +25,9 @@ class OnboardingFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity()
         adapter = OnboardingAdapter(requireContext())
         viewPager = binding.pager
         viewPager.adapter = adapter
-
         binding.onBoardingTextViewSkip.setOnClickListener{
             findNavController().popBackStack()
         }

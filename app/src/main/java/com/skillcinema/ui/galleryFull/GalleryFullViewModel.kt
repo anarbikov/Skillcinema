@@ -46,10 +46,13 @@ class GalleryFullViewModel @Inject constructor(
         "SCREENSHOT"
     )
     private val chipList = mutableMapOf<String, Int>()
+    init {
+        _isLoading.value = true
+    }
     fun loadChips(kinopoiskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             kotlin.runCatching {
-                _isLoading.value = true
+//                _isLoading.value = true
                 for (i in filterList) {
                     val response = getImagesByKinopoiskIdUseCase.execute(kinopoiskId, i, 1)
                     if (response.items!!.isNotEmpty()) {

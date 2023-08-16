@@ -44,7 +44,6 @@ class FullFilmList : Fragment() {
             binding.goUpButton.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
         binding.loadingErrorPage.visibility = if (it.refresh is LoadState.Error)  View.VISIBLE else View.GONE
         }
-
         binding.categoryDescription.text = filterDescription
         binding.recyclerView.adapter = pagedFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))

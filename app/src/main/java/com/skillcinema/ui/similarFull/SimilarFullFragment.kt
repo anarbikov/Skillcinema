@@ -42,10 +42,9 @@ class SimilarFullFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         binding.header.text = requireContext().getString(R.string.similar_header)
-        doObserveWork(kinopoiskId)
+        doObserveWork()
     }
-    private fun doObserveWork(kinopoiskId:Int){
-        viewModel.loadAll(kinopoiskId)
+    private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {

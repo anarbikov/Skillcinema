@@ -30,7 +30,9 @@ class FilmFragment : Fragment() {
 
     private var _binding: FragmentFilmBinding? = null
     private val binding get() = _binding!!
+//    private var kinopoiskId = 0
     private val viewModel: FilmViewModel by viewModels()
+
     private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
     private lateinit var filmSeasonsAdapter: FilmSeasonsAdapter
     private lateinit var filmActorsParentAdapter: FilmActorsParentAdapter
@@ -48,11 +50,10 @@ class FilmFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
-//        Log.d("mytag","FilmID: $kinopoiskId")
-        val kinopoiskId = 77044
+//        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+  //      kinopoiskId = 77044
         setUpViews()
-        doObserveWork(kinopoiskId)
+        doObserveWork()
     }
     private fun setUpViews(){
         generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
@@ -61,8 +62,7 @@ class FilmFragment : Fragment() {
         filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
         filmSimilarParentAdapter = FilmSimilarParentAdapter(requireContext())
     }
-    private fun doObserveWork(kinopoiskId:Int){
-        viewModel.loadAll(kinopoiskId)
+    private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {

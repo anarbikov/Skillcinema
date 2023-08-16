@@ -1,6 +1,7 @@
 package com.skillcinema.ui.filmography
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.GetActorInfoByKinopoiskIdUseCase
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilmographyViewModel @Inject constructor(
+    state: SavedStateHandle,
     private val getActorInfoByKinopoiskIdUseCase: GetActorInfoByKinopoiskIdUseCase,
     private val getFilmInfoByKinopoiskIdUseCase: GetFilmInfoByKinopoiskIdUseCase
 ) : ViewModel() {
@@ -34,8 +36,12 @@ class FilmographyViewModel @Inject constructor(
     private val _films = Channel<List<Any>>()
     val films : Channel<List<Any>> = _films
     private val allFilms = mutableMapOf<Int, Any>().toSortedMap()
+    init {
+        val id:Int = state["staffId"]!!
+        loadInitial(id)
+    }
 
-        fun loadInitial(staffId:Int) {
+        private fun loadInitial(staffId:Int) {
             viewModelScope.launch (Dispatchers.IO) {
                 kotlin.runCatching {
                     _isLoading.value = true

@@ -34,7 +34,7 @@ class GalleryFullScreenFragment : Fragment() {
 
         Glide.with(requireContext())
             .load(imageUrl)
-            .centerCrop()
+            .centerInside()
             .placeholder(AppCompatResources.getDrawable(requireContext(),R.drawable.ic_launcher_foreground))
             .into(binding.fullScreenImageView)
 
