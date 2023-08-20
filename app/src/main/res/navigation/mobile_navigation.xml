@@ -99,6 +99,10 @@
             android:id="@+id/action_filmFragment_to_galleryFullScreenFragment"
             app:popUpToSaveState="true"
             app:destination="@id/galleryFullScreenFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_seasonsFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/seasonsFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -216,5 +220,19 @@
             app:restoreState="true"
             app:popUpTo="@id/filmFragment"
             app:destination="@id/filmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/seasonsFragment"
+        android:name="com.skillcinema.ui.seasons.SeasonsFragment"
+        android:label="fragment_seasons"
+        tools:layout="@layout/fragment_seasons" >
+        <action
+            android:id="@+id/action_seasonsFragment_to_filmFragment"
+            app:restoreState="true"
+            app:popUpTo="@id/filmFragment"
+            app:destination="@id/filmFragment" />
+        <argument
+            android:name="kinopoiskId"
+            app:argType="android.os.Bundle" />
     </fragment>
 </navigation>

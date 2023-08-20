@@ -30,7 +30,7 @@ class FilmFragment : Fragment() {
 
     private var _binding: FragmentFilmBinding? = null
     private val binding get() = _binding!!
-//    private var kinopoiskId = 0
+    private var kinopoiskId = 0
     private val viewModel: FilmViewModel by viewModels()
 
     private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
@@ -46,11 +46,11 @@ class FilmFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilmBinding.inflate(inflater, container, false)
+        kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
   //      kinopoiskId = 77044
         setUpViews()
         doObserveWork()
@@ -101,7 +101,7 @@ class FilmFragment : Fragment() {
         val isSeries = generalInfo.serial
         generalInfoAdapter.addData(generalInfo)
         val seasons: FilmSeasonsDto = allInfo[2] as FilmSeasonsDto
-        filmSeasonsAdapter.addData(seasons)
+        filmSeasonsAdapter.addData(seasons, kinopoiskId = kinopoiskId, filmName = (generalInfo.nameRu?:generalInfo.nameEn) as String)
         val actorInfo: List<ActorDto> = allInfo[3] as List<ActorDto>
         val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
         filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!,generalInfo.kinopoiskId!!)

@@ -5,11 +5,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmSeasonsViewBinding
 import com.skillcinema.entity.FilmSeasonsDto
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class FilmSeasonsAdapter @Inject constructor(
     val context: Context
@@ -18,6 +21,9 @@ class FilmSeasonsAdapter @Inject constructor(
         RecyclerView.ViewHolder(binding.root)
 
     private lateinit var seasonsInfo: FilmSeasonsDto
+    private var filmId by Delegates.notNull<Int>()
+    private var seriesName by Delegates.notNull<String>()
+    private val bundle = bundleOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -36,6 +42,11 @@ class FilmSeasonsAdapter @Inject constructor(
             this.seasonsHeader.visibility = if (seasonsInfo.items.isNotEmpty()) View.VISIBLE else View.GONE
             this.seasonsAll.text = if(seasonsInfo.items.isNotEmpty()) context.getString(R.string.all) else ""
             this.seasonsAll.visibility = if (seasonsInfo.items.isNotEmpty())View.VISIBLE else View.GONE
+            this.seasonsAll.setOnClickListener{
+                bundle.putInt("kinopoiskId",filmId)
+                bundle.putString("seriesName",seriesName)
+                this.root.findNavController().navigate(R.id.action_filmFragment_to_seasonsFragment,bundle)
+            }
             val seasonsQty:String = if (seasonsInfo.total != 0) seasonsInfo.total.toString() else ""
             var seriesCounter = 0
             if(seasonsInfo.items.isNotEmpty()) for (season in seasonsInfo.items) seriesCounter+= season.episodes!!.size
@@ -62,8 +73,10 @@ class FilmSeasonsAdapter @Inject constructor(
         return 1
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(info: FilmSeasonsDto) {
+    fun addData(info: FilmSeasonsDto,kinopoiskId:Int, filmName:String) {
         this.seasonsInfo = info
+        this.filmId = kinopoiskId
+        this.seriesName = filmName
         notifyDataSetChanged()
     }
 }
