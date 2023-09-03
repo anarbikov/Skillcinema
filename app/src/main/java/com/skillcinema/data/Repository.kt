@@ -9,13 +9,18 @@ import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmSeasonsDto
 import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.entity.FilmsDto
+import com.skillcinema.room.Collection
+import com.skillcinema.room.CollectionDao
+import com.skillcinema.room.Film
+import com.skillcinema.room.FilmCollection
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val api: Api,
     @ApplicationContext
-    val context: Context
+    val context: Context,
+    private val collectionDao: CollectionDao
 ) {
     private lateinit var prefs: SharedPreferences
     private var onboardingShown = 0
@@ -94,6 +99,24 @@ class Repository @Inject constructor(
     suspend fun getActorInfoByKinopoiskId (staffId: Int): ActorGeneralInfoDto {
         return api.getActorInfoByKinopoiskId(staffId)
     }
+    fun getAllCollections() = collectionDao.getAllCollections()
+    suspend fun insertCollection(collection: Collection) = collectionDao.insertCollection (collection = collection)
+    suspend fun  deleteCollection (collection: String) = collectionDao.deleteCollection(collection = collection)
+    suspend fun deleteAllWatched() = collectionDao.deleteAll()
+
+    fun getFilmIdsFromCollection(collection: String) = collectionDao.getCollectionFilmIds(collection)
+
+    suspend fun insertFilmToDb(film: Film, collection: String) {
+        collectionDao.insertFilm(film)
+        collectionDao.insertFilmToCollection(
+            filmCollection =  FilmCollection(
+                collectionName = collection,
+                filmId = film.kinopoiskId
+            )
+        )
+    }
+    suspend fun deleteFilmFromCollection (filmId: Int,collection: String) = collectionDao.deleteFilmFromCollection(filmId =filmId, collectionName = collection)
+
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"
         private const val KEY_INT_NAME = "KEY_STRING"

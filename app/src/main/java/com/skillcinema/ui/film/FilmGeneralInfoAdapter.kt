@@ -10,10 +10,12 @@ import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmGeneralInfoViewBinding
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.room.Film
 import javax.inject.Inject
 
 class FilmGeneralInfoAdapter @Inject constructor(
-    val context: Context
+    val context: Context,
+    private val onClickWatched: (Film) -> Unit
 ) : RecyclerView.Adapter<FilmGeneralInfoAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmGeneralInfoViewBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -79,6 +81,54 @@ class FilmGeneralInfoAdapter @Inject constructor(
                 }
                 else {this.filmDescriptionBodyTextView.maxLines = MAX_LINES_COLLAPSED}
                 isCollapsed = !isCollapsed
+            }
+            val watchedFieldRes = if (filmInfo.isWatched) R.drawable.watched else R.drawable.not_watched
+            this.notWatched.setImageResource(watchedFieldRes)
+            this.notWatched.setOnClickListener{
+                val res: Int
+                if (filmInfo.isWatched){ //delete from watched
+                    res = R.drawable.not_watched
+                    filmInfo.isWatched = false
+                        onClickWatched (
+                            Film(
+                            kinopoiskId = filmInfo.kinopoiskId!!,
+                            duration = filmInfo.filmLength,
+                        nameEn = filmInfo.nameEn as String?,
+                        nameRu = filmInfo.nameRu,
+                        posterUrl =filmInfo.posterUrl,
+                        posterUrlPreview=filmInfo.posterUrlPreview,
+                        premiereRu= null,
+                        year= filmInfo.year,
+                        ratingKinopoisk= filmInfo.ratingKinopoisk,
+                        filmId= filmInfo.kinopoiskId,
+                        isWatched= false,
+                        countries= filmInfo.countries.joinToString(",") { it.country.toString() },
+                        genres= filmInfo.genres.joinToString(",") {it.genre.toString()  }
+                        )
+                            )
+                }else{
+                    res = R.drawable.watched
+                    filmInfo.isWatched = true
+                        onClickWatched (
+                            Film(
+                                kinopoiskId = filmInfo.kinopoiskId!!,
+                                duration = filmInfo.filmLength,
+                                nameEn = filmInfo.nameEn as String?,
+                                nameRu = filmInfo.nameRu,
+                                posterUrl =filmInfo.posterUrl,
+                                posterUrlPreview=filmInfo.posterUrlPreview,
+                                premiereRu= null,
+                                year= filmInfo.year,
+                                ratingKinopoisk= filmInfo.ratingKinopoisk,
+                                filmId= filmInfo.kinopoiskId,
+                                isWatched= true,
+                                countries= filmInfo.countries.joinToString(",") { it.country.toString() },
+                                genres= filmInfo.genres.joinToString(",") {it.genre.toString()  }
+                            )
+                        )
+                }
+                this.notWatched.setImageResource(res)
+
             }
         }
     }

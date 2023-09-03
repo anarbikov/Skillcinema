@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.entity.FilmDto
+import kotlinx.android.synthetic.main.home_film_view.view.alreadyWatched
 import kotlinx.android.synthetic.main.home_film_view.view.filmGenreTextView
 import kotlinx.android.synthetic.main.home_film_view.view.filmImageView
 import kotlinx.android.synthetic.main.home_film_view.view.filmNameTextView
@@ -53,6 +54,7 @@ class ChildFilmAdapter @Inject constructor(
             }
             itemView.filmGenreTextView.text =
                 if (result.genres.size != 1) genres.dropLast(2) else genres
+            itemView.alreadyWatched.visibility = if (!result.isWatched) View.GONE else View.VISIBLE
         }
     }
 

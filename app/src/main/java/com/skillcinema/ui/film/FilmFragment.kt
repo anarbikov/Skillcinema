@@ -19,6 +19,7 @@ import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmSeasonsDto
 import com.skillcinema.entity.FilmSimilarsDto
+import com.skillcinema.room.Film
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
@@ -56,7 +57,7 @@ class FilmFragment : Fragment() {
         doObserveWork()
     }
     private fun setUpViews(){
-        generalInfoAdapter = FilmGeneralInfoAdapter(requireContext())
+        generalInfoAdapter = FilmGeneralInfoAdapter(requireContext()){ film -> onClickedWatched(film = film)}
         filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
         filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
         filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
@@ -98,10 +99,11 @@ class FilmFragment : Fragment() {
         }
             else binding.loadingErrorPage.visibility = View.GONE
         val generalInfo: FilmInfo = allInfo[1] as FilmInfo
+        viewModel.checkWatched()
         val isSeries = generalInfo.serial
         generalInfoAdapter.addData(generalInfo)
         val seasons: FilmSeasonsDto = allInfo[2] as FilmSeasonsDto
-        filmSeasonsAdapter.addData(seasons, kinopoiskId = kinopoiskId, filmName = (generalInfo.nameRu?:generalInfo.nameEn) as String)
+        filmSeasonsAdapter.addData(seasons, kinopoiskId = kinopoiskId, filmName = (generalInfo.nameRu?:generalInfo.nameEn?:"") as String)
         val actorInfo: List<ActorDto> = allInfo[3] as List<ActorDto>
         val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
         filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!,generalInfo.kinopoiskId!!)
@@ -115,6 +117,15 @@ class FilmFragment : Fragment() {
         concatAdapter = ConcatAdapter(config, generalInfoAdapter,filmSeasonsAdapter,filmActorsParentAdapter,filmGalleryParentAdapter,filmSimilarParentAdapter)
         binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.concatRecyclerView.adapter = concatAdapter
+    }
+    private fun onClickedWatched (film:Film) {
+
+        if (film.isWatched == false) {
+            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "watchedList")
+        }else{
+            viewModel.addFilmToCollection(collection = "watchedList", film = film )
+        }
+
     }
     override fun onDestroyView() {
         super.onDestroyView()

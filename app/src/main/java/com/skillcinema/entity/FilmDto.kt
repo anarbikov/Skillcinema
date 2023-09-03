@@ -24,7 +24,8 @@ data class FilmDto (
     @Json (name = "premiereRu")override val premiereRu: String?,
     @Json (name = "year")override val year: Int?,
     @Json(name = "ratingKinopoisk") override val ratingKinopoisk: Double?,
-    @Json(name = "filmId") override val filmId: Int?
+    @Json(name = "filmId") override val filmId: Int?,
+    @Json(name = "isWatched") override var isWatched: Boolean = false
 ):Film
 
 @JsonClass(generateAdapter = true)

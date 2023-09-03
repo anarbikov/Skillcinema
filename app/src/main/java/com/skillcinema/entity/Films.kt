@@ -22,11 +22,12 @@ interface Film {
     val year: Int?
     val ratingKinopoisk: Double?
     val filmId: Int?
+    var isWatched: Boolean
 }
 interface Country {
-    val country: String
+    val country: String?
 }
 
 interface Genre {
-    val genre: String
+    val genre: String?
 }

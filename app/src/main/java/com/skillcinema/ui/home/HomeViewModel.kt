@@ -4,13 +4,20 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.data.FilmFilters
+import com.skillcinema.domain.GetAllCollectionsUseCase
+import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.GetPopularUseCase
 import com.skillcinema.domain.GetPremiereUseCase
 import com.skillcinema.domain.GetRandomGenreFilmsUseCase
 import com.skillcinema.domain.GetSeriesUseCase
 import com.skillcinema.domain.GetSharedPrefsUseCase
 import com.skillcinema.domain.GetTop250UseCase
+import com.skillcinema.domain.InsertCollectionUseCase
 import com.skillcinema.entity.FilmsDto
+import com.skillcinema.room.Collection
+import com.skillcinema.room.CollectionDao
+import com.skillcinema.room.Film
+import com.skillcinema.room.FilmCollection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +30,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val collectionDao: CollectionDao,
+    private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
+    private val getAllCollectionsUseCase: GetAllCollectionsUseCase,
+    private val insertCollectionUseCase: InsertCollectionUseCase,
     private val getPremiereUseCase: GetPremiereUseCase,
     private val getSharedPrefsUseCase: GetSharedPrefsUseCase,
     private val getPopularUseCase: GetPopularUseCase,
@@ -42,15 +53,36 @@ class HomeViewModel @Inject constructor(
     private val _isError = MutableStateFlow(false)
     val isError = _isError.asStateFlow()
     private val allFilms = mutableMapOf<Int, FilmsDto>().toSortedMap()
+    private var watchedList = emptyList<Collection>()
+    private var watchedIds = emptyList<Int>()
+
     init {
+        dbJob()
         loadAll()
     }
     fun refresh() {
+        dbJob()
         loadAll()
     }
     fun checkForOnboarding() {
         viewModelScope.launch {
             onboardingShownFlag = getSharedPrefsUseCase.execute()
+        }
+    }
+    private fun dbJob() {
+        viewModelScope.launch (Dispatchers.IO) {
+        val collections = getAllCollectionsUseCase.execute()
+        if (collections.isEmpty()) {
+                insertCollectionUseCase.execute(Collection(name = "watchedList"))
+            }
+        }
+    }
+    fun checkWatched() {
+        viewModelScope.launch(Dispatchers.IO) {
+        watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
+        for (filmList in allFilms) {
+            filmList.value.items?.forEach { it.isWatched = it.kinopoiskId in watchedIds }
+        }
         }
     }
      private fun loadAll() {
@@ -66,6 +98,8 @@ class HomeViewModel @Inject constructor(
                 allFilms[7] = getSeriesUseCase.execute()
             }.fold(
                 onSuccess = {
+                    for (i in allFilms[1]!!.items!!) {insertToDataBase(i)} //TEST
+//                    checkWatched()
                     allFilms.forEach { it.value.items = it.value.items!!.shuffled() }
                     _movies.value = allFilms.values.toList()
                 },
@@ -75,6 +109,32 @@ class HomeViewModel @Inject constructor(
                 }
             )
             _isLoading.value = false
+        }
+    }
+    private fun insertToDataBase(film:com.skillcinema.entity.Film) {
+        viewModelScope.launch(Dispatchers.IO) {
+            collectionDao.insertFilm(film = Film(
+                kinopoiskId =  film.kinopoiskId!!,
+                duration = film.duration,
+                nameEn = film.nameEn,
+                nameRu = film.nameRu,
+                posterUrl = film.posterUrl,
+                posterUrlPreview = film.posterUrlPreview,
+                premiereRu = film.premiereRu,
+                year = film.year,
+                ratingKinopoisk = film.ratingKinopoisk,
+                filmId = film.filmId,
+                isWatched = false,
+                countries = film.countries?.joinToString(",") { it.country!!},
+                genres = film.genres.joinToString(",") { it.genre!! }
+            )
+            )
+            collectionDao.insertFilmToCollection(
+                filmCollection = FilmCollection(
+                    collectionName = "watchedList",
+                    filmId = film.kinopoiskId!!
+                )
+            )
         }
     }
 }

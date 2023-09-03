@@ -4,11 +4,16 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skillcinema.domain.DeleteFilmFromCollectionUseCase
 import com.skillcinema.domain.GetActorsByKinopoiskIdUseCase
+import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.GetFilmInfoByKinopoiskIdUseCase
 import com.skillcinema.domain.GetImagesByKinopoiskIdUseCase
 import com.skillcinema.domain.GetSeasonsByKinopoiskIdUseCase
 import com.skillcinema.domain.GetSimilarByKinopoiskIdUseCase
+import com.skillcinema.domain.InsertFilmToDbUseCase
+import com.skillcinema.entity.FilmInfo
+import com.skillcinema.room.Film
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +27,9 @@ import javax.inject.Inject
 @HiltViewModel
 class FilmViewModel @Inject constructor(
     state: SavedStateHandle,
+    private val insertFilmToDbUseCase: InsertFilmToDbUseCase,
+    private val deleteFilmFromCollectionUseCase: DeleteFilmFromCollectionUseCase,
+    private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
     private val getFilmInfoByKinopoiskIdUseCase: GetFilmInfoByKinopoiskIdUseCase,
     private val getActorsByKinopoiskIdUseCase: GetActorsByKinopoiskIdUseCase,
     private val getImagesByKinopoiskIdUseCase: GetImagesByKinopoiskIdUseCase,
@@ -37,9 +45,27 @@ class FilmViewModel @Inject constructor(
     private val allInfo = mutableMapOf<Int, Any>().toSortedMap()
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+    private var watchedIds = listOf<Int>()
     init {
         val id:Int = state["kinopoiskId"]!!
         loadAll(id)
+    }
+    fun checkWatched() {
+        viewModelScope.launch(Dispatchers.IO) {
+            watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
+            (allInfo[1] as FilmInfo).isWatched =
+                (allInfo[1] as FilmInfo).kinopoiskId in watchedIds
+        }
+    }
+    fun addFilmToCollection(collection: String,film: Film){
+        viewModelScope.launch(Dispatchers.IO) {
+            insertFilmToDbUseCase.execute(collection = collection, film = film)
+        }
+    }
+    fun deleteFilmFromCollection(filmId:Int,collection:String){
+        viewModelScope.launch (Dispatchers.IO) {
+        deleteFilmFromCollectionUseCase.execute(collection = collection, filmId = filmId)
+        }
     }
     private fun loadAll(kinopoiskId:Int) {
         viewModelScope.launch (Dispatchers.IO) {
