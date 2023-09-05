@@ -16,5 +16,6 @@ data class FilmSimilarsItemDto(
     @Json val nameRu: String?,
     @Json val posterUrl: String?,
     @Json val posterUrlPreview: String?,
-    @Json val relationType: String?
+    @Json val relationType: String?,
+    @Json var isWatched: Boolean = false
 )

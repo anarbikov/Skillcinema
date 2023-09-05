@@ -3,6 +3,7 @@ package com.skillcinema.ui.fullFilmList
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -48,6 +49,7 @@ class PagedFilmAdapter @Inject constructor(
         }
         holder.binding.filmGenreTextView.text =
             if (item.genres.size != 1) genres.dropLast(2) else genres
+        holder.binding.alreadyWatched.visibility = if (item.isWatched) View.VISIBLE else View.GONE
         holder.binding.root.setOnClickListener {
             onClick(item)
         }

@@ -98,8 +98,8 @@ class FilmFragment : Fragment() {
             return
         }
             else binding.loadingErrorPage.visibility = View.GONE
-        val generalInfo: FilmInfo = allInfo[1] as FilmInfo
         viewModel.checkWatched()
+        val generalInfo: FilmInfo = allInfo[1] as FilmInfo
         val isSeries = generalInfo.serial
         generalInfoAdapter.addData(generalInfo)
         val seasons: FilmSeasonsDto = allInfo[2] as FilmSeasonsDto

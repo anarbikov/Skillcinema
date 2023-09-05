@@ -13,6 +13,7 @@ import com.skillcinema.domain.GetSeasonsByKinopoiskIdUseCase
 import com.skillcinema.domain.GetSimilarByKinopoiskIdUseCase
 import com.skillcinema.domain.InsertFilmToDbUseCase
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.room.Film
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -55,6 +56,9 @@ class FilmViewModel @Inject constructor(
             watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
             (allInfo[1] as FilmInfo).isWatched =
                 (allInfo[1] as FilmInfo).kinopoiskId in watchedIds
+            for (item in (allInfo[6] as FilmSimilarsDto).items!!){
+                item.isWatched = item.filmId in watchedIds
+            }
         }
     }
     fun addFilmToCollection(collection: String,film: Film){

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.entity.FilmSimilarsItemDto
+import kotlinx.android.synthetic.main.film_general_info_view.view.notWatched
 import kotlinx.android.synthetic.main.home_film_view.view.filmImageView
 import kotlinx.android.synthetic.main.home_film_view.view.filmNameTextView
 import javax.inject.Inject
@@ -39,6 +40,7 @@ class FilmSimilarChildAdapter @Inject constructor(
             Glide.with(itemView.context)
                 .load(url)
                 .into(itemView.filmImageView)
+            itemView.notWatched.setImageResource(if (result.isWatched) R.drawable.watched else R.drawable.not_watched)
         }
     }
 
