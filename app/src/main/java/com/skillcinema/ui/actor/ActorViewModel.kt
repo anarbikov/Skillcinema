@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.GetActorInfoByKinopoiskIdUseCase
+import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.GetFilmInfoByKinopoiskIdUseCase
 import com.skillcinema.entity.FilmInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ActorViewModel @Inject constructor(
     state: SavedStateHandle,
+    private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
     private val getActorInfoByKinopoiskIdUseCase: GetActorInfoByKinopoiskIdUseCase,
     private val getFilmInfoByKinopoiskIdUseCase: GetFilmInfoByKinopoiskIdUseCase
 ) : ViewModel() {
@@ -32,9 +34,19 @@ class ActorViewModel @Inject constructor(
     private val allInfo = mutableMapOf<Int, Any>().toSortedMap()
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+    private var watchedIds = listOf<Int>()
     init {
         val id: Int = state["staffId"]!!
         loadAll(id)
+    }
+    @Suppress("UNCHECKED_CAST")
+    fun checkWatched() {
+        viewModelScope.launch(Dispatchers.IO) {
+            watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
+            for (item in allInfo[2] as List<FilmInfo>) {
+                item.isWatched = (item.kinopoiskId in watchedIds)
+            }
+        }
     }
     private fun loadAll(staffId:Int) {
         viewModelScope.launch (Dispatchers.IO) {

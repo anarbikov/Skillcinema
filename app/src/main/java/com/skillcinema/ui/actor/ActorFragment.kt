@@ -81,6 +81,7 @@ class ActorFragment : Fragment() {
             return
         }
         else binding.loadingErrorPage.visibility = View.GONE
+        viewModel.checkWatched()
         val generalInfo: ActorGeneralInfoDto = allInfo[1] as ActorGeneralInfoDto
         actorGeneralInfoAdapter.addData(generalInfo)
         val filmListByActor:List<FilmInfo> = allInfo[2] as List<FilmInfo>

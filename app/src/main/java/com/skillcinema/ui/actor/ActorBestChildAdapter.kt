@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
+import kotlinx.android.synthetic.main.actor_best_film_view.view.alreadyWatched
 import kotlinx.android.synthetic.main.actor_best_film_view.view.filmGenreTextView
 import kotlinx.android.synthetic.main.actor_best_film_view.view.filmImageView
 import kotlinx.android.synthetic.main.actor_best_film_view.view.filmNameTextView
@@ -69,6 +70,7 @@ class ActorBestChildAdapter @Inject constructor(
             }
             itemView.filmGenreTextView.text =
                 if (result.genres.size != 1) genres.dropLast(2) else genres
+            itemView.alreadyWatched.visibility = if (result.isWatched) View.VISIBLE else View.GONE
         }
     }
 
