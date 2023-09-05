@@ -83,6 +83,7 @@ class FilmographyFragment : Fragment() {
             setupAndRenderView(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.films.receiveAsFlow().onEach {
+            viewModel.checkWatched()
             launchRecycler(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

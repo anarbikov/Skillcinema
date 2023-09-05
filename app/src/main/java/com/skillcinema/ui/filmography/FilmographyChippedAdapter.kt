@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.actor_best_film_view.view.filmImageView
 import kotlinx.android.synthetic.main.actor_best_film_view.view.filmNameTextView
 import kotlinx.android.synthetic.main.actor_best_film_view.view.ratingFrame
 import kotlinx.android.synthetic.main.actor_best_film_view.view.ratingTextView
+import kotlinx.android.synthetic.main.filmography_film_view.view.alreadyWatched
 import javax.inject.Inject
 
 class FilmographyChippedAdapter @Inject constructor(
@@ -57,6 +58,7 @@ class FilmographyChippedAdapter @Inject constructor(
             }
             itemView.filmGenreTextView.text =
                 if (result.genres.size != 1) genres.dropLast(2) else genres
+            itemView.alreadyWatched.visibility = if (result.isWatched) View.VISIBLE else View.GONE
         }
     }
 

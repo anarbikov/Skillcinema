@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.GetActorInfoByKinopoiskIdUseCase
+import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.GetFilmInfoByKinopoiskIdUseCase
 import com.skillcinema.entity.FilmInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FilmographyViewModel @Inject constructor(
     state: SavedStateHandle,
+    private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
     private val getActorInfoByKinopoiskIdUseCase: GetActorInfoByKinopoiskIdUseCase,
     private val getFilmInfoByKinopoiskIdUseCase: GetFilmInfoByKinopoiskIdUseCase
 ) : ViewModel() {
@@ -36,6 +38,7 @@ class FilmographyViewModel @Inject constructor(
     private val _films = Channel<List<Any>>()
     val films : Channel<List<Any>> = _films
     private val allFilms = mutableMapOf<Int, Any>().toSortedMap()
+    private var watchedIds = listOf<Int>()
     init {
         val id:Int = state["staffId"]!!
         loadInitial(id)
@@ -61,6 +64,7 @@ class FilmographyViewModel @Inject constructor(
                 _isLoading.value = false
             }
         }
+
     fun loadByChip(staffId: Int,profession:String){
         viewModelScope.launch (Dispatchers.IO) {
             kotlin.runCatching {
@@ -75,7 +79,6 @@ class FilmographyViewModel @Inject constructor(
                 allFilms[0] = true
             }.fold(
                 onSuccess = {
-
                     _films.send(allFilms.values.toList())
                 },
                 onFailure = {
@@ -85,6 +88,15 @@ class FilmographyViewModel @Inject constructor(
                 }
             )
             _isLoading.value = false
+        }
+    }
+    @Suppress("UNCHECKED_CAST")
+    fun checkWatched() {
+        viewModelScope.launch(Dispatchers.IO) {
+            watchedIds = getCollectionFilmIdsUseCase.execute("watchedList")
+            (allFilms[1] as List<FilmInfo>).forEach{
+                it.isWatched = it.kinopoiskId in watchedIds
+            }
         }
     }
     }
