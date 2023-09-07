@@ -2,9 +2,11 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
@@ -124,6 +126,15 @@ class FilmGeneralInfoAdapter @Inject constructor(
                     filmInfo.toWatch = true
                     onClickToWatch(createFilmForRoom("toWatch",boolean = true))
                 }
+            }
+            this.share.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "https://www.kinopoisk.ru/film/${filmInfo.kinopoiskId}/")
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(context,shareIntent, null)
             }
         }
     }
