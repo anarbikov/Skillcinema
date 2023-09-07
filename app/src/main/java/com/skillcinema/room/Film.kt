@@ -19,5 +19,7 @@ data class Film(
     val filmId: Int?,
     var isWatched: Boolean?,
     val countries: String?,
-    val genres: String?
+    val genres: String?,
+    val isLiked: Boolean?,
+    val toWatch: Boolean?
 )

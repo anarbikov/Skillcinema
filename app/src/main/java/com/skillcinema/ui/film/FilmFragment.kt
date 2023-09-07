@@ -57,7 +57,13 @@ class FilmFragment : Fragment() {
         doObserveWork()
     }
     private fun setUpViews(){
-        generalInfoAdapter = FilmGeneralInfoAdapter(requireContext()){ film -> onClickedWatched(film = film)}
+        generalInfoAdapter = FilmGeneralInfoAdapter(
+            requireContext(),
+            {film -> onClickWatched(film = film)},
+            {film -> onClickLiked(film = film)},
+            {film -> onClickToWatch(film = film)},
+            {film -> addToHistory(film) }
+        )
         filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
         filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
         filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
@@ -118,14 +124,29 @@ class FilmFragment : Fragment() {
         binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.concatRecyclerView.adapter = concatAdapter
     }
-    private fun onClickedWatched (film:Film) {
-
+    private fun onClickWatched (film:Film) {
         if (film.isWatched == false) {
             viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "watchedList")
         }else{
             viewModel.addFilmToCollection(collection = "watchedList", film = film )
         }
-
+    }
+    private fun onClickLiked (film:Film) {
+        if (film.isLiked == false) {
+            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "liked")
+        }else {
+            viewModel.addFilmToCollection(collection = "liked", film = film)
+        }
+    }
+    private fun onClickToWatch(film: Film){
+        if (film.toWatch == false) {
+            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "toWatch")
+        }else {
+            viewModel.addFilmToCollection(collection = "toWatch", film = film)
+        }
+    }
+    private fun addToHistory(film: Film){
+        viewModel.addFilmToCollection("history",film = film)
     }
     override fun onDestroyView() {
         super.onDestroyView()

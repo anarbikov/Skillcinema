@@ -115,8 +115,10 @@ class Repository @Inject constructor(
             )
         )
     }
-    suspend fun deleteFilmFromCollection (filmId: Int,collection: String) = collectionDao.deleteFilmFromCollection(filmId =filmId, collectionName = collection)
-
+    suspend fun deleteFilmFromCollection (filmId: Int,collection: String) {
+        collectionDao.deleteFilmFromCollection(filmId = filmId, collectionName = collection)
+//        collectionDao.deleteFilmFromFilm(filmId)
+    }
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"
         private const val KEY_INT_NAME = "KEY_STRING"

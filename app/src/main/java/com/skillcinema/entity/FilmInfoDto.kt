@@ -49,7 +49,9 @@ data class FilmInfo(
     @Json (name = "type") val type: String?,
     @Json (name = "webUrl") val webUrl: String?,
     @Json (name = "year") val year: Int?,
-    @Json (name = "isWatched") var isWatched: Boolean = false
+    @Json (name = "isWatched") var isWatched: Boolean = false,
+    @Json (name = "isLiked") var isLiked: Boolean = false,
+    @Json (name = "toWatch") var toWatch:Boolean = false
 )
 @JsonClass(generateAdapter = true)
 data class CountryInfo(

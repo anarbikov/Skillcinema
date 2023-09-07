@@ -15,9 +15,6 @@ import com.skillcinema.domain.GetTop250UseCase
 import com.skillcinema.domain.InsertCollectionUseCase
 import com.skillcinema.entity.FilmsDto
 import com.skillcinema.room.Collection
-import com.skillcinema.room.CollectionDao
-import com.skillcinema.room.Film
-import com.skillcinema.room.FilmCollection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +27,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val collectionDao: CollectionDao,
     private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
     private val getAllCollectionsUseCase: GetAllCollectionsUseCase,
     private val insertCollectionUseCase: InsertCollectionUseCase,
@@ -53,7 +49,6 @@ class HomeViewModel @Inject constructor(
     private val _isError = MutableStateFlow(false)
     val isError = _isError.asStateFlow()
     private val allFilms = mutableMapOf<Int, FilmsDto>().toSortedMap()
-    private var watchedList = emptyList<Collection>()
     private var watchedIds = emptyList<Int>()
 
     init {
@@ -70,10 +65,13 @@ class HomeViewModel @Inject constructor(
         }
     }
     private fun dbJob() {
-        viewModelScope.launch (Dispatchers.IO) {
-        val collections = getAllCollectionsUseCase.execute()
-        if (collections.isEmpty()) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val collections = getAllCollectionsUseCase.execute()
+            if (collections.isEmpty()) {
                 insertCollectionUseCase.execute(Collection(name = "watchedList"))
+                insertCollectionUseCase.execute(Collection(name = "liked"))
+                insertCollectionUseCase.execute(Collection(name = "toWatch"))
+                insertCollectionUseCase.execute(Collection(name = "history"))
             }
         }
     }
@@ -98,8 +96,6 @@ class HomeViewModel @Inject constructor(
                 allFilms[7] = getSeriesUseCase.execute()
             }.fold(
                 onSuccess = {
-                    for (i in allFilms[1]!!.items!!) {insertToDataBase(i)} //TEST
-//                    checkWatched()
                     allFilms.forEach { it.value.items = it.value.items!!.shuffled() }
                     _movies.value = allFilms.values.toList()
                 },
@@ -109,32 +105,6 @@ class HomeViewModel @Inject constructor(
                 }
             )
             _isLoading.value = false
-        }
-    }
-    private fun insertToDataBase(film:com.skillcinema.entity.Film) {
-        viewModelScope.launch(Dispatchers.IO) {
-            collectionDao.insertFilm(film = Film(
-                kinopoiskId =  film.kinopoiskId!!,
-                duration = film.duration,
-                nameEn = film.nameEn,
-                nameRu = film.nameRu,
-                posterUrl = film.posterUrl,
-                posterUrlPreview = film.posterUrlPreview,
-                premiereRu = film.premiereRu,
-                year = film.year,
-                ratingKinopoisk = film.ratingKinopoisk,
-                filmId = film.filmId,
-                isWatched = false,
-                countries = film.countries?.joinToString(",") { it.country!!},
-                genres = film.genres.joinToString(",") { it.genre!! }
-            )
-            )
-            collectionDao.insertFilmToCollection(
-                filmCollection = FilmCollection(
-                    collectionName = "watchedList",
-                    filmId = film.kinopoiskId!!
-                )
-            )
         }
     }
 }
