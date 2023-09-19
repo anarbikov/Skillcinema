@@ -2,10 +2,13 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.skillcinema.R
 import com.skillcinema.databinding.FragmentFilmBinding
 import com.skillcinema.entity.ActorDto
 import com.skillcinema.entity.FilmGalleryDto
@@ -53,8 +57,10 @@ class FilmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
   //      kinopoiskId = 77044
+        Log.d("mytag","dismissed")
         setUpViews()
         doObserveWork()
+
     }
     private fun setUpViews(){
         generalInfoAdapter = FilmGeneralInfoAdapter(
@@ -62,7 +68,8 @@ class FilmFragment : Fragment() {
             {film -> onClickWatched(film = film)},
             {film -> onClickLiked(film = film)},
             {film -> onClickToWatch(film = film)},
-            {film -> addToHistory(film) }
+            {film -> addToHistory(film) },
+            {film -> addToCollection(film) }
         )
         filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
         filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
@@ -91,6 +98,13 @@ class FilmFragment : Fragment() {
         }
         viewModel.movieInfo.onEach {
             setupAndRenderView(it)
+            setFragmentResultListener("update"){ _, _ ->
+                Log.d("mytag","UPDATED!")
+                viewModel.checkLiked()
+                viewModel.checkWatched()
+                viewModel.checkToWatch()
+                setupAndRenderView(it)
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
     @Suppress("UNCHECKED_CAST")
@@ -105,6 +119,8 @@ class FilmFragment : Fragment() {
         }
             else binding.loadingErrorPage.visibility = View.GONE
         viewModel.checkWatched()
+        viewModel.checkLiked()
+        viewModel.checkToWatch()
         val generalInfo: FilmInfo = allInfo[1] as FilmInfo
         val isSeries = generalInfo.serial
         generalInfoAdapter.addData(generalInfo)
@@ -147,6 +163,12 @@ class FilmFragment : Fragment() {
     }
     private fun addToHistory(film: Film){
         viewModel.addFilmToCollection("history",film = film)
+    }
+    private fun addToCollection(filmInfo: FilmInfo) {
+        val bundle = bundleOf()
+        bundle.putParcelable("filmInfo",filmInfo)
+        childFragmentManager.setFragmentResult("key",bundle)
+        findNavController().navigate(R.id.action_filmFragment_to_collectionDialogFragment, bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()

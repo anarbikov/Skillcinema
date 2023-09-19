@@ -103,6 +103,9 @@
             android:id="@+id/action_filmFragment_to_seasonsFragment"
             app:popUpToSaveState="true"
             app:destination="@id/seasonsFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_collectionDialogFragment"
+            app:destination="@id/collectionDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"
@@ -235,4 +238,13 @@
             android:name="kinopoiskId"
             app:argType="android.os.Bundle" />
     </fragment>
+    <dialog
+        android:id="@+id/collectionDialogFragment"
+        android:name="com.skillcinema.ui.film.CollectionDialogFragment"
+        android:label="fragment_collection_dialog_list_dialog"
+        tools:layout="@layout/fragment_collection_dialog_list_dialog" >
+        <argument
+            android:name="filmInfo"
+            app:argType="android.os.Bundle" />
+    </dialog>
 </navigation>

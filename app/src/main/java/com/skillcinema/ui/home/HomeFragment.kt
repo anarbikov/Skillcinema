@@ -2,7 +2,6 @@ package com.skillcinema.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillcinema.R
-import com.skillcinema.entity.FilmsDto
 import com.skillcinema.databinding.FragmentHomeBinding
+import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.android.synthetic.main.fragment_home.parentRecyclerView
@@ -105,7 +104,6 @@ class HomeFragment : Fragment() {
     private fun renderFilmsList(films: List<FilmsDto>) {
         if (films.isEmpty())return
         viewModel.checkWatched()
-        Log.d("mytag",films[3].items.toString())
         parentFilmAdapter.addData(films)
         parentFilmAdapter.notifyDataSetChanged()
     }

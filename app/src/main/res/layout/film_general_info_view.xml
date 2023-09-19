@@ -97,12 +97,11 @@
 
         <ImageView
             android:id="@+id/moreThreeDotes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="16dp"
+            android:layout_height="14dp"
             android:layout_marginStart="22dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/more_three_dotes_"
+
+            android:src="@drawable/more_three_dotes"
             app:layout_constraintStart_toEndOf="@id/share"
 
             app:layout_constraintTop_toTopOf="@id/share"

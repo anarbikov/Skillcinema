@@ -28,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FilmViewModel @Inject constructor(
     state: SavedStateHandle,
+
     private val insertFilmToDbUseCase: InsertFilmToDbUseCase,
     private val deleteFilmFromCollectionUseCase: DeleteFilmFromCollectionUseCase,
     private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
@@ -47,6 +48,8 @@ class FilmViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
     private var watchedIds = listOf<Int>()
+    private var likedIds = listOf<Int>()
+    private var toWatchIds = listOf<Int>()
     init {
         val id:Int = state["kinopoiskId"]!!
         loadAll(id)
@@ -59,6 +62,26 @@ class FilmViewModel @Inject constructor(
             for (item in (allInfo[6] as FilmSimilarsDto).items!!){
                 item.isWatched = item.filmId in watchedIds
             }
+        }
+    }
+    fun checkLiked() {
+        viewModelScope.launch(Dispatchers.IO) {
+            likedIds = getCollectionFilmIdsUseCase.execute ("liked")
+            (allInfo[1] as FilmInfo).isLiked =
+                (allInfo[1] as FilmInfo).kinopoiskId in likedIds
+//            for (item in (allInfo[6] as FilmSimilarsDto).items!!){
+//                item.isWatched = item.filmId in watchedIds
+//            }
+        }
+    }
+    fun checkToWatch() {
+        viewModelScope.launch(Dispatchers.IO) {
+            toWatchIds = getCollectionFilmIdsUseCase.execute ("toWatch")
+            (allInfo[1] as FilmInfo).toWatch =
+                (allInfo[1] as FilmInfo).kinopoiskId in toWatchIds
+//            for (item in (allInfo[6] as FilmSimilarsDto).items!!){
+//                item.isWatched = item.filmId in watchedIds
+//            }
         }
     }
     fun addFilmToCollection(collection: String,film: Film){

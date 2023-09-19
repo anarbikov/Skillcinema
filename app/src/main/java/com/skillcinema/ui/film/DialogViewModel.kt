@@ -1,0 +1,101 @@
+package com.skillcinema.ui.film
+
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.skillcinema.domain.DeleteFilmFromCollectionUseCase
+import com.skillcinema.domain.GetCollectionFilmIdsUseCase
+import com.skillcinema.domain.GetFullCollectionsUseCase
+import com.skillcinema.domain.InsertFilmToDbUseCase
+import com.skillcinema.entity.FilmInfo
+import com.skillcinema.room.CollectionWIthFilms
+import com.skillcinema.room.Film
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class DialogViewModel @Inject constructor(
+    val state:SavedStateHandle,
+    private val getFullCollectionsUseCase: GetFullCollectionsUseCase,
+    private val insertFilmToDbUseCase: InsertFilmToDbUseCase,
+    private val deleteFilmFromCollectionUseCase: DeleteFilmFromCollectionUseCase,
+    private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
+) : ViewModel() {
+
+    private val _collection = Channel<List<CollectionData>>()
+    val collection = _collection
+    private var filmInfo: FilmInfo = state["filmInfo"]!!
+
+    init {
+        getCollectionsList()
+    }
+
+    private fun getCollectionsList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val collectionsList = mutableListOf<CollectionData>()
+            var collections = emptyList<CollectionWIthFilms>()
+            kotlin.runCatching {
+                collections = getFullCollectionsUseCase.execute()
+            }.fold(
+                onSuccess = {
+                    for (i in collections) {
+                        collectionsList.add(
+                            CollectionData(
+                                collectionName = i.collection.name,
+                                collectionsSize = i.films.size,
+                                isInCollection = filmInfo.kinopoiskId in getCollectionFilmIdsUseCase.execute(i.collection.name)
+                            )
+                        )
+                    }
+                    _collection.send(collectionsList.toList())
+                },
+                onFailure = { Log.d("mytag", it.message.toString()) }
+            )
+        }
+    }
+    fun addToCollections(checkedCollection: String,filmInfo: FilmInfo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            kotlin.runCatching {
+                    insertFilmToDbUseCase.execute(
+                        collection = checkedCollection, film = Film(
+                            kinopoiskId = filmInfo.kinopoiskId!!,
+                            duration = filmInfo.filmLength,
+                            nameEn = filmInfo.nameEn as String?,
+                            nameRu = filmInfo.nameRu,
+                            posterUrl = filmInfo.posterUrl,
+                            posterUrlPreview = filmInfo.posterUrlPreview,
+                            premiereRu = null,
+                            year = filmInfo.year,
+                            ratingKinopoisk = filmInfo.ratingKinopoisk,
+                            filmId = filmInfo.kinopoiskId,
+                            isWatched = false,
+                            countries = filmInfo.countries.joinToString(", ") { it.country.toString() },
+                            genres = filmInfo.genres.joinToString(", ") { it.genre.toString() },
+                            isLiked = false,
+                            toWatch = false
+                        )
+                    )
+            }.fold(
+                onSuccess = {
+                    getCollectionsList()
+                },
+                onFailure = { Log.d("mytag", it.message.toString()) }
+            )
+        }
+    }
+    fun deleteFromCollection(collection: String, filmId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            kotlin.runCatching {
+                deleteFilmFromCollectionUseCase.execute(collection = collection, filmId = filmId)
+            }.fold(
+                onSuccess = {
+                    getCollectionsList()
+                }, onFailure = {Log.d("mytag", it.message.toString())}
+            )
+        }
+    }
+}

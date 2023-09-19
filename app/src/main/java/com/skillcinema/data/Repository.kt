@@ -25,6 +25,7 @@ class Repository @Inject constructor(
     private lateinit var prefs: SharedPreferences
     private var onboardingShown = 0
     fun getOnBoardingFlag(): Int {
+
         return when {
             onboardingShown == 1 -> {
                 1
@@ -100,6 +101,7 @@ class Repository @Inject constructor(
         return api.getActorInfoByKinopoiskId(staffId)
     }
     fun getAllCollections() = collectionDao.getAllCollections()
+    fun getFullCollections() = collectionDao.getFullCollection()
     suspend fun insertCollection(collection: Collection) = collectionDao.insertCollection (collection = collection)
     suspend fun  deleteCollection (collection: String) = collectionDao.deleteCollection(collection = collection)
     suspend fun deleteAllWatched() = collectionDao.deleteAll()
@@ -119,6 +121,7 @@ class Repository @Inject constructor(
         collectionDao.deleteFilmFromCollection(filmId = filmId, collectionName = collection)
 //        collectionDao.deleteFilmFromFilm(filmId)
     }
+
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"
         private const val KEY_INT_NAME = "KEY_STRING"
