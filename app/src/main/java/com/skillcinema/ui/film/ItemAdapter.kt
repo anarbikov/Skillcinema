@@ -12,6 +12,7 @@ import com.skillcinema.databinding.FragmentCollectionDialogTitleBinding
 import com.skillcinema.entity.FilmInfo
 import kotlinx.android.synthetic.main.fragment_collection_dialog_check_item.view.collectionTitle
 import kotlinx.android.synthetic.main.fragment_collection_dialog_check_item.view.collectionsSize
+import kotlinx.android.synthetic.main.fragment_collection_dialog_create_collection.view.createCollectionButton
 import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.ratingTextView
 import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.titleBodyTextView
 import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.titleImageView
@@ -22,6 +23,7 @@ class ItemAdapter(
 
     private val filmInfo: FilmInfo,
     private val onClickAddToCollection: (Pair<String,Boolean>) -> Unit,
+    private val onClickCreateCollection: () -> Unit
 
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -59,7 +61,9 @@ class ItemAdapter(
             TYPE_ADD_TO_COLLECTION -> {}
 
             TYPE_CREATE_COLLECTION -> {
-                holder.itemView.apply {  }
+                holder.itemView.apply {
+                    createCollectionButton.setOnClickListener {onClickCreateCollection()  }
+                }
             }
 
             TITLE -> {

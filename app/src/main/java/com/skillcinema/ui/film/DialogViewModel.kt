@@ -1,15 +1,20 @@
 package com.skillcinema.ui.film
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.DeleteFilmFromCollectionUseCase
 import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.GetFullCollectionsUseCase
+import com.skillcinema.domain.InsertCollectionUseCase
 import com.skillcinema.domain.InsertFilmToDbUseCase
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.room.Collection
 import com.skillcinema.room.CollectionWIthFilms
+import com.skillcinema.room.Collections
 import com.skillcinema.room.Film
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +22,11 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
 class DialogViewModel @Inject constructor(
     val state:SavedStateHandle,
+    private val insertCollectionUseCase: InsertCollectionUseCase,
     private val getFullCollectionsUseCase: GetFullCollectionsUseCase,
     private val insertFilmToDbUseCase: InsertFilmToDbUseCase,
     private val deleteFilmFromCollectionUseCase: DeleteFilmFromCollectionUseCase,
@@ -34,7 +41,8 @@ class DialogViewModel @Inject constructor(
         getCollectionsList()
     }
 
-    private fun getCollectionsList() {
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun getCollectionsList() {
         viewModelScope.launch(Dispatchers.IO) {
             val collectionsList = mutableListOf<CollectionData>()
             var collections = emptyList<CollectionWIthFilms>()
@@ -50,6 +58,7 @@ class DialogViewModel @Inject constructor(
                                 isInCollection = filmInfo.kinopoiskId in getCollectionFilmIdsUseCase.execute(i.collection.name)
                             )
                         )
+                        collectionsList.removeIf { it.collectionName == Collections.HISTORY.rusName }
                     }
                     _collection.send(collectionsList.toList())
                 },
@@ -85,6 +94,11 @@ class DialogViewModel @Inject constructor(
                 },
                 onFailure = { Log.d("mytag", it.message.toString()) }
             )
+        }
+    }
+    fun createCollection(collectionName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            insertCollectionUseCase.execute(collection = Collection(collectionName))
         }
     }
     fun deleteFromCollection(collection: String, filmId: Int) {

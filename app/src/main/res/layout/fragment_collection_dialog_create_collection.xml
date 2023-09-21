@@ -27,10 +27,10 @@
         android:clickable="true"
         android:focusable="true"
         android:maxLines="1"
-        android:textAlignment="textStart"
         android:text="@string/create_collection"
+        android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toEndOf="@id/createIcon"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        tools:ignore="TextSizeCheck,VisualLintButtonSize" />
 </androidx.constraintlayout.widget.ConstraintLayout>

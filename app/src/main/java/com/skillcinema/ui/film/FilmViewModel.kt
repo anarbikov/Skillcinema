@@ -14,6 +14,7 @@ import com.skillcinema.domain.GetSimilarByKinopoiskIdUseCase
 import com.skillcinema.domain.InsertFilmToDbUseCase
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmSimilarsDto
+import com.skillcinema.room.Collections
 import com.skillcinema.room.Film
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +57,7 @@ class FilmViewModel @Inject constructor(
     }
     fun checkWatched() {
         viewModelScope.launch(Dispatchers.IO) {
-            watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
+            watchedIds = getCollectionFilmIdsUseCase.execute (Collections.WATCHED_LIST.rusName)
             (allInfo[1] as FilmInfo).isWatched =
                 (allInfo[1] as FilmInfo).kinopoiskId in watchedIds
             for (item in (allInfo[6] as FilmSimilarsDto).items!!){
@@ -66,22 +67,16 @@ class FilmViewModel @Inject constructor(
     }
     fun checkLiked() {
         viewModelScope.launch(Dispatchers.IO) {
-            likedIds = getCollectionFilmIdsUseCase.execute ("liked")
+            likedIds = getCollectionFilmIdsUseCase.execute (Collections.LIKED.rusName)
             (allInfo[1] as FilmInfo).isLiked =
                 (allInfo[1] as FilmInfo).kinopoiskId in likedIds
-//            for (item in (allInfo[6] as FilmSimilarsDto).items!!){
-//                item.isWatched = item.filmId in watchedIds
-//            }
         }
     }
     fun checkToWatch() {
         viewModelScope.launch(Dispatchers.IO) {
-            toWatchIds = getCollectionFilmIdsUseCase.execute ("toWatch")
+            toWatchIds = getCollectionFilmIdsUseCase.execute (Collections.TO_WATCH.rusName)
             (allInfo[1] as FilmInfo).toWatch =
                 (allInfo[1] as FilmInfo).kinopoiskId in toWatchIds
-//            for (item in (allInfo[6] as FilmSimilarsDto).items!!){
-//                item.isWatched = item.filmId in watchedIds
-//            }
         }
     }
     fun addFilmToCollection(collection: String,film: Film){

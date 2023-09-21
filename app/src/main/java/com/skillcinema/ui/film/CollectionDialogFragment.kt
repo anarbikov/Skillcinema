@@ -1,10 +1,11 @@
 package com.skillcinema.ui.film
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -40,20 +41,34 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         filmInfo = arguments?.getParcelable(ARG_FILM_INFO)!!
         binding.list.layoutManager = GridLayoutManager(requireContext(), 1)
         adapter = ItemAdapter(
             filmInfo = filmInfo,
-            onClickAddToCollection = { add -> onClickAddToCollections(add) }
+            onClickAddToCollection = { add -> onClickAddToCollections(add) },
+            onClickCreateCollection = { onClickCreateCollection() }
         )
 
         binding.list.adapter = adapter
         doObserveWork()
         binding.closeButton.setOnClickListener { findNavController().popBackStack() }
+        binding.createCollectionCloseButton.setOnClickListener {
+            binding.createCollectionLayout.visibility = View.GONE
+            binding.editText.setText("")
+        }
+        binding.readyButton.setOnClickListener {
+            val text = binding.editText.text.toString()
+            viewModel.createCollection(text)
+            viewModel.addToCollections(checkedCollection = text,filmInfo = filmInfo)
+            binding.createCollectionLayout.visibility = View.GONE
+            viewModel.getCollectionsList()
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -71,6 +86,7 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun onClickAddToCollections(checked: Pair<String, Boolean>) {
         if (checked.second) {
             viewModel.addToCollections(checkedCollection = checked.first, filmInfo = filmInfo)
@@ -81,10 +97,12 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
             )
         }
     }
+    private fun onClickCreateCollection () {
+        binding.createCollectionLayout.visibility = View.VISIBLE
+    }
 
     override fun onStop() {
         super.onStop()
-        Log.d("mytag","stop")
         parentFragmentManager.setFragmentResult("update", bundleOf())
     }
 }

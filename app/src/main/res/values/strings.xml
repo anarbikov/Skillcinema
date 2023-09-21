@@ -67,5 +67,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_to_collection">Добавить в коллекцию</string>
     <string name="create_collection">Создать свою коллекцию</string>
+    <string name="hint_create_collection">Придумайте название для вашей коллекции</string>
+    <string name="ready_button">Готово</string>
 
 </resources>

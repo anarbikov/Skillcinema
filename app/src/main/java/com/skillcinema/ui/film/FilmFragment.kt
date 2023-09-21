@@ -2,7 +2,6 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import com.skillcinema.entity.FilmGalleryDto
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.entity.FilmSeasonsDto
 import com.skillcinema.entity.FilmSimilarsDto
+import com.skillcinema.room.Collections
 import com.skillcinema.room.Film
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.nav_view
@@ -57,7 +57,6 @@ class FilmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
   //      kinopoiskId = 77044
-        Log.d("mytag","dismissed")
         setUpViews()
         doObserveWork()
 
@@ -99,7 +98,6 @@ class FilmFragment : Fragment() {
         viewModel.movieInfo.onEach {
             setupAndRenderView(it)
             setFragmentResultListener("update"){ _, _ ->
-                Log.d("mytag","UPDATED!")
                 viewModel.checkLiked()
                 viewModel.checkWatched()
                 viewModel.checkToWatch()
@@ -142,27 +140,27 @@ class FilmFragment : Fragment() {
     }
     private fun onClickWatched (film:Film) {
         if (film.isWatched == false) {
-            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "watchedList")
+            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = Collections.WATCHED_LIST.rusName)
         }else{
-            viewModel.addFilmToCollection(collection = "watchedList", film = film )
+            viewModel.addFilmToCollection(collection = Collections.WATCHED_LIST.rusName, film = film )
         }
     }
     private fun onClickLiked (film:Film) {
         if (film.isLiked == false) {
-            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "liked")
+            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = Collections.LIKED.rusName)
         }else {
-            viewModel.addFilmToCollection(collection = "liked", film = film)
+            viewModel.addFilmToCollection(collection = Collections.LIKED.name, film = film)
         }
     }
     private fun onClickToWatch(film: Film){
         if (film.toWatch == false) {
-            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = "toWatch")
+            viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = Collections.TO_WATCH.rusName)
         }else {
-            viewModel.addFilmToCollection(collection = "toWatch", film = film)
+            viewModel.addFilmToCollection(collection = Collections.TO_WATCH.rusName, film = film)
         }
     }
     private fun addToHistory(film: Film){
-        viewModel.addFilmToCollection("history",film = film)
+        viewModel.addFilmToCollection(Collections.HISTORY.rusName,film = film)
     }
     private fun addToCollection(filmInfo: FilmInfo) {
         val bundle = bundleOf()

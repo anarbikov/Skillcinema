@@ -15,6 +15,7 @@ import com.skillcinema.domain.GetTop250UseCase
 import com.skillcinema.domain.InsertCollectionUseCase
 import com.skillcinema.entity.FilmsDto
 import com.skillcinema.room.Collection
+import com.skillcinema.room.Collections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,16 +69,16 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val collections = getAllCollectionsUseCase.execute()
             if (collections.isEmpty()) {
-                insertCollectionUseCase.execute(Collection(name = "watchedList"))
-                insertCollectionUseCase.execute(Collection(name = "liked"))
-                insertCollectionUseCase.execute(Collection(name = "toWatch"))
-                insertCollectionUseCase.execute(Collection(name = "history"))
+                insertCollectionUseCase.execute(Collection(name = Collections.WATCHED_LIST.rusName))
+                insertCollectionUseCase.execute(Collection(name = Collections.LIKED.rusName))
+                insertCollectionUseCase.execute(Collection(name = Collections.TO_WATCH.rusName))
+                insertCollectionUseCase.execute(Collection(name = Collections.HISTORY.rusName))
             }
         }
     }
     fun checkWatched() {
         viewModelScope.launch(Dispatchers.IO) {
-        watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
+        watchedIds = getCollectionFilmIdsUseCase.execute (Collections.WATCHED_LIST.rusName)
         for (filmList in allFilms) {
             filmList.value.items?.forEach { it.isWatched = it.kinopoiskId in watchedIds }
         }
