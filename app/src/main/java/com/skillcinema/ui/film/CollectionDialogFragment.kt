@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,15 +17,12 @@ import com.skillcinema.entity.FilmInfo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 
 const val ARG_FILM_INFO = "filmInfo"
 
 
 @AndroidEntryPoint
 class CollectionDialogFragment : BottomSheetDialogFragment() {
-
     private var _binding: FragmentCollectionDialogListDialogBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DialogViewModel by viewModels()
@@ -67,14 +62,9 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
             viewModel.getCollectionsList()
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.N)
     private fun doObserveWork() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-            }
-        }
-        viewModel.collection.receiveAsFlow().onEach {
+        viewModel.collection.onEach {
             renderView(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
      }

@@ -18,7 +18,9 @@ import com.skillcinema.room.Collections
 import com.skillcinema.room.Film
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,8 +35,12 @@ class DialogViewModel @Inject constructor(
     private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase,
 ) : ViewModel() {
 
-    private val _collection = Channel<List<CollectionData>>()
-    val collection = _collection
+    private val _collection = MutableStateFlow<List<CollectionData>>(emptyList())
+    val collection = _collection.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = _collection.value
+    )
     private var filmInfo: FilmInfo = state["filmInfo"]!!
 
     init {
@@ -60,7 +66,7 @@ class DialogViewModel @Inject constructor(
                         )
                         collectionsList.removeIf { it.collectionName == Collections.HISTORY.rusName }
                     }
-                    _collection.send(collectionsList.toList())
+                    _collection.value =collectionsList.toList()
                 },
                 onFailure = { Log.d("mytag", it.message.toString()) }
             )

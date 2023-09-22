@@ -26,9 +26,7 @@ class ItemAdapter(
     private val onClickCreateCollection: () -> Unit
 
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     private var collections : List<CollectionData> = ArrayList()
-    private val checkMap = mutableMapOf<String,Boolean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -43,18 +41,16 @@ class ItemAdapter(
             }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_COLLECTION_ROW -> {
-                checkMap[collections[position-2].collectionName] = false
                 holder.itemView.apply {
-                    collectionTitle.text = collections[position-2].collectionName
-                    collectionsSize.text = collections[position-2].collectionsSize.toString()
-                    collectionTitle.isChecked = collections[position-2].isInCollection
-                    collectionTitle.setOnCheckedChangeListener{ button, checked ->
-                        checkMap[button.text as String] = checked
-                        onClickAddToCollection (Pair(collectionTitle.text.toString(),checked))
+                    collectionTitle.text = collections[position - 2].collectionName
+                    collectionsSize.text = collections[position - 2].collectionsSize.toString()
+                    collectionTitle.isChecked = collections[position - 2].isInCollection
+                    collectionTitle.setOnCheckedChangeListener { _, checked ->
+                        onClickAddToCollection(Pair(collectionTitle.text.toString(),checked))
                     }
                 }
             }
@@ -62,7 +58,9 @@ class ItemAdapter(
 
             TYPE_CREATE_COLLECTION -> {
                 holder.itemView.apply {
-                    createCollectionButton.setOnClickListener {onClickCreateCollection()  }
+                    createCollectionButton.setOnClickListener {
+                        onClickCreateCollection()
+                    }
                 }
             }
 
