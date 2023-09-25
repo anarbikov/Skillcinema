@@ -73,10 +73,6 @@ class HomeViewModel @Inject constructor(
                 insertCollectionUseCase.execute(Collection(name = Collections.LIKED.rusName))
                 insertCollectionUseCase.execute(Collection(name = Collections.TO_WATCH.rusName))
                 insertCollectionUseCase.execute(Collection(name = Collections.HISTORY.rusName))
-                insertCollectionUseCase.execute(Collection(name = "й"))
-                insertCollectionUseCase.execute(Collection(name = "ц"))
-                insertCollectionUseCase.execute(Collection(name = "у"))
-                insertCollectionUseCase.execute(Collection(name = "к"))
             }
         }
     }

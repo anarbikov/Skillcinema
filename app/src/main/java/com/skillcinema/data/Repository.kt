@@ -103,7 +103,10 @@ class Repository @Inject constructor(
     fun getAllCollections() = collectionDao.getAllCollections()
     fun getFullCollections() = collectionDao.getFullCollection()
     suspend fun insertCollection(collection: Collection) = collectionDao.insertCollection (collection = collection)
-    suspend fun  deleteCollection (collection: String) = collectionDao.deleteCollection(collection = collection)
+    suspend fun  deleteCollection (collection: String){
+        collectionDao.cleanCollection(collectionName = collection)
+        collectionDao.deleteCollection(collection = collection)
+    }
     suspend fun deleteAllWatched() = collectionDao.deleteAll()
 
     fun getFilmIdsFromCollection(collection: String) = collectionDao.getCollectionFilmIds(collection)
@@ -120,6 +123,9 @@ class Repository @Inject constructor(
     suspend fun deleteFilmFromCollection (filmId: Int,collection: String) {
         collectionDao.deleteFilmFromCollection(filmId = filmId, collectionName = collection)
 //        collectionDao.deleteFilmFromFilm(filmId)
+    }
+    suspend fun cleanCollection(collectionName: String){
+        collectionDao.cleanCollection(collectionName = collectionName)
     }
 
     companion object{

@@ -49,6 +49,10 @@
             android:id="@+id/action_profileFragment_to_navigation_home"
             app:restoreState="true"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_profileFragment_to_filmFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/filmFragment" />
     </fragment>
     <fragment
         android:id="@+id/onboarding_fragment"
@@ -106,6 +110,11 @@
         <action
             android:id="@+id/action_filmFragment_to_collectionDialogFragment"
             app:destination="@id/collectionDialogFragment" />
+        <action
+            android:id="@+id/action_filmFragment_to_profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:restoreState="true"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullFilmList"

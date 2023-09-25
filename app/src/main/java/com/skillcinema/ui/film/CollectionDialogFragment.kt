@@ -56,6 +56,7 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
         }
         binding.readyButton.setOnClickListener {
             val text = binding.editText.text.toString()
+            binding.editText.setText("")
             viewModel.createCollection(text)
             viewModel.addToCollections(checkedCollection = text,filmInfo = filmInfo)
             binding.createCollectionLayout.visibility = View.GONE

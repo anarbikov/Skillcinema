@@ -54,6 +54,7 @@ class FilmViewModel @Inject constructor(
     init {
         val id:Int = state["kinopoiskId"]!!
         loadAll(id)
+        checkHistory()
     }
     fun checkWatched() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -77,6 +78,19 @@ class FilmViewModel @Inject constructor(
             toWatchIds = getCollectionFilmIdsUseCase.execute (Collections.TO_WATCH.rusName)
             (allInfo[1] as FilmInfo).toWatch =
                 (allInfo[1] as FilmInfo).kinopoiskId in toWatchIds
+        }
+    }
+    private fun checkHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val history =
+                getCollectionFilmIdsUseCase.execute(collection = Collections.HISTORY.rusName)
+                    .toMutableList()
+            while (history.size > 20) {
+                deleteFilmFromCollectionUseCase.execute(
+                    collection = Collections.HISTORY.rusName, filmId = history.first()
+                )
+                history.removeFirst()
+            }
         }
     }
     fun addFilmToCollection(collection: String,film: Film){

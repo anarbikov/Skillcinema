@@ -25,6 +25,9 @@ interface CollectionDao {
     @Query ("DELETE FROM filmCollection WHERE film_id = :filmId AND collection_name =:collectionName")
     suspend fun deleteFilmFromCollection(filmId:Int,collectionName: String)
 
+    @Query("DELETE FROM filmCollection WHERE collection_name =:collectionName")
+    suspend fun cleanCollection (collectionName: String)
+
     @Query ("DELETE FROM film WHERE kinopoisk_id = :kinopoiskId")
     suspend fun deleteFilmFromFilm (kinopoiskId: Int)
 
