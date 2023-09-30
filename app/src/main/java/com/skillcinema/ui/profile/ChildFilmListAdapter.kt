@@ -1,5 +1,6 @@
 package com.skillcinema.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -22,9 +23,11 @@ class ChildFilmListAdapter @Inject constructor(
     var onClickFilm: (Film) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var filmList: List<CollectionWIthFilms> = ArrayList()
+    private var filmList: MutableList<Film> = mutableListOf()
+    private var collectionName = ""
     init {
-        this.filmList = filmData
+        this.collectionName = filmData[0].collection.name
+        this.filmList = if (filmData[0].films.size<20)filmData[0].films.toMutableList() else filmData[0].films.take(20).toMutableList()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):RecyclerView.ViewHolder {
         return when (viewType) {
@@ -41,10 +44,11 @@ class ChildFilmListAdapter @Inject constructor(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_FILM -> {
-                val result = filmList[0].films[position]
+                val result = filmList[position]
                 holder.itemView.apply {
                     filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
                     val url = result.posterUrlPreview ?: result.posterUrl
@@ -58,9 +62,11 @@ class ChildFilmListAdapter @Inject constructor(
                 }
             }
             TYPE_FOOTER -> {
-                holder.itemView.visibility = if (filmList[0].films.isNotEmpty()) View.VISIBLE else View.GONE
+                holder.itemView.visibility = if (filmList.isNotEmpty()) View.VISIBLE else View.GONE
                 holder.itemView.setOnClickListener {
-                    onClickCleanHistory(filmList[0].collection.name)
+                    onClickCleanHistory(collectionName)
+                    filmList.clear()
+                    notifyDataSetChanged()
                 }
             }
         }
@@ -71,7 +77,7 @@ class ChildFilmListAdapter @Inject constructor(
             else -> TYPE_FILM
         }
     }
-    override fun getItemCount(): Int = filmList[0].films.size+1
+    override fun getItemCount(): Int = filmList.size+1
     companion object{
         private const val TYPE_FILM = 1
         private const val TYPE_FOOTER = 2

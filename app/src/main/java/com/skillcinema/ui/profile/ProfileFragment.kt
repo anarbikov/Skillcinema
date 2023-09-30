@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentProfileBinding
 import com.skillcinema.room.Collection
@@ -86,8 +85,6 @@ class ProfileFragment : Fragment() {
             setIsolateViewTypes(true)
         }.build()
         concatAdapter = ConcatAdapter(config, watchedListParentAdapter,userCollectionsAdapter,historyListParentAdapter)
-        binding.concatRecyclerView.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.VERTICAL,false)
         binding.concatRecyclerView.adapter = concatAdapter
     }
     private fun onClickOpenCollection(collection: CollectionWIthFilms){

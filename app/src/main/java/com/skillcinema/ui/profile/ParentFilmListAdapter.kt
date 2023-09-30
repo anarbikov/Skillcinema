@@ -3,6 +3,7 @@ package com.skillcinema.ui.profile
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.databinding.FragmentProfileFilmParentAdapterBinding
@@ -38,16 +39,18 @@ class ParentFilmListAdapter @Inject constructor(
             ChildFilmListAdapter(
                 context = context,
                 filmData = collections,
-                onClickCleanHistory = {cleanCollection -> onClickCLeanCollection(cleanCollection) },
+                onClickCleanHistory = {cleanCollection ->
+                    onClickCLeanCollection(cleanCollection)
+                    holder.itemView.all.text = "0"
+                    holder.itemView.collectionRecyclerView.visibility = View.GONE
+                },
                 onClickFilm = { film -> onClickFilm(film)}
             )
-
-
-
                 holder.itemView.apply {
                     header.text = result.collection.name
                     all.text = takenFilms.size.toString()
                     collectionRecyclerView.adapter = childFilmListAdapter
+                    collectionRecyclerView.visibility = if (collections.isNotEmpty()) View.VISIBLE else View.GONE
                     all.setOnClickListener {
                         onClickOpenFullCollection(result)
                     }

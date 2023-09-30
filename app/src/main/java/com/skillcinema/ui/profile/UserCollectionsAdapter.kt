@@ -19,7 +19,7 @@ class UserCollectionsAdapter @Inject constructor(
     private val onClickDeleteCollection: (String) -> Unit
 ):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var collections: List<CollectionWIthFilms> = listOf()
+    var collections: MutableList<CollectionWIthFilms> = mutableListOf()
     private lateinit var childAdapter: UserCollectionsChildAdapter
 
     inner class ViewHolder(val binding: FragmentProfileCreateCollectionBinding) :
@@ -56,10 +56,11 @@ class UserCollectionsAdapter @Inject constructor(
     override fun getItemCount(): Int = 1
     @SuppressLint("NotifyDataSetChanged")
     fun addData(list: List<CollectionWIthFilms>) {
-        collections = list
+        collections = list.toMutableList()
         notifyDataSetChanged()
     }
     fun addCollection(collection:CollectionWIthFilms){
         childAdapter.addCollection(collection = collection)
+        collections.add(collection)
     }
 }

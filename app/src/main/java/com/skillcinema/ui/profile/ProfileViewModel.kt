@@ -55,7 +55,7 @@ class ProfileViewModel @Inject constructor(
             kotlin.runCatching {
                 cleanCollectionUseCase.execute(collectionName = collectionName)
             }.fold(
-                onSuccess = { getCollectionsList() },
+                onSuccess = {  },
                 onFailure = { Log.d("mytag", it.message.toString()) })
         }
     }

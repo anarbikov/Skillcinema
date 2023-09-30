@@ -85,7 +85,7 @@ class FilmViewModel @Inject constructor(
             val history =
                 getCollectionFilmIdsUseCase.execute(collection = Collections.HISTORY.rusName)
                     .toMutableList()
-            while (history.size > 20) {
+            while (history.size > 100) {
                 deleteFilmFromCollectionUseCase.execute(
                     collection = Collections.HISTORY.rusName, filmId = history.first()
                 )
