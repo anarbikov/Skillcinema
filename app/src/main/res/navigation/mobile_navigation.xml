@@ -53,6 +53,10 @@
             android:id="@+id/action_profileFragment_to_filmFragment"
             app:popUpToSaveState="true"
             app:destination="@id/filmFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_fullCollectionFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/fullCollectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/onboarding_fragment"
@@ -256,4 +260,23 @@
             android:name="filmInfo"
             app:argType="android.os.Bundle" />
     </dialog>
+    <fragment
+        android:id="@+id/fullCollectionFragment"
+        android:name="com.skillcinema.ui.fullCollection.FullCollectionFragment"
+        android:label="fragment_full_collection"
+        tools:layout="@layout/fragment_full_collection" >
+        <argument
+            android:name="collectionName"
+            app:argType="android.os.Bundle" />
+        <action
+            android:id="@+id/action_fullCollectionFragment_to_profileFragment"
+            app:restoreState="true"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_fullCollectionFragment_to_filmFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/filmFragment" />
+    </fragment>
 </navigation>

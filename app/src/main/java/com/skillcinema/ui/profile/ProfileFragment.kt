@@ -88,7 +88,7 @@ class ProfileFragment : Fragment() {
         binding.concatRecyclerView.adapter = concatAdapter
     }
     private fun onClickOpenCollection(collection: CollectionWIthFilms){
-//        findNavController().navigate(R, collection)
+        findNavController().navigate(R.id.action_profileFragment_to_fullCollectionFragment, bundleOf("collectionName" to collection.collection.name))
         Log.d("mytag","onClickOpenCollection- $collection")
     }
     private fun onClickCleanCollection(collection:String){

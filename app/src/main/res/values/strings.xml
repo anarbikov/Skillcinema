@@ -70,5 +70,6 @@
     <string name="hint_create_collection">Придумайте название для вашей коллекции</string>
     <string name="ready_button">Готово</string>
     <string name="collections">Коллекции</string>
+    <string name="clean_collection">Очистить коллекцию</string>
 
 </resources>

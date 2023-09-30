@@ -31,7 +31,7 @@ class ParentFilmListAdapter @Inject constructor(
                 ))
     }
 
-    @SuppressLint("SuspiciousIndentation")
+    @SuppressLint("SuspiciousIndentation", "SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val result = collections[0]
         val takenFilms = if (result.films.size < 20) result.films else result.films.take(20)
@@ -47,10 +47,10 @@ class ParentFilmListAdapter @Inject constructor(
                 onClickFilm = { film -> onClickFilm(film)}
             )
                 holder.itemView.apply {
+                    collectionRecyclerView.visibility = if (result.films.isNotEmpty()) View.VISIBLE else View.GONE
                     header.text = result.collection.name
-                    all.text = takenFilms.size.toString()
+                    all.text = "${takenFilms.size}  >"
                     collectionRecyclerView.adapter = childFilmListAdapter
-                    collectionRecyclerView.visibility = if (collections.isNotEmpty()) View.VISIBLE else View.GONE
                     all.setOnClickListener {
                         onClickOpenFullCollection(result)
                     }

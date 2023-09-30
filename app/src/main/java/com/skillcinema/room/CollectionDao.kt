@@ -13,6 +13,10 @@ interface CollectionDao {
     @Query("SELECT * FROM collection")
     fun getFullCollection (): List<CollectionWIthFilms>
 
+    @Transaction
+    @Query("SELECT * FROM collection WHERE name =:collectionName")
+    fun getOneFullCollection (collectionName: String): List<CollectionWIthFilms>
+
     @Insert (entity = Collection::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCollection (collection: Collection)
 

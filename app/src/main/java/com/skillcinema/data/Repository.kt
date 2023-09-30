@@ -127,6 +127,7 @@ class Repository @Inject constructor(
     suspend fun cleanCollection(collectionName: String){
         collectionDao.cleanCollection(collectionName = collectionName)
     }
+    fun getOneFullCollection(collectionName: String) = collectionDao.getOneFullCollection(collectionName)
 
     companion object{
         private  const val PREFERENCE_NAME = "prefs_name"
