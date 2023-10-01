@@ -41,10 +41,7 @@ class FullCollectionFragment : Fragment() {
         collectionName = arguments.let { it?.getString("collectionName")?:"" }
         setUpViews()
         doObserveWork()
-        findNavController().addOnDestinationChangedListener{_,destination,_->
-            if (destination.id == R.id.fullCollectionFragment) {
-                viewModel.getFilmsFromDb(collectionName)}
-        }
+        viewModel.getFilmsFromDb(collectionName)
     }
     private fun setUpViews() {
         binding.collectionTitle.text = collectionName
