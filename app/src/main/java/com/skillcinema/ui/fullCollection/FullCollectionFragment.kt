@@ -41,6 +41,10 @@ class FullCollectionFragment : Fragment() {
         collectionName = arguments.let { it?.getString("collectionName")?:"" }
         setUpViews()
         doObserveWork()
+        findNavController().addOnDestinationChangedListener{_,destination,_->
+            if (destination.id == R.id.fullCollectionFragment) {
+                viewModel.getFilmsFromDb(collectionName)}
+        }
     }
     private fun setUpViews() {
         binding.collectionTitle.text = collectionName
@@ -69,9 +73,6 @@ class FullCollectionFragment : Fragment() {
         }
     }
 
-    private fun onClickCleanCollection(collection:String){
-        viewModel.cleanCollectionHistory (collection)
-    }
     private fun onClickOpenFilm (film: Film){
         findNavController().navigate(R.id.action_fullCollectionFragment_to_filmFragment, bundleOf("kinopoiskId" to film.kinopoiskId))
     }

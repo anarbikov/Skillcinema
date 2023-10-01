@@ -33,11 +33,8 @@ class ProfileViewModel @Inject constructor(
         started = SharingStarted.Eagerly,
         initialValue = _collections.value
     )
-    init {
-        getCollectionsList()
-    }
 
-    private fun getCollectionsList() {
+    fun getCollectionsList() {
         viewModelScope.launch(Dispatchers.IO) {
             var collectionsList = emptyList<CollectionWIthFilms>()
             kotlin.runCatching {

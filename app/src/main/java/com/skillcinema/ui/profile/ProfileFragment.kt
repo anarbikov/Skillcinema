@@ -45,6 +45,10 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
         doObserveWork()
+        findNavController().addOnDestinationChangedListener{_,destination,_->
+            if (destination.id == R.id.profileFragment) {
+                viewModel.getCollectionsList()}
+        }
     }
     private fun setUpViews() {
         watchedListParentAdapter = ParentFilmListAdapter(

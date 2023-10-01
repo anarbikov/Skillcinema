@@ -117,6 +117,7 @@
         <action
             android:id="@+id/action_filmFragment_to_profileFragment"
             app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true"
             app:restoreState="true"
             app:destination="@id/profileFragment" />
     </fragment>

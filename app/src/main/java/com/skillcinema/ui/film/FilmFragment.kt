@@ -2,6 +2,7 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +60,6 @@ class FilmFragment : Fragment() {
   //      kinopoiskId = 77044
         setUpViews()
         doObserveWork()
-
     }
     private fun setUpViews(){
         generalInfoAdapter = FilmGeneralInfoAdapter(
@@ -67,8 +67,8 @@ class FilmFragment : Fragment() {
             {film -> onClickWatched(film = film)},
             {film -> onClickLiked(film = film)},
             {film -> onClickToWatch(film = film)},
-            {film -> addToHistory(film) },
-            {film -> addToCollection(film) }
+            {film -> addToHistory(film = film) },
+            {film -> addToCollection(filmInfo = film) }
         )
         filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
         filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
@@ -146,10 +146,11 @@ class FilmFragment : Fragment() {
         }
     }
     private fun onClickLiked (film:Film) {
+        Log.d("mytag",film.toString())
         if (film.isLiked == false) {
             viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = Collections.LIKED.rusName)
         }else {
-            viewModel.addFilmToCollection(collection = Collections.LIKED.name, film = film)
+            viewModel.addFilmToCollection(collection = Collections.LIKED.rusName, film = film)
         }
     }
     private fun onClickToWatch(film: Film){

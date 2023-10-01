@@ -1,7 +1,6 @@
 package com.skillcinema.ui.fullCollection
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillcinema.domain.CleanCollectionUseCase
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FullCollectionViewModel @Inject constructor(
-    state:SavedStateHandle,
     private val getOneCollectionUseCase: GetOneCollectionUseCase,
     private val cleanCollectionUseCase: CleanCollectionUseCase,
 ) : ViewModel() {
@@ -29,12 +27,6 @@ class FullCollectionViewModel @Inject constructor(
         started = SharingStarted.Eagerly,
         initialValue = _films.value
     )
-
-
-    init {
-        val collectionName:String = state["collectionName"]!!
-        getFilmsFromDb(collectionName)
-    }
 
     fun getFilmsFromDb(collectionName:String) {
         viewModelScope.launch(Dispatchers.IO) {
