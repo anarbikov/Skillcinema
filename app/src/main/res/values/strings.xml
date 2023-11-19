@@ -71,5 +71,6 @@
     <string name="ready_button">Готово</string>
     <string name="collections">Коллекции</string>
     <string name="clean_collection">Очистить коллекцию</string>
+    <string name="hint_search_view">Фильмы, актёры, режиссёры</string>
 
 </resources>
