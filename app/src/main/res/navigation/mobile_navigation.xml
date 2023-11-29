@@ -38,6 +38,11 @@
         <action
             android:id="@+id/action_searchFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_searchFragment_to_filmFragment"
+            app:popUpToSaveState="true"
+            app:destination="@id/filmFragment" />
+
     </fragment>
 
     <fragment

@@ -100,6 +100,21 @@ class Repository @Inject constructor(
     suspend fun getActorInfoByKinopoiskId (staffId: Int): ActorGeneralInfoDto {
         return api.getActorInfoByKinopoiskId(staffId)
     }
+    suspend fun getFilmsByFilters (
+        countries: List<Int>?,
+        genres: List<Int>?,
+        order: String,
+        type: String,
+        ratingFrom: Int,
+        ratingTo: Int,
+        yearFrom: Int,
+        yearTo: Int,
+        keyword: String,
+        page:Int
+    ): FilmsDto {
+        return api.getFilmsbyFilters(countries, genres, order, type, ratingFrom, ratingTo, yearFrom, yearTo, keyword, page)
+    }
+
     fun getAllCollections() = collectionDao.getAllCollections()
     fun getFullCollections() = collectionDao.getFullCollection()
     suspend fun insertCollection(collection: Collection) = collectionDao.insertCollection (collection = collection)

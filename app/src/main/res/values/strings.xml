@@ -72,5 +72,6 @@
     <string name="collections">Коллекции</string>
     <string name="clean_collection">Очистить коллекцию</string>
     <string name="hint_search_view">Фильмы, актёры, режиссёры</string>
+    <string name="text_not_found">К сожалению, по вашему запросу ничего не найдено</string>
 
 </resources>

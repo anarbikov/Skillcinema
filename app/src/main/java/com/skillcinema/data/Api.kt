@@ -50,6 +50,7 @@ class Api @Inject constructor(
         val searchSimilarByKinopoiskIdApi: SearchSimilarByKinopoiskIdApi = retrofit.create(SearchSimilarByKinopoiskIdApi::class.java)
         val searchSeasonsByKinopoiskIdApi: SearchSeasonsByKinopoiskIdApi = retrofit.create(SearchSeasonsByKinopoiskIdApi::class.java)
         val searchActorInfoByKinopoiskStaffIdApi: SearchActorInfoByKinopoiskStaffIdApi = retrofit.create(SearchActorInfoByKinopoiskStaffIdApi::class.java)
+        val searchFilmsByFiltersApi: SearchFilmsByFiltersApi = retrofit.create(SearchFilmsByFiltersApi::class.java)
     }
 
     interface SearchPremiereApi {
@@ -172,6 +173,26 @@ class Api @Inject constructor(
         ): ActorGeneralInfoDto
     }
 
+    interface SearchFilmsByFiltersApi {
+        @Headers(
+            "X-API-KEY:$API_KEY",
+            "Content-Type: application/json"
+        )
+        @GET("api/v2.2/films")
+        suspend fun getFilmsByFilters(
+            @Query(value = "countries") countries: List<Int>?,  // JUST 1 country is supported
+            @Query(value = "genres") genres: List<Int>?, // JUST 1 genre is supported
+            @Query(value = "order") order: String,
+            @Query(value = "type") type: String,
+            @Query(value = "ratingFrom") ratingFrom: Int,
+            @Query(value = "ratingTo") ratingTo: Int,
+            @Query(value = "yearFrom") yearFrom: Int,
+            @Query(value = "yearTo") yearTo: Int,
+            @Query(value = "keyword") keyword: String,
+            @Query(value = "page") page:Int
+        ): FilmsDto
+    }
+
     suspend fun getPremieres(page: Int): FilmsDto {
         val year = Calendar.getInstance().get(Calendar.YEAR)
         val month = Calendar.getInstance()
@@ -225,5 +246,19 @@ class Api @Inject constructor(
     }
     suspend fun getActorInfoByKinopoiskId(staffId: Int): ActorGeneralInfoDto {
         return RetrofitServices.searchActorInfoByKinopoiskStaffIdApi.getActorInfoByKinopoiskId(staffId)
+    }
+    suspend fun getFilmsbyFilters(
+        countries: List<Int>?,
+        genres: List<Int>?,
+        order: String,
+        type: String,
+        ratingFrom: Int,
+        ratingTo: Int,
+        yearFrom: Int,
+        yearTo: Int,
+        keyword: String,
+        page:Int
+    ): FilmsDto {
+        return RetrofitServices.searchFilmsByFiltersApi.getFilmsByFilters(countries, genres, order, type, ratingFrom, ratingTo, yearFrom, yearTo, keyword, page)
     }
 }
