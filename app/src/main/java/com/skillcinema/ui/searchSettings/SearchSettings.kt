@@ -1,0 +1,76 @@
+package com.skillcinema.ui.searchSettings
+
+import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.skillcinema.R
+import com.skillcinema.databinding.FragmentSearchSettingsBinding
+import com.skillcinema.ui.search.SearchSettings
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class SearchSettings : Fragment() {
+
+    private var _binding: FragmentSearchSettingsBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: SearchSettingsViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        customizeTabs()
+
+
+    }
+
+    private fun customizeTabs() {
+        when (SearchSettings.type) {
+            "ALL" -> binding.filmsSeriesTabLayout.selectTab(binding.filmsSeriesTabLayout.getTabAt(0))
+            "FILM" -> binding.filmsSeriesTabLayout.selectTab(binding.filmsSeriesTabLayout.getTabAt(1))
+            "TV_SERIES" -> binding.filmsSeriesTabLayout.selectTab(binding.filmsSeriesTabLayout.getTabAt(2))
+        }
+        val tabCategory = binding.filmsSeriesTabLayout.getChildAt(0)
+        if (tabCategory is LinearLayout) {
+            tabCategory.showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE
+            val drawable = GradientDrawable()
+            drawable.setColor(ContextCompat.getColor(requireContext(), R.color.grey))
+            drawable.setSize(5, 5)
+            tabCategory.dividerPadding = 10
+            tabCategory.dividerDrawable = drawable
+        }
+        binding.filmsSeriesTabLayout.addOnTabSelectedListener(object: OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    when (tab.position){
+                        0 -> SearchSettings.type = "ALL"
+                        1 -> SearchSettings.type = "FILM"
+                        2 -> SearchSettings.type = "TV_SERIES"
+                    }
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

@@ -42,6 +42,10 @@
             android:id="@+id/action_searchFragment_to_filmFragment"
             app:popUpToSaveState="true"
             app:destination="@id/filmFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_searchSettings"
+            app:popUpToSaveState="true"
+            app:destination="@id/searchSettings" />
 
     </fragment>
 
@@ -284,5 +288,15 @@
             android:id="@+id/action_fullCollectionFragment_to_filmFragment"
             app:popUpToSaveState="true"
             app:destination="@id/filmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchSettings"
+        android:name="com.skillcinema.ui.searchSettings.SearchSettings"
+        android:label="fragment_search_settings"
+        tools:layout="@layout/fragment_search_settings" >
+        <action
+            android:id="@+id/action_searchSettings_to_searchFragment"
+            app:restoreState="true"
+            app:destination="@id/searchFragment" />
     </fragment>
 </navigation>

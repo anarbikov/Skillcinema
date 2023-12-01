@@ -73,5 +73,11 @@
     <string name="clean_collection">Очистить коллекцию</string>
     <string name="hint_search_view">Фильмы, актёры, режиссёры</string>
     <string name="text_not_found">К сожалению, по вашему запросу ничего не найдено</string>
+    <string name="search_settings_header">Настройки поиска</string>
+    <string name="to_show">Показывать</string>
+    <string name="All_tab">Все</string>
+    <string name="films_tab">Фильмы</string>
+    <string name="series_tab">Сериалы</string>
+    <string name="go_back"><![CDATA[<]]></string>
 
 </resources>

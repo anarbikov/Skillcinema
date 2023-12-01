@@ -56,23 +56,25 @@ class SearchFragment : Fragment() {
         binding.goUpButton.setOnClickListener {
             binding.recyclerView.scrollToPosition(0)
         }
+        pagedFilteredFilmAdapter.submitData(lifecycle,PagingData.empty())
+        viewModel.pagedFilm.onEach {
+            pagedFilteredFilmAdapter.submitData(it)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.editText.setText(SearchSettings.keyword)
         binding.editText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                if (p0.toString().isNotEmpty()){
-                    viewModel.keyword = p0.toString()
+                    SearchSettings.keyword = p0.toString()
                     pagedFilteredFilmAdapter.submitData(lifecycle,PagingData.empty())
                     viewModel.pagedFilm.onEach {
                         pagedFilteredFilmAdapter.submitData(it)
                     }.launchIn(viewLifecycleOwner.lifecycleScope)
-                }else {
-                    pagedFilteredFilmAdapter.submitData(lifecycle,PagingData.empty())
-                }
             }
+        })
+        binding.settingsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_searchSettings)
         }
-        )
-
     }
     private fun onItemClick(item: FilmDto) {
         val kinopoiskId = bundleOf("kinopoiskId" to item.kinopoiskId)

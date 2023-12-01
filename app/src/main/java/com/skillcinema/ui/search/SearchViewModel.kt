@@ -14,29 +14,21 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val getFilmsByFiltersUseCase: GetFilmsByFiltersUseCase
 ) : ViewModel() {
-    var countries: List<Int>? = null
-    var genres: List<Int>? = null
-    var order: String = "RATING"
-    var type: String = "ALL"
-    var ratingFrom: Int = 0
-    var ratingTo: Int = 10
-    var yearFrom: Int = 1000
-    var yearTo: Int = 3000
-    var keyword: String = ""
+
 
     val pagedFilm : Flow<PagingData<FilmDto>> = Pager(
         config = PagingConfig(pageSize = 20),
         pagingSourceFactory = {FilteredFilmsPagingSource(
             getFilmsByFiltersUseCase,
-            countries = countries,
-            genres =  genres,
-            order =  order,
-            type = type,
-            ratingFrom = ratingFrom,
-            ratingTo = ratingTo,
-            yearFrom = yearFrom,
-            yearTo = yearTo,
-            keyword = keyword,
+            countries = SearchSettings.countries,
+            genres =  SearchSettings.genres,
+            order =  SearchSettings.order,
+            type = SearchSettings.type,
+            ratingFrom = SearchSettings.ratingFrom,
+            ratingTo = SearchSettings.ratingTo,
+            yearFrom = SearchSettings.yearFrom,
+            yearTo = SearchSettings.yearTo,
+            keyword = SearchSettings.keyword,
         )}
     ).flow
 }
