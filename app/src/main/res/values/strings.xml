@@ -79,5 +79,18 @@
     <string name="films_tab">Фильмы</string>
     <string name="series_tab">Сериалы</string>
     <string name="go_back"><![CDATA[<]]></string>
+    <string name="country_settings">Страна</string>
+    <string name="any_settings">Любая</string>
+    <string name="genre_settings">Жанр</string>
+    <string name="genre_settings_item">Любой</string>
+    <string name="year_settings">Год</string>
+    <string name="year_value_settings">с 1000 до 3000</string>
+    <string name="rating_settings">Рейтинг</string>
+    <string name="rating_settings_value">1 – 10</string>
+    <string name="sort_settings">Сортировать</string>
+    <string name="date_sort_by">Дата</string>
+    <string name="popularity_sort_by">Популярность</string>
+    <string name="rating_sort_by">Рейтинг</string>
+    <string name="not_watched_settings">Не просмотрен</string>
 
 </resources>

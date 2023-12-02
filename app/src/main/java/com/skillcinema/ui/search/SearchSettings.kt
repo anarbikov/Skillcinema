@@ -4,7 +4,7 @@ object SearchSettings {
 
     var countries: List<Int>? = null
     var genres: List<Int>? = null
-    var order: String = "RATING"
+    var order: String = "YEAR"
     var type: String = "ALL"
     var ratingFrom: Int = 0
     var ratingTo: Int = 10
