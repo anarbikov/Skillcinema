@@ -1,7 +1,9 @@
 package com.skillcinema.ui.searchSettings
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.slider.RangeSlider
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.skillcinema.R
@@ -36,6 +39,7 @@ class SearchSettings : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         customizeTabs()
+        customizeRangeSlider()
         binding.goBack.setOnClickListener{findNavController().popBackStack()}
 
     }
@@ -68,8 +72,6 @@ class SearchSettings : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-
-
         when (SearchSettings.order) {
             "YEAR" -> binding.sortByTabLayout.selectTab(binding.sortByTabLayout.getTabAt(0))
             "NUM_VOTE" -> binding.sortByTabLayout.selectTab(binding.sortByTabLayout.getTabAt(1))
@@ -97,6 +99,19 @@ class SearchSettings : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+    }
+    @SuppressLint("SetTextI18n")
+    private fun customizeRangeSlider() {
+        Log.d("mytag","${SearchSettings.ratingFrom.toFloat()}, ${SearchSettings.ratingTo.toFloat()}")
+        binding.ratingRangeSlider.setValues(SearchSettings.ratingFrom.toFloat(),SearchSettings.ratingTo.toFloat())
+        binding.ratingFromTo.text = "${SearchSettings.ratingFrom} - ${SearchSettings.ratingTo}"
+        binding.ratingRangeSlider.addOnChangeListener(
+            RangeSlider.OnChangeListener { slider, _, _ ->
+                SearchSettings.ratingFrom = slider.values[0].toInt()
+                SearchSettings.ratingTo = slider.values[1].toInt()
+                binding.ratingFromTo.text = "${slider.values[0].toInt()} - ${slider.values[1].toInt()}"
+                Log.d("mytag",SearchSettings.ratingFrom.toString())
+            })
 
     }
 
