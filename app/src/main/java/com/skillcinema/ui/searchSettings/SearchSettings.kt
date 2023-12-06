@@ -16,6 +16,7 @@ import com.google.android.material.slider.RangeSlider
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.skillcinema.R
+import com.skillcinema.data.FilmFilters
 import com.skillcinema.databinding.FragmentSearchSettingsBinding
 import com.skillcinema.ui.search.SearchSettings
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +42,9 @@ class SearchSettings : Fragment() {
         customizeTabs()
         customizeRangeSlider()
         binding.goBack.setOnClickListener{findNavController().popBackStack()}
-
+        binding.countryItem.text = if (SearchSettings.countries.isNullOrEmpty())
+            context?.getString(R.string.any_settings) else FilmFilters.getCountryNameById(SearchSettings.countries!![0])
+        binding.countryItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_countrySelection) }
     }
 
     private fun customizeTabs() {

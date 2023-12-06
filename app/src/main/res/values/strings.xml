@@ -92,5 +92,6 @@
     <string name="popularity_sort_by">Популярность</string>
     <string name="rating_sort_by">Рейтинг</string>
     <string name="not_watched_settings">Не просмотрен</string>
+    <string name="input_country">Введите страну</string>
 
 </resources>

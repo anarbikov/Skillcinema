@@ -300,5 +300,20 @@
             app:popUpTo="@id/searchFragment"
             app:popUpToInclusive="true"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_searchSettings_to_countrySelection"
+            app:popUpToSaveState="true"
+            app:destination="@id/countrySelection" />
+    </fragment>
+    <fragment
+        android:id="@+id/countrySelection"
+        android:name="com.skillcinema.ui.countrySelection.CountrySelection"
+        android:label="fragment_country_selection"
+        tools:layout="@layout/fragment_country_selection" >
+        <action
+            android:id="@+id/action_countrySelection_to_searchSettings"
+            app:popUpTo="@id/searchSettings"
+            app:restoreState="true"
+            app:destination="@id/searchSettings" />
     </fragment>
 </navigation>
