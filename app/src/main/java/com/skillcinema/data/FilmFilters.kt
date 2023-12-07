@@ -1166,15 +1166,6 @@ object FilmFilters {
 //        Log.d("mytag", genres.toString())
         return randGenre
     }
-    fun getCountryIdByName(countryName:String): Int? {
-        val countries = filters!!.countries
-        for (country in countries){
-            if (country.country == countryName)
-            {return country.id!!}
-        }
-        return null
-    }
-
     fun getCountryNameById(countryId:Int):String {
         val countries = filters!!.countries
         for (country in countries){
@@ -1183,6 +1174,14 @@ object FilmFilters {
         }
         return ""
     }
+    fun getGenreNameById(genreId: Int): String{
+        val genresAll = filters!!.genres
+        for (genre in genresAll){
+            if (genre.id == genreId){return genre.genre!!}
+        }
+        return ""
+    }
     fun getAllCountries():List<FilterCountryDto> = filters!!.countries
+    fun getAllGenres():List<FilterGenreDto> = filters!!.genres
 
 }

@@ -41,10 +41,17 @@ class SearchSettings : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         customizeTabs()
         customizeRangeSlider()
-        binding.goBack.setOnClickListener{findNavController().popBackStack()}
+        binding.goBack.setOnClickListener { findNavController().popBackStack() }
         binding.countryItem.text = if (SearchSettings.countries.isNullOrEmpty())
-            context?.getString(R.string.any_settings) else FilmFilters.getCountryNameById(SearchSettings.countries!![0])
+            context?.getString(R.string.any_settings) else FilmFilters.getCountryNameById(
+            SearchSettings.countries!![0]
+        )
         binding.countryItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_countrySelection) }
+        binding.genreItem.text =
+            if (SearchSettings.genres.isNullOrEmpty()) context?.getString(R.string.genre_settings_item) else FilmFilters.getGenreNameById(
+                SearchSettings.genres!![0]
+            )
+        binding.genreItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_genreSelection) }
     }
 
     private fun customizeTabs() {
