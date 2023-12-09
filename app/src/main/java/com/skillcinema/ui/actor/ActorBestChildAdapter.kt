@@ -41,7 +41,7 @@ class ActorBestChildAdapter @Inject constructor(
         }
 
         fun bind(result: FilmInfo) {
-            itemView.filmNameTextView.text = when{
+             itemView. filmNameTextView.text = when{
                 result.nameRu != null -> result.nameRu
                 result.nameEn != null -> result.nameEn.toString()
                 result.nameOriginal != null -> result.nameOriginal.toString()

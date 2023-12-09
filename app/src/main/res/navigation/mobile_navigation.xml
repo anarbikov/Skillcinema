@@ -308,6 +308,10 @@
             android:id="@+id/action_searchSettings_to_genreSelection"
             app:popUpToSaveState="true"
             app:destination="@id/genreSelection" />
+        <action
+            android:id="@+id/action_searchSettings_to_yearsSelection"
+            app:popUpToSaveState="true"
+            app:destination="@id/yearsSelection" />
     </fragment>
     <fragment
         android:id="@+id/countrySelection"
@@ -328,6 +332,17 @@
             android:id="@+id/action_genreSelection_to_searchSettings"
             app:restoreState="true"
             app:popUpTo="@id/searchSettings"
+            app:destination="@id/searchSettings" />
+    </fragment>
+    <fragment
+        android:id="@+id/yearsSelection"
+        android:name="com.skillcinema.ui.yearsSelection.YearsSelection"
+        android:label="fragment_years_selection"
+        tools:layout="@layout/fragment_years_selection" >
+        <action
+            android:id="@+id/action_yearsSelection_to_searchSettings"
+            app:popUpTo="@id/searchSettings"
+            app:restoreState="true"
             app:destination="@id/searchSettings" />
     </fragment>
 </navigation>

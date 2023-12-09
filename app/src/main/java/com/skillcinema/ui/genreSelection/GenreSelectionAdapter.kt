@@ -25,6 +25,7 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return ViewHolder(view)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val result = genres[position]
         holder.itemView.apply {

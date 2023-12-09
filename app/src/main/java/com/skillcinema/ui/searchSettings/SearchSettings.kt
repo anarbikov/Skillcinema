@@ -37,6 +37,7 @@ class SearchSettings : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         customizeTabs()
@@ -52,6 +53,8 @@ class SearchSettings : Fragment() {
                 SearchSettings.genres!![0]
             )
         binding.genreItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_genreSelection) }
+        binding.yearItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_yearsSelection) }
+        binding.yearItem.text = "с ${SearchSettings.yearFrom} до ${SearchSettings.yearTo}"
     }
 
     private fun customizeTabs() {

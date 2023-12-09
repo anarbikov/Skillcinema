@@ -165,6 +165,7 @@
         android:textSize="16sp"/>
 
     <TextView
+        android:id="@+id/yearItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/genreYearDivider"

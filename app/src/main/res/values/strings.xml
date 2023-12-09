@@ -93,5 +93,11 @@
     <string name="rating_sort_by">Рейтинг</string>
     <string name="not_watched_settings">Не просмотрен</string>
     <string name="input_country">Введите страну</string>
+    <string name="settings_period">Период</string>
+    <string name="search_to_year">Искать в период до</string>
+    <string name="search_year_from">Искать в период с</string>
+    <string name="from_to"><![CDATA[< >]]></string>
+    <string name="select">Выбрать</string>
+    <string name="toast_year_selection_error">Год окончания должен быть раньше или равен году начала</string>
 
 </resources>
