@@ -11,4 +11,5 @@ object SearchSettings {
     var yearFrom: Int = 1000
     var yearTo: Int = 3000
     var keyword: String = ""
+    var notWatchedOnly = false
 }

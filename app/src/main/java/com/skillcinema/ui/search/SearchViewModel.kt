@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.paged.GetFilmsByFiltersUseCase
 import com.skillcinema.entity.FilmDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getFilmsByFiltersUseCase: GetFilmsByFiltersUseCase
+    private val getFilmsByFiltersUseCase: GetFilmsByFiltersUseCase,
+    private val getCollectionFilmIdsUseCase: GetCollectionFilmIdsUseCase
 ) : ViewModel() {
 
 
@@ -29,6 +31,7 @@ class SearchViewModel @Inject constructor(
             yearFrom = SearchSettings.yearFrom,
             yearTo = SearchSettings.yearTo,
             keyword = SearchSettings.keyword,
+            getCollectionFilmIdsUseCase = getCollectionFilmIdsUseCase
         )}
     ).flow
 }

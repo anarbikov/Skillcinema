@@ -43,7 +43,7 @@ class FilmPagingSource (
     }
     private fun checkWatched() {
         CoroutineScope(Dispatchers.IO).launch {
-            watchedIdsList = getCollectionFilmIdsUseCase.execute ("watchedList")
+            watchedIdsList = getCollectionFilmIdsUseCase.execute ("Просмотренное")
         }
     }
 

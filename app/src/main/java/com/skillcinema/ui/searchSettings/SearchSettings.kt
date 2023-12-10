@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.tabs.TabLayout
@@ -26,7 +25,6 @@ class SearchSettings : Fragment() {
 
     private var _binding: FragmentSearchSettingsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SearchSettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +53,16 @@ class SearchSettings : Fragment() {
         binding.genreItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_genreSelection) }
         binding.yearItem.setOnClickListener { findNavController().navigate(R.id.action_searchSettings_to_yearsSelection) }
         binding.yearItem.text = "с ${SearchSettings.yearFrom} до ${SearchSettings.yearTo}"
+        binding.notWatchedCheckBox.isChecked = SearchSettings.notWatchedOnly
+        binding.notWatchedCheckBox.setOnCheckedChangeListener { _, p1 ->
+            if (p1) {
+                binding.notWatchedCheckBox.isChecked = true
+                SearchSettings.notWatchedOnly = true
+            } else {
+                binding.notWatchedCheckBox.isChecked = false
+                SearchSettings.notWatchedOnly = false
+            }
+        }
     }
 
     private fun customizeTabs() {
