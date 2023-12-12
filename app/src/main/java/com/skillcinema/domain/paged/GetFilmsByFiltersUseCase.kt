@@ -1,11 +1,11 @@
 package com.skillcinema.domain.paged
 
-import com.skillcinema.data.Repository
+import com.skillcinema.domain.RepositoryInterface
 import com.skillcinema.entity.FilmsDto
 import javax.inject.Inject
 
 class GetFilmsByFiltersUseCase @Inject constructor(
-    private val repository: Repository
+    private val repository: RepositoryInterface
 ) {
      suspend fun execute(
          countries: List<Int>?,

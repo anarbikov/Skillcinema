@@ -1,10 +1,9 @@
 package com.skillcinema.domain
 
-import com.skillcinema.data.Repository
 import javax.inject.Inject
 
 class DeleteCollectionUseCase @Inject constructor(
-    private val repository: Repository
+    private val repository: RepositoryInterface
 ) {
     suspend fun execute(collectionName: String) = repository.deleteCollection(collection = collectionName)
 }
