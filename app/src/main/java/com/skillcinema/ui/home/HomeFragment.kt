@@ -12,12 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentHomeBinding
 import com.skillcinema.entity.FilmsDto
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.nav_view
-import kotlinx.android.synthetic.main.fragment_home.parentRecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -47,9 +46,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpViews() {
-        parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         parentFilmAdapter = ParentFilmAdapter(requireContext())
-        parentRecyclerView.adapter = parentFilmAdapter
+        binding.parentRecyclerView.adapter = parentFilmAdapter
 
     }
 
@@ -62,14 +61,14 @@ class HomeFragment : Fragment() {
                             binding.swipeRefresh.isRefreshing = false
                             binding.parentRecyclerView.visibility = View.GONE
                             binding.loadingProgress.visibility = View.VISIBLE
-                            requireActivity().nav_view.visibility = View.GONE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
                         }
 
                         else -> {
                             binding.parentRecyclerView.visibility = View.VISIBLE
                             binding.swipeRefresh.isRefreshing = false
                             binding.loadingProgress.visibility = View.GONE
-                            requireActivity().nav_view.visibility = View.VISIBLE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
                         }
                     }
                 }
@@ -92,7 +91,7 @@ class HomeFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
             binding.loadingProgress.visibility = View.GONE
-            requireActivity().nav_view.visibility = View.VISIBLE
+            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
             viewModel.movies.onEach {
                 renderFilmsList(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)

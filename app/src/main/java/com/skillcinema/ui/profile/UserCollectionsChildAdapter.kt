@@ -10,10 +10,6 @@ import com.skillcinema.R
 import com.skillcinema.databinding.FragmentProfileCollectionViewBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Collections
-import kotlinx.android.synthetic.main.fragment_profile_collection_view.view.closeButton
-import kotlinx.android.synthetic.main.fragment_profile_collection_view.view.collectionIcon
-import kotlinx.android.synthetic.main.fragment_profile_collection_view.view.collectionNameTextView
-import kotlinx.android.synthetic.main.fragment_profile_collection_view.view.collectionSizeTextView
 import javax.inject.Inject
 
 class UserCollectionsChildAdapter @Inject constructor(
@@ -40,7 +36,7 @@ class UserCollectionsChildAdapter @Inject constructor(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CollectionViewHolder, position: Int) {
         val result = collections[position]
-        holder.itemView.apply {
+        holder.binding.apply {
             collectionIcon.setImageResource(
                 when(result.collection.name){
                     Collections.LIKED.rusName -> R.drawable.liked
@@ -58,7 +54,7 @@ class UserCollectionsChildAdapter @Inject constructor(
             }
             collectionNameTextView.text = result.collection.name
             collectionSizeTextView.text = " ${result.films.size} "
-            setOnClickListener { onClickCollection(collections[position]) }
+            root.setOnClickListener { onClickCollection(collections[position]) }
         }
     }
     override fun getItemCount(): Int = collections.size

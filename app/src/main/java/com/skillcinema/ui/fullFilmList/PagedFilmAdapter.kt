@@ -30,28 +30,30 @@ class PagedFilmAdapter @Inject constructor(
         val displayMetrics = context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         view.root.layoutParams.width = screenWidth / 2-20
-
         return FilmPagedViewHolder(view)
     }
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: FilmPagedViewHolder, position: Int) {
         val item = getItem(position)
         val posterPreviewUrl = item?.posterUrlPreview
-        Glide.with(holder.itemView.context).load(posterPreviewUrl)
-            .into(holder.binding.filmImageView)
-        holder.binding.filmNameTextView.text = item?.nameRu
-        var genres = ""
-        if (item?.genres?.size!! == 1) genres += item.genres[0].genre
-        else {
-            for (i in item.genres) {
-                genres += i.genre + ", "
+        holder.binding.apply {
+            Glide.with(root.context).load(posterPreviewUrl)
+                .into(filmImageView)
+            filmNameTextView.text = item?.nameRu
+            var genres = ""
+            if (item?.genres?.size!! == 1) genres += item.genres[0].genre
+            else {
+                for (i in item.genres) {
+                    genres += i.genre + ", "
+                }
             }
-        }
-        holder.binding.filmGenreTextView.text =
-            if (item.genres.size != 1) genres.dropLast(2) else genres
-        holder.binding.alreadyWatched.visibility = if (item.isWatched) View.VISIBLE else View.GONE
-        holder.binding.root.setOnClickListener {
-            onClick(item)
+            filmGenreTextView.text =
+                if (item.genres.size != 1) genres.dropLast(2) else genres
+            alreadyWatched.visibility =
+                if (item.isWatched) View.VISIBLE else View.GONE
+            root.setOnClickListener {
+                onClick(item)
+            }
         }
     }
 }

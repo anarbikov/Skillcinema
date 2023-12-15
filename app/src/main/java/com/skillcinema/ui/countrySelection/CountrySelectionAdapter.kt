@@ -6,17 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.data.FilterCountryDto
 import com.skillcinema.databinding.CountrySelectionCountryViewBinding
-import kotlinx.android.synthetic.main.country_selection_country_view.view.countryName
 import javax.inject.Inject
 
 class CountrySelectionAdapter @Inject constructor(
 var onClickCountry: (Int) -> Unit
 
-):
-RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+): RecyclerView.Adapter<ViewHolder>() {
     var countries: List<FilterCountryDto> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         val view = CountrySelectionCountryViewBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -26,11 +24,11 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     @SuppressLint("SuspiciousIndentation")
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = countries[position]
-        holder.itemView.apply {
+        holder.binding.apply {
             countryName.text = result.country
-                setOnClickListener {
+                root.setOnClickListener {
                     result.id?.let { it1 -> onClickCountry(it1) }
             }
         }
@@ -49,5 +47,5 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 }
-class ViewHolder(binding: CountrySelectionCountryViewBinding) :
+class ViewHolder(val binding: CountrySelectionCountryViewBinding) :
     RecyclerView.ViewHolder(binding.root)

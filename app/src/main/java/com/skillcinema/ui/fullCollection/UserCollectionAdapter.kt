@@ -9,21 +9,17 @@ import com.bumptech.glide.Glide
 import com.skillcinema.databinding.FragmentFullCollectionFilmViewBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Film
-import kotlinx.android.synthetic.main.fragment_full_collection_film_view.view.filmGenreTextView
-import kotlinx.android.synthetic.main.fragment_full_collection_film_view.view.filmImageView
-import kotlinx.android.synthetic.main.fragment_full_collection_film_view.view.filmNameTextView
 import javax.inject.Inject
 
 class UserCollectionAdapter @Inject constructor(
 val context: Context,
 var onClickFilm: (Film) -> Unit
 
-):
-RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+): RecyclerView.Adapter<ViewHolder>() {
     var collection: List<CollectionWIthFilms> = listOf()
-    var filmList: MutableList<Film> = mutableListOf()
+    private var filmList: MutableList<Film> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         val view = FragmentFullCollectionFilmViewBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -33,20 +29,19 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val displayMetrics = context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         view.root.layoutParams.width = screenWidth / 2-20
-
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = filmList[position]
-        holder.itemView.apply {
+        holder.binding.apply {
             filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
             val url = result.posterUrlPreview ?: result.posterUrl
             filmGenreTextView.text = result.genres
-            Glide.with(context)
+            Glide.with(root.context)
                 .load(url)
                 .into(filmImageView)
-            setOnClickListener {
+            root.setOnClickListener {
                 onClickFilm(result)
             }
         }
@@ -66,5 +61,5 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 }
-class ViewHolder(binding: FragmentFullCollectionFilmViewBinding) :
+class ViewHolder(val binding: FragmentFullCollectionFilmViewBinding) :
     RecyclerView.ViewHolder(binding.root)

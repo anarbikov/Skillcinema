@@ -11,11 +11,9 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
-import com.skillcinema.entity.FilmsDto
 import com.skillcinema.data.FooterAdapter
-import kotlinx.android.synthetic.main.home_film_recyclerview.view.childRecyclerView
-import kotlinx.android.synthetic.main.home_film_recyclerview.view.homeTextViewPremieres
-import kotlinx.android.synthetic.main.home_film_recyclerview.view.premiereShowAllLayout
+import com.skillcinema.databinding.HomeFilmRecyclerviewBinding
+import com.skillcinema.entity.FilmsDto
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
@@ -30,44 +28,47 @@ open class ParentFilmAdapter @Inject constructor(
     var onItemClick: ((FilmsDto) -> Unit)? = null
     val bundle = Bundle()
 
-    inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DataViewHolder(val binding:HomeFilmRecyclerviewBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            itemView.setOnClickListener {saveArgsAndNavigate()}
+            binding.root.setOnClickListener {saveArgsAndNavigate()}
 //                onItemClick?.invoke(filmCategoriesList[bindingAdapterPosition])
         }
-
         @SuppressLint("SuspiciousIndentation")
-        fun bind(result: FilmsDto) {
-            itemView.homeTextViewPremieres.text = result.category
-            val childMembersAdapter = ChildFilmAdapter(result.category!!,result.items!!.take(20), context)
-            val footerAdapter = FooterAdapter()
-            itemView.childRecyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            val concatAdapter = ConcatAdapter(childMembersAdapter,footerAdapter)
-            itemView.childRecyclerView.adapter = concatAdapter
-
-            if (itemView.childRecyclerView.itemDecorationCount == 0) {
-                itemView.childRecyclerView.addItemDecoration(RecyclerItemDecoration(21, 8, true))
-            }
-            val decorator = OverScrollDecoratorHelper.setUpOverScroll(itemView.childRecyclerView,OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
-            decorator.setOverScrollStateListener { _, oldState, newState ->
-                if (newState == STATE_BOUNCE_BACK && oldState != STATE_DRAG_START_SIDE) saveArgsAndNavigate()
-            }
-            itemView.childRecyclerView.addOnScrollListener(object :
-                RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val layoutManager =
-                        LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
-                    val itemCount = recyclerView.layoutManager?.itemCount
-                    val lastVisible = layoutManager!!.findLastVisibleItemPosition()
-             if (itemCount == lastVisible + 1) {
-                        itemView.premiereShowAllLayout.visibility =
-                            View.VISIBLE
-                    }
-                    else itemView.premiereShowAllLayout.visibility = View.GONE
+        fun bind(result: FilmsDto,holder:DataViewHolder) {
+            holder.binding.apply {
+                homeTextViewPremieres.text = result.category
+                val childMembersAdapter =
+                    ChildFilmAdapter(result.category!!, result.items!!.take(20), context)
+                val footerAdapter = FooterAdapter()
+                childRecyclerView.layoutManager =
+                    LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+                val concatAdapter = ConcatAdapter(childMembersAdapter, footerAdapter)
+                childRecyclerView.adapter = concatAdapter
+                if (childRecyclerView.itemDecorationCount == 0) {
+                    childRecyclerView.addItemDecoration(RecyclerItemDecoration(21, 8, true))
                 }
-            })
+                val decorator = OverScrollDecoratorHelper.setUpOverScroll(
+                    childRecyclerView,
+                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+                )
+                decorator.setOverScrollStateListener { _, oldState, newState ->
+                    if (newState == STATE_BOUNCE_BACK && oldState != STATE_DRAG_START_SIDE) saveArgsAndNavigate()
+                }
+                childRecyclerView.addOnScrollListener(object :
+                    RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        val layoutManager =
+                            LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
+                        val itemCount = recyclerView.layoutManager?.itemCount
+                        val lastVisible = layoutManager!!.findLastVisibleItemPosition()
+                        if (itemCount == lastVisible + 1) {
+                            premiereShowAllLayout.visibility =
+                                View.VISIBLE
+                        } else premiereShowAllLayout.visibility = View.GONE
+                    }
+                })
+            }
         }
         private fun saveArgsAndNavigate(){
             bundle.putInt("filterId",filmCategoriesList[bindingAdapterPosition].filterCategory!!)
@@ -77,14 +78,10 @@ open class ParentFilmAdapter @Inject constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.home_film_recyclerview, parent,
-            false
-        )
-    )
+            HomeFilmRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(filmCategoriesList[position])
+        holder.bind(filmCategoriesList[position],holder)
     }
     override fun getItemCount(): Int = filmCategoriesList.size
     @SuppressLint("NotifyDataSetChanged")

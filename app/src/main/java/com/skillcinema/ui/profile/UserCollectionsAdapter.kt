@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.databinding.FragmentProfileCreateCollectionBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Collections
-import kotlinx.android.synthetic.main.fragment_profile_create_collection.view.collectionsRV
-import kotlinx.android.synthetic.main.fragment_profile_create_collection.view.createCollectionButton
 import javax.inject.Inject
 
 class UserCollectionsAdapter @Inject constructor(
@@ -18,24 +16,23 @@ class UserCollectionsAdapter @Inject constructor(
     private val onClickCreateCollection: () -> Unit,
     private val onClickDeleteCollection: (String) -> Unit
 ):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<UserCollectionsAdapter.ViewHolderUCA>() {
     var collections: MutableList<CollectionWIthFilms> = mutableListOf()
     private lateinit var childAdapter: UserCollectionsChildAdapter
 
-    inner class ViewHolder(val binding: FragmentProfileCreateCollectionBinding) :
+    inner class ViewHolderUCA(val binding: FragmentProfileCreateCollectionBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolderUCA(
             FragmentProfileCreateCollectionBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-    }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: ViewHolderUCA, position: Int) {
         childAdapter = UserCollectionsChildAdapter(
             context = context,
             onClickCollection = {collection -> onItemClick(collection)},
@@ -46,7 +43,7 @@ class UserCollectionsAdapter @Inject constructor(
             it.collection.name!= Collections.HISTORY.rusName
         }
         childAdapter.addData(filteredCollections)
-        holder.itemView.apply {
+        holder.binding.apply {
             collectionsRV.adapter = childAdapter
             createCollectionButton.setOnClickListener {
                 onClickCreateCollection()

@@ -8,11 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.skillcinema.R
+import com.skillcinema.databinding.SeasonsSeasonViewBinding
 import com.skillcinema.entity.Episode
-import kotlinx.android.synthetic.main.seasons_season_view.view.episodeDescriptionTextView
-import kotlinx.android.synthetic.main.seasons_season_view.view.episodeNameTextView
-import kotlinx.android.synthetic.main.seasons_season_view.view.episodeReleaseDate
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -23,7 +20,7 @@ class SeasonsChippedAdapter @Inject constructor(
     RecyclerView.Adapter<SeasonsChippedAdapter.DataViewHolder>() {
     private var episodeList: MutableList<Episode> = ArrayList()
 
-    inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DataViewHolder(val binding:SeasonsSeasonViewBinding) : RecyclerView.ViewHolder(binding.root) {
 //        private val bundle = bundleOf()
 //        init {
 //            itemView.setOnClickListener {
@@ -40,7 +37,7 @@ class SeasonsChippedAdapter @Inject constructor(
             val newFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val releaseDate = LocalDate.parse(releaseDateInitial,dateFormat).format(newFormat)
             val episodeName = result.nameRu?: result.nameEn ?: ""
-            itemView.apply {
+            binding.apply {
                 episodeNameTextView.text = "$episodeNumber серия. $episodeName"
                 val episodeDescription = result.synopsis?: ""
                 episodeDescriptionTextView.text = episodeDescription
@@ -51,11 +48,7 @@ class SeasonsChippedAdapter @Inject constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.seasons_season_view, parent,
-            false
-        )
-    )
+        SeasonsSeasonViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {

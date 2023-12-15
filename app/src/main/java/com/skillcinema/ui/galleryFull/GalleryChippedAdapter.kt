@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.skillcinema.databinding.GalleryFullFilmViewBinding
 import com.skillcinema.entity.FilmGalleryItemDto
-import kotlinx.android.synthetic.main.gallery_full_film_view.view.posterImageView
 
 class GalleryChippedAdapter (
     private val onClick: (FilmGalleryItemDto) -> Unit,
@@ -66,11 +65,11 @@ class GalleryChippedAdapter (
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables", "SuspiciousIndentation")
     override fun onBindViewHolder(holder: GalleryPagedViewHolder, position: Int) {
         val item = getItem(position)
-            Glide.with(holder.itemView.context)
+            Glide.with(holder.binding.root.context)
                 .load(item?.imageUrl)
                 .centerCrop()
-                .into(holder.itemView.posterImageView)
-            holder.itemView.setOnClickListener {
+                .into(holder.binding.posterImageView)
+            holder.binding.root.setOnClickListener {
                 onClick(item!!)
             }
     }

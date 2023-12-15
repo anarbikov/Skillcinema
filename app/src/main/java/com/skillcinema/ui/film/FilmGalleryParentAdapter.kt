@@ -10,10 +10,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
+import com.skillcinema.databinding.FilmGalleryChildRvBinding
 import com.skillcinema.entity.FilmGalleryDto
-import kotlinx.android.synthetic.main.film_actors_child_rv.view.childRecyclerView
-import kotlinx.android.synthetic.main.film_gallery_child_rv.view.galleryAll
-import kotlinx.android.synthetic.main.film_gallery_child_rv.view.galleryHeader
 import javax.inject.Inject
 
 class FilmGalleryParentAdapter @Inject constructor(
@@ -22,32 +20,32 @@ class FilmGalleryParentAdapter @Inject constructor(
     private lateinit var images: FilmGalleryDto
     private val bundle = bundleOf()
     private var kinopoiskId = 0
-    inner class ViewHolderGallery(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolderGallery(val binding:FilmGalleryChildRvBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(result: FilmGalleryDto) {
-            val takenImages = result.items?.take(20)
-            itemView.childRecyclerView.adapter =
-                FilmGalleryChildAdapter(context, takenImages!!)
-            itemView.childRecyclerView.layoutManager =
-                GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-            itemView.galleryAll.text = if(result.total!!>4) "${result.total} >" else ""
-            itemView.galleryAll.visibility = if (result.items.isNotEmpty())View.VISIBLE else View.GONE
-            itemView.galleryAll.setOnClickListener{
-                bundle.putInt("kinopoiskId", kinopoiskId)
-                itemView.findNavController().navigate(R.id.action_filmFragment_to_galleryFullFragment,bundle)
+            binding.apply {
+                val takenImages = result.items?.take(20)
+                childRecyclerView.adapter =
+                    FilmGalleryChildAdapter(root.context, takenImages!!)
+                childRecyclerView.layoutManager =
+                    GridLayoutManager(root.context, 1, GridLayoutManager.HORIZONTAL, false)
+                galleryAll.text = if (result.total!! > 4) "${result.total} >" else ""
+                galleryAll.visibility =
+                    if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
+                galleryAll.setOnClickListener {
+                    bundle.putInt("kinopoiskId", kinopoiskId)
+                    root.findNavController()
+                        .navigate(R.id.action_filmFragment_to_galleryFullFragment, bundle)
+                }
+                val header = context.getString(R.string.gallery_header)
+                galleryHeader.text = if (result.items.isNotEmpty()) header else ""
+                galleryHeader.visibility =
+                    if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
             }
-            val header = context.getString(R.string.gallery_header)
-            itemView.galleryHeader.text = if (result.items.isNotEmpty()) header else ""
-            itemView.galleryHeader.visibility = if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
-
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderGallery = ViewHolderGallery (
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.film_gallery_child_rv, parent,
-            false
-        )
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolderGallery (
+        FilmGalleryChildRvBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     override fun onBindViewHolder(holder: ViewHolderGallery, position: Int) {
         holder.bind(images)
     }

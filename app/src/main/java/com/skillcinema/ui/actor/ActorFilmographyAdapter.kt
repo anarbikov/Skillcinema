@@ -22,23 +22,21 @@ class ActorFilmographyAdapter @Inject constructor(
     private lateinit var filmsInfo: ActorGeneralInfoDto
     private val bundle = bundleOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
             ActorFilmographyViewBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            this.filmographyHeader.text = if (filmsInfo.films?.size !=0) context.getString(R.string.filmography_header) else ""
-            this.filmographyHeader.visibility = if (filmsInfo.films?.size !=0) View.VISIBLE else View.GONE
-            this.filmographyAll.text = if(filmsInfo.films?.size !=0) context.getString(R.string.filmography_all) else ""
-            this.filmographyAll.visibility = if (filmsInfo.films?.size !=0)View.VISIBLE else View.GONE
+            filmographyHeader.text = if (filmsInfo.films?.size !=0) context.getString(R.string.filmography_header) else ""
+            filmographyHeader.visibility = if (filmsInfo.films?.size !=0) View.VISIBLE else View.GONE
+            filmographyAll.text = if(filmsInfo.films?.size !=0) context.getString(R.string.filmography_all) else ""
+            filmographyAll.visibility = if (filmsInfo.films?.size !=0)View.VISIBLE else View.GONE
             val filmQty:String = if (filmsInfo.films?.size !=0) filmsInfo.films?.size.toString() else ""
             val film = when(filmsInfo.films!!.size%10){
                 1 -> "фильм"
@@ -47,9 +45,9 @@ class ActorFilmographyAdapter @Inject constructor(
                 else -> "фильмов"
             }
             val description = "$filmQty $film"
-            this.filmographyDescription.text = if (filmsInfo.films?.size !=0) description else ""
-            this.filmographyDescription.visibility= if (filmsInfo.films?.size !=0) View.VISIBLE else View.GONE
-            this.filmographyAll.setOnClickListener {
+            filmographyDescription.text = if (filmsInfo.films?.size !=0) description else ""
+            filmographyDescription.visibility= if (filmsInfo.films?.size !=0) View.VISIBLE else View.GONE
+            filmographyAll.setOnClickListener {
                 bundle.putInt("staffId",filmsInfo.personId!!)
                 it.findNavController().navigate(R.id.action_actorFragment_to_filmographyFragment,bundle)
             }

@@ -37,15 +37,15 @@ class FilmGalleryChildAdapter @Inject constructor(
     override fun onBindViewHolder(holder: FilmGalleryChildAdapter.ViewHolder, position: Int) {
         val url = if (imagesList[position].previewUrl != null) imagesList[position].previewUrl else imagesList[position].imageUrl
         holder.binding.apply {
-            Glide.with(holder.itemView.context)
+            Glide.with(root.context)
                 .load(url)
                 .centerCrop()
-                .into(this.galleryImageView)
+                .into(galleryImageView)
         }
-        holder.itemView.setOnClickListener{
+        holder.binding.root.setOnClickListener{
             val bundle = Bundle()
             bundle.putString("imageUrl", imagesList[position].imageUrl)
-            holder.itemView.findNavController().navigate(R.id.action_filmFragment_to_galleryFullScreenFragment,bundle)
+            holder.binding.root.findNavController().navigate(R.id.action_filmFragment_to_galleryFullScreenFragment,bundle)
         }
     }
     override fun getItemCount(): Int {

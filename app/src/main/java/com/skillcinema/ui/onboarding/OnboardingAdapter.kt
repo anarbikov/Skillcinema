@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentOnboardingPagerBinding
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class OnboardingAdapter @Inject constructor(
-    @ApplicationContext
     private val context: Context
     ) : RecyclerView.Adapter<OnboardingViewHolder>() {
 

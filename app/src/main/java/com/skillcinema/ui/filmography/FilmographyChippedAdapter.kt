@@ -10,13 +10,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
+import com.skillcinema.databinding.FilmographyFilmViewBinding
 import com.skillcinema.entity.FilmInfo
-import kotlinx.android.synthetic.main.actor_best_film_view.view.filmGenreTextView
-import kotlinx.android.synthetic.main.actor_best_film_view.view.filmImageView
-import kotlinx.android.synthetic.main.actor_best_film_view.view.filmNameTextView
-import kotlinx.android.synthetic.main.actor_best_film_view.view.ratingFrame
-import kotlinx.android.synthetic.main.actor_best_film_view.view.ratingTextView
-import kotlinx.android.synthetic.main.filmography_film_view.view.alreadyWatched
 import javax.inject.Inject
 
 class FilmographyChippedAdapter @Inject constructor(
@@ -25,49 +20,50 @@ class FilmographyChippedAdapter @Inject constructor(
     RecyclerView.Adapter<FilmographyChippedAdapter.DataViewHolder>() {
     private var filmList: MutableList<FilmInfo> = ArrayList()
 
-    inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DataViewHolder(val binding:FilmographyFilmViewBinding) : RecyclerView.ViewHolder(binding.root) {
         private val bundle = bundleOf()
         init {
-            itemView.setOnClickListener {
+             binding.root.setOnClickListener {
                 bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
-                itemView.findNavController().navigate(R.id.action_filmographyFragment_to_filmFragment ,bundle)
+                binding.root.findNavController().navigate(R.id.action_filmographyFragment_to_filmFragment ,bundle)
             }
         }
 
         fun bind(result: FilmInfo) {
-            itemView.filmNameTextView.text = when{
-                result.nameRu != null -> result.nameRu
-                result.nameEn != null -> result.nameEn.toString()
-                result.nameOriginal != null -> result.nameOriginal.toString()
-                else -> ""
-            }
-
-            var rating = ""
-            if (result.ratingKinopoisk != null) {rating = result.ratingKinopoisk.toString()}
-
-            itemView.ratingFrame.visibility = if (rating !="") View.VISIBLE else View.GONE
-            itemView.ratingTextView.text = rating
-            val posterUrlPreview = result.posterUrlPreview
-            Glide.with(itemView.context).load(posterUrlPreview).into(itemView.filmImageView)
-            var genres = ""
-            if (result.genres.size == 1) genres += result.genres[0].genre
-            else {
-                for (i in result.genres) {
-                    genres += i.genre + ", "
+            binding.apply {
+                filmNameTextView.text = when {
+                    result.nameRu != null -> result.nameRu
+                    result.nameEn != null -> result.nameEn.toString()
+                    result.nameOriginal != null -> result.nameOriginal.toString()
+                    else -> ""
                 }
+
+                var rating = ""
+                if (result.ratingKinopoisk != null) {
+                    rating = result.ratingKinopoisk.toString()
+                }
+
+                ratingFrame.visibility = if (rating != "") View.VISIBLE else View.GONE
+                ratingTextView.text = rating
+                val posterUrlPreview = result.posterUrlPreview
+                Glide.with(root.context).load(posterUrlPreview).into(filmImageView)
+                var genres = ""
+                if (result.genres.size == 1) genres += result.genres[0].genre
+                else {
+                    for (i in result.genres) {
+                        genres += i.genre + ", "
+                    }
+                }
+                filmGenreTextView.text =
+                    if (result.genres.size != 1) genres.dropLast(2) else genres
+                alreadyWatched.visibility =
+                    if (result.isWatched) View.VISIBLE else View.GONE
             }
-            itemView.filmGenreTextView.text =
-                if (result.genres.size != 1) genres.dropLast(2) else genres
-            itemView.alreadyWatched.visibility = if (result.isWatched) View.VISIBLE else View.GONE
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.filmography_film_view, parent,
-            false
-        )
-    )
+        FilmographyFilmViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         holder.bind(filmList[position])

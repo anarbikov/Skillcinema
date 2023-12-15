@@ -29,15 +29,13 @@ class FilmGeneralInfoAdapter @Inject constructor(
     private lateinit var filmInfo: FilmInfo
     private var isCollapsed = INITIAL_IS_COLLAPSED
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
             FilmGeneralInfoViewBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-    }
 
     @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -66,7 +64,7 @@ class FilmGeneralInfoAdapter @Inject constructor(
             if (filmInfo.ratingAgeLimits != null) ", " + filmInfo.ratingAgeLimits.toString()
                 .drop(3) + "+" else ""
         holder.binding.apply {
-                Glide.with(holder.itemView.context)
+                Glide.with(root.context)
                     .load(filmInfo.posterUrlPreview)
                     .centerCrop()
                     .into(posterImageView)

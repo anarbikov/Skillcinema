@@ -10,13 +10,7 @@ import com.skillcinema.databinding.FragmentCollectionDialogCheckItemBinding
 import com.skillcinema.databinding.FragmentCollectionDialogCreateCollectionBinding
 import com.skillcinema.databinding.FragmentCollectionDialogTitleBinding
 import com.skillcinema.entity.FilmInfo
-import kotlinx.android.synthetic.main.fragment_collection_dialog_check_item.view.collectionTitle
-import kotlinx.android.synthetic.main.fragment_collection_dialog_check_item.view.collectionsSize
-import kotlinx.android.synthetic.main.fragment_collection_dialog_create_collection.view.createCollectionButton
-import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.ratingTextView
-import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.titleBodyTextView
-import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.titleImageView
-import kotlinx.android.synthetic.main.fragment_collection_dialog_title.view.titleTextView
+
 
 
 class ItemAdapter(
@@ -28,8 +22,7 @@ class ItemAdapter(
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var collections : List<CollectionData> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
                  TITLE -> ViewHolder1( FragmentCollectionDialogTitleBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false))
                 TYPE_ADD_TO_COLLECTION -> ViewHolder2 (FragmentCollectionDialogAddItemsBinding.inflate(
@@ -39,25 +32,25 @@ class ItemAdapter(
                 else -> ViewHolder4( FragmentCollectionDialogCheckItemBinding .inflate(
                     LayoutInflater.from(parent.context),parent, false))
             }
-    }
+
 
     @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_COLLECTION_ROW -> {
-                holder.itemView.apply {
+                (holder as ViewHolder4).binding.apply {
                     collectionTitle.text = collections[position - 2].collectionName
                     collectionsSize.text = collections[position - 2].collectionsSize.toString()
                     collectionTitle.isChecked = collections[position - 2].isInCollection
                     collectionTitle.setOnCheckedChangeListener { _, checked ->
-                        onClickAddToCollection(Pair(collectionTitle.text.toString(),checked))
+                        onClickAddToCollection(Pair(collectionTitle.text.toString(), checked))
                     }
                 }
             }
             TYPE_ADD_TO_COLLECTION -> {}
 
             TYPE_CREATE_COLLECTION -> {
-                holder.itemView.apply {
+                (holder as ViewHolder3).binding.apply {
                     createCollectionButton.setOnClickListener {
                         onClickCreateCollection()
                     }
@@ -65,8 +58,8 @@ class ItemAdapter(
             }
 
             TITLE -> {
-                holder.itemView.apply {
-                    Glide.with(context)
+                (holder as ViewHolder1).binding.apply {
+                    Glide.with(root.context)
                         .load(filmInfo.posterUrlPreview?:filmInfo.posterUrl)
                         .centerCrop()
                         .into(titleImageView)
@@ -108,11 +101,11 @@ class ItemAdapter(
 
     }
 }
-class ViewHolder1(binding: FragmentCollectionDialogTitleBinding) :
+class ViewHolder1(val binding: FragmentCollectionDialogTitleBinding) :
     RecyclerView.ViewHolder(binding.root)
-class ViewHolder2(binding: FragmentCollectionDialogAddItemsBinding) :
+class ViewHolder2(val binding: FragmentCollectionDialogAddItemsBinding) :
     RecyclerView.ViewHolder(binding.root)
-class ViewHolder3(binding: FragmentCollectionDialogCreateCollectionBinding) :
+class ViewHolder3(val binding: FragmentCollectionDialogCreateCollectionBinding) :
     RecyclerView.ViewHolder(binding.root)
-class ViewHolder4(binding: FragmentCollectionDialogCheckItemBinding) :
+class ViewHolder4(val binding: FragmentCollectionDialogCheckItemBinding) :
     RecyclerView.ViewHolder(binding.root)

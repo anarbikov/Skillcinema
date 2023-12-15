@@ -9,13 +9,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.R
+import com.skillcinema.databinding.HomeFilmViewBinding
 import com.skillcinema.entity.FilmDto
-import kotlinx.android.synthetic.main.home_film_view.view.alreadyWatched
-import kotlinx.android.synthetic.main.home_film_view.view.filmGenreTextView
-import kotlinx.android.synthetic.main.home_film_view.view.filmImageView
-import kotlinx.android.synthetic.main.home_film_view.view.filmNameTextView
-import kotlinx.android.synthetic.main.home_film_view.view.ratingFrame
-import kotlinx.android.synthetic.main.home_film_view.view.ratingTextView
 import javax.inject.Inject
 
 class ChildFilmAdapter @Inject constructor(
@@ -28,7 +23,7 @@ class ChildFilmAdapter @Inject constructor(
     init {
         this.filmList = filmData
     }
-    inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DataViewHolder(val binding:HomeFilmViewBinding) : RecyclerView.ViewHolder(binding.root) {
         private val bundle = bundleOf()
         init {
             itemView.setOnClickListener {
@@ -37,36 +32,36 @@ class ChildFilmAdapter @Inject constructor(
             }
         }
 
-        fun bind(result: FilmDto) {
-            itemView.filmNameTextView.text = result.nameRu?:(result.nameEn?:"")
-            if (result.ratingKinopoisk != null) {
-                itemView.ratingFrame.visibility = View.VISIBLE
-                itemView.ratingTextView.text = result.ratingKinopoisk.toString()
-            }
-            val posterUrlPreview = result.posterUrlPreview
-            Glide.with(itemView.context).load(posterUrlPreview).into(itemView.filmImageView)
-            var genres = ""
-            if (result.genres.size == 1) genres += result.genres[0].genre
-            else {
-                for (i in result.genres) {
-                    genres += i.genre + ", "
+        fun bind(result: FilmDto, holder: DataViewHolder) {
+            holder.binding.apply {
+                filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
+                if (result.ratingKinopoisk != null) {
+                    ratingFrame.visibility = View.VISIBLE
+                    ratingTextView.text = result.ratingKinopoisk.toString()
                 }
+                val posterUrlPreview = result.posterUrlPreview
+                Glide.with(binding.root.context).load(posterUrlPreview).into(filmImageView)
+                var genres = ""
+                if (result.genres.size == 1) genres += result.genres[0].genre
+                else {
+                    for (i in result.genres) {
+                        genres += i.genre + ", "
+                    }
+                }
+                filmGenreTextView.text =
+                    if (result.genres.size != 1) genres.dropLast(2) else genres
+                alreadyWatched.visibility =
+                    if (!result.isWatched) View.GONE else View.VISIBLE
             }
-            itemView.filmGenreTextView.text =
-                if (result.genres.size != 1) genres.dropLast(2) else genres
-            itemView.alreadyWatched.visibility = if (!result.isWatched) View.GONE else View.VISIBLE
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.home_film_view, parent,
-            false
-        )
+        HomeFilmViewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
     )
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(filmList[position])
+        holder.bind(filmList[position], holder = holder)
     }
 
     override fun getItemCount(): Int = filmList.size

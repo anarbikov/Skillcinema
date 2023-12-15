@@ -11,9 +11,6 @@ import com.skillcinema.databinding.FragmentProfileChildFilmAdapterFilmViewBindin
 import com.skillcinema.databinding.FragmentProfileFooterViewBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Film
-import kotlinx.android.synthetic.main.fragment_profile_child_film_adapter_film_view.view.filmGenreTextView
-import kotlinx.android.synthetic.main.fragment_profile_child_film_adapter_film_view.view.filmImageView
-import kotlinx.android.synthetic.main.home_film_view.view.filmNameTextView
 import javax.inject.Inject
 
 class ChildFilmListAdapter @Inject constructor(
@@ -49,14 +46,14 @@ class ChildFilmListAdapter @Inject constructor(
         when (holder.itemViewType) {
             TYPE_FILM -> {
                 val result = filmList[position]
-                holder.itemView.apply {
+                (holder as ViewHolder1).binding.apply {
                     filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
                     val url = result.posterUrlPreview ?: result.posterUrl
                     filmGenreTextView.text = result.genres
-                    Glide.with(context)
+                    Glide.with(root.context)
                         .load(url)
                         .into(filmImageView)
-                    setOnClickListener{
+                    root.setOnClickListener{
                         onClickFilm (result)
                     }
                 }
@@ -83,7 +80,7 @@ class ChildFilmListAdapter @Inject constructor(
         private const val TYPE_FOOTER = 2
     }
 }
-class ViewHolder1(binding: FragmentProfileChildFilmAdapterFilmViewBinding) :
+class ViewHolder1(val binding: FragmentProfileChildFilmAdapterFilmViewBinding) :
     RecyclerView.ViewHolder(binding.root)
-class ViewHolder2(binding: FragmentProfileFooterViewBinding) :
+class ViewHolder2(val binding: FragmentProfileFooterViewBinding) :
     RecyclerView.ViewHolder(binding.root)

@@ -16,4 +16,4 @@ class MyLoadStateAdapter: LoadStateAdapter<LoadStateViewHolder>() {
         return LoadStateViewHolder(binding)
     }
 }
-class LoadStateViewHolder(binding: LoadStateBinding): RecyclerView.ViewHolder(binding.root)
+class LoadStateViewHolder(val binding: LoadStateBinding): RecyclerView.ViewHolder(binding.root)

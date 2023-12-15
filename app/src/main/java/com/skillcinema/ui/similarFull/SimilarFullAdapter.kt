@@ -12,8 +12,6 @@ import com.skillcinema.R
 import com.skillcinema.databinding.SimilarFullFilmViewBinding
 import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.entity.FilmSimilarsItemDto
-import kotlinx.android.synthetic.main.similar_full_film_view.view.filmImageView
-import kotlinx.android.synthetic.main.similar_full_film_view.view.filmNameTextView
 import javax.inject.Inject
 
 class SimilarFullAdapter @Inject constructor(
@@ -27,17 +25,17 @@ class SimilarFullAdapter @Inject constructor(
         RecyclerView.ViewHolder(binding.root){
         private val bundle = bundleOf()
         init {
-            itemView.setOnClickListener{
+            binding.root.setOnClickListener{
                 bundle.putInt("kinopoiskId",kinopoiskId)
-                itemView.findNavController().navigate(R.id.action_similarFullFragment_to_filmFragment,bundle)
+                binding.root.findNavController().navigate(R.id.action_similarFullFragment_to_filmFragment,bundle)
             }
         }
 fun bind(result: FilmSimilarsItemDto) {
-    itemView.filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
+    binding.filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
     val url = result.posterUrlPreview ?: result.posterUrl
-    Glide.with(itemView.context)
+    Glide.with(binding.root.context)
         .load(url)
-        .into(itemView.filmImageView)
+        .into(binding.filmImageView)
 }
     }
 

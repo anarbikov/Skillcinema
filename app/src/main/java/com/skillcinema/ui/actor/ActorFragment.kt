@@ -12,11 +12,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.skillcinema.R
 import com.skillcinema.databinding.FragmentActorBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -55,13 +56,13 @@ class ActorFragment : Fragment() {
                         true -> {
                             binding.concatRecyclerView.visibility = View.GONE
                             binding.loadingProgress.visibility = View.VISIBLE
-                            requireActivity().nav_view.visibility = View.GONE
+                             requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
                         }
 
                         else -> {
                             binding.concatRecyclerView.visibility = View.VISIBLE
                             binding.loadingProgress.visibility = View.GONE
-                            requireActivity().nav_view.visibility = View.VISIBLE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
                         }
                     }
                 }
@@ -96,7 +97,7 @@ class ActorFragment : Fragment() {
         binding.concatRecyclerView.adapter = concatAdapter
     }
     private fun setUpViews(){
-        actorGeneralInfoAdapter = ActorGeneralInfoAdapter(requireContext())
+        actorGeneralInfoAdapter = ActorGeneralInfoAdapter()
         actorBestParentAdapter = ActorBestParentAdapter(requireContext())
         filmographyAdapter = ActorFilmographyAdapter(requireContext())
 

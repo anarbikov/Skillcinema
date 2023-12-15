@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentFilmBinding
 import com.skillcinema.entity.ActorDto
@@ -26,7 +27,6 @@ import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.room.Collections
 import com.skillcinema.room.Film
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -83,13 +83,13 @@ class FilmFragment : Fragment() {
                         true -> {
                             binding.concatRecyclerView.visibility = View.GONE
                             binding.loadingProgress.visibility = View.VISIBLE
-                            requireActivity().nav_view.visibility = View.GONE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
                         }
 
                         else -> {
                             binding.concatRecyclerView.visibility = View.VISIBLE
                             binding.loadingProgress.visibility = View.GONE
-                            requireActivity().nav_view.visibility = View.VISIBLE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
                         }
                     }
                 }

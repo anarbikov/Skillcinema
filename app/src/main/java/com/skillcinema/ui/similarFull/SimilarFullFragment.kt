@@ -11,11 +11,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skillcinema.R
 import com.skillcinema.databinding.FragmentSimilarFullBinding
 import com.skillcinema.entity.FilmSimilarsDto
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -52,13 +52,13 @@ class SimilarFullFragment : Fragment() {
                         true -> {
                             binding.recyclerView.visibility = View.GONE
                             binding.loadingProgress.visibility = View.VISIBLE
-                            requireActivity().nav_view.visibility = View.GONE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
                         }
 
                         else -> {
                             binding.recyclerView.visibility = View.VISIBLE
                             binding.loadingProgress.visibility = View.GONE
-                            requireActivity().nav_view.visibility = View.VISIBLE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
                         }
                     }
                 }

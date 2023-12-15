@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.skillcinema.R
@@ -23,7 +24,6 @@ import com.skillcinema.databinding.FragmentGalleryFullBinding
 import com.skillcinema.entity.FilmGalleryItemDto
 import com.skillcinema.ui.fullFilmList.MyLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -75,13 +75,13 @@ class GalleryFullFragment : Fragment() {
                         true -> {
                             binding.chippedRecyclerView .visibility = View.GONE
                             binding.loadingProgress.visibility = View.VISIBLE
-                            requireActivity().nav_view.visibility = View.GONE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
                         }
 
                         else -> {
                             binding.chippedRecyclerView .visibility = View.VISIBLE
                             binding.loadingProgress.visibility = View.GONE
-                            requireActivity().nav_view.visibility = View.VISIBLE
+                            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
                         }
                     }
                 }

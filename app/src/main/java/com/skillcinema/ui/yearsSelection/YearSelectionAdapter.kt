@@ -16,9 +16,9 @@ RecyclerView.Adapter<ViewHolder>() {
     private var years: List<Int> = listOf()
     private var selectedYear:ViewHolder? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(FragmentYearSelectionYearViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        FragmentYearSelectionYearViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+
 
     @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

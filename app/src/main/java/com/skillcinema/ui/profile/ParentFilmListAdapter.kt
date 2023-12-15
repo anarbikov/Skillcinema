@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.databinding.FragmentProfileFilmParentAdapterBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Film
-import kotlinx.android.synthetic.main.fragment_profile_film_parent_adapter.view.all
-import kotlinx.android.synthetic.main.fragment_profile_film_parent_adapter.view.collectionRecyclerView
-import kotlinx.android.synthetic.main.fragment_profile_film_parent_adapter.view.header
 import javax.inject.Inject
 
 class ParentFilmListAdapter @Inject constructor(
@@ -21,32 +18,29 @@ class ParentFilmListAdapter @Inject constructor(
     var onClickFilm: (Film) -> Unit
 
 ):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<ViewHolder>() {
     var collections: List<CollectionWIthFilms> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):RecyclerView.ViewHolder {
-        return  ViewHolder(
-                FragmentProfileFilmParentAdapterBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false
-                ))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        FragmentProfileFilmParentAdapterBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false))
 
     @SuppressLint("SuspiciousIndentation", "SetTextI18n")
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = collections[0]
         val takenFilms = if (result.films.size < 20) result.films else result.films.take(20)
         val childFilmListAdapter =
             ChildFilmListAdapter(
-                context = context,
+                context = holder.binding.root.context,
                 filmData = collections,
                 onClickCleanHistory = {cleanCollection ->
                     onClickCLeanCollection(cleanCollection)
-                    holder.itemView.all.text = "0"
-                    holder.itemView.collectionRecyclerView.visibility = View.GONE
+                    holder.binding.all.text = "0"
+                    holder.binding.collectionRecyclerView.visibility = View.GONE
                 },
                 onClickFilm = { film -> onClickFilm(film)}
             )
-                holder.itemView.apply {
+                holder.binding.apply {
                     collectionRecyclerView.visibility = if (result.films.isNotEmpty()) View.VISIBLE else View.GONE
                     header.text = result.collection.name
                     all.text = "${takenFilms.size}  >"
@@ -65,5 +59,5 @@ class ParentFilmListAdapter @Inject constructor(
         notifyDataSetChanged()
     }
 }
-class ViewHolder(binding: FragmentProfileFilmParentAdapterBinding) :
+class ViewHolder(val binding: FragmentProfileFilmParentAdapterBinding) :
     RecyclerView.ViewHolder(binding.root)

@@ -10,10 +10,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
+import com.skillcinema.databinding.FilmSimilarChildRvBinding
 import com.skillcinema.entity.FilmSimilarsDto
-import kotlinx.android.synthetic.main.film_similar_child_rv.view.similarAll
-import kotlinx.android.synthetic.main.film_similar_child_rv.view.similarChildRecyclerView
-import kotlinx.android.synthetic.main.film_similar_child_rv.view.similarHeader
 import javax.inject.Inject
 
 class FilmSimilarParentAdapter @Inject constructor(
@@ -22,33 +20,33 @@ class FilmSimilarParentAdapter @Inject constructor(
     private lateinit var similarFilms: FilmSimilarsDto
     private var kinopoiskId = 0
     private val bundle = bundleOf()
-    inner class ViewHolderSimilar(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolderSimilar(val binding:FilmSimilarChildRvBinding) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
         fun bind(result: FilmSimilarsDto) {
-            val takenImages = result.items?.shuffled()?.take(20)
-            itemView.similarChildRecyclerView.adapter =
-                FilmSimilarChildAdapter(context= context, filmData = takenImages!!)
-            itemView.similarChildRecyclerView.layoutManager =
-                GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
-            itemView.similarAll.text = if(result.items.size >10) "${result.total} >" else ""
-            itemView.similarAll.visibility = if (result.items.isNotEmpty())View.VISIBLE else View.GONE
-            itemView.similarAll.setOnClickListener{
-                bundle.putInt("kinopoiskId", kinopoiskId)
-                itemView.findNavController().navigate(R.id.action_filmFragment_to_similarFullFragment,bundle)
+            binding.apply {
+                val takenImages = result.items?.shuffled()?.take(20)
+                similarChildRecyclerView.adapter =
+                    FilmSimilarChildAdapter(context = root.context, filmData = takenImages!!)
+                similarChildRecyclerView.layoutManager =
+                    GridLayoutManager(root.context, 1, GridLayoutManager.HORIZONTAL, false)
+                similarAll.text = if (result.items.size > 10) "${result.total} >" else ""
+                similarAll.visibility =
+                    if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
+                similarAll.setOnClickListener {
+                    bundle.putInt("kinopoiskId", kinopoiskId)
+                     root.findNavController()
+                        .navigate(R.id.action_filmFragment_to_similarFullFragment, bundle)
+                }
+                val header = context.getString(R.string.similar_header)
+                similarHeader.text = if (result.items.isNotEmpty()) header else ""
+                similarHeader.visibility =
+                    if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
             }
-            val header = context.getString(R.string.similar_header)
-            itemView.similarHeader.text = if (result.items.isNotEmpty()) header else ""
-            itemView.similarHeader.visibility = if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
-
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderSimilar = ViewHolderSimilar (
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.film_similar_child_rv, parent,
-            false
-        )
-    )
+        FilmSimilarChildRvBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     override fun onBindViewHolder(holder: ViewHolderSimilar, position: Int) {
         holder.bind(similarFilms)
     }
