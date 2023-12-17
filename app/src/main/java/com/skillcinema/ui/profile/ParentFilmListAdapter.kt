@@ -1,7 +1,6 @@
 package com.skillcinema.ui.profile
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.databinding.FragmentProfileFilmParentAdapterBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Film
-import javax.inject.Inject
 
-class ParentFilmListAdapter @Inject constructor(
-    val context: Context,
-    var onClickOpenFullCollection: (CollectionWIthFilms) -> Unit,
-    var onClickCLeanCollection: (String) -> Unit,
-    var onClickFilm: (Film) -> Unit
+class ParentFilmListAdapter (
+    val onClickOpenFullCollection: (CollectionWIthFilms) -> Unit,
+    val onClickCLeanCollection: (String) -> Unit,
+    val onClickFilm: (Film) -> Unit
 
 ):
     RecyclerView.Adapter<ViewHolder>() {
@@ -31,7 +28,6 @@ class ParentFilmListAdapter @Inject constructor(
         val takenFilms = if (result.films.size < 20) result.films else result.films.take(20)
         val childFilmListAdapter =
             ChildFilmListAdapter(
-                context = holder.binding.root.context,
                 filmData = collections,
                 onClickCleanHistory = {cleanCollection ->
                     onClickCLeanCollection(cleanCollection)

@@ -1,7 +1,6 @@
 package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,8 @@ import com.skillcinema.R
 import com.skillcinema.databinding.FilmGeneralInfoViewBinding
 import com.skillcinema.entity.FilmInfo
 import com.skillcinema.room.Film
-import javax.inject.Inject
 
-class FilmGeneralInfoAdapter @Inject constructor(
-    val context: Context,
+class FilmGeneralInfoAdapter (
     private val onClickWatched: (Film) -> Unit,
     private val onClickLiked: (Film) -> Unit,
     private val onClickToWatch: (Film) -> Unit,
@@ -55,8 +52,8 @@ class FilmGeneralInfoAdapter @Inject constructor(
         val durationMinutes =
             if (filmInfo.filmLength != null) filmInfo.filmLength!! - durationHours * 60 else 0
         val duration =
-            if (filmInfo.filmLength != null) ", $durationHours ${context.getString(R.string.hour)} $durationMinutes ${
-                context.getString(
+            if (filmInfo.filmLength != null) ", $durationHours ${holder.binding.root.context.getString(R.string.hour)} $durationMinutes ${
+                holder.binding.root.context.getString(
                     R.string.minutes
                 )
             }" else ""
@@ -132,7 +129,7 @@ class FilmGeneralInfoAdapter @Inject constructor(
                     type = "text/plain"
                 }
                 val shareIntent = Intent.createChooser(sendIntent, null)
-                startActivity(context,shareIntent, null)
+                startActivity(root.context,shareIntent, null)
             }
             moreThreeDotes.setOnClickListener {
                 addToCollection(filmInfo)

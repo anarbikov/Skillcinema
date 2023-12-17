@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class UserCollectionAdapter @Inject constructor(
 val context: Context,
-var onClickFilm: (Film) -> Unit
+val onClickFilm: (Film) -> Unit
 
 ): RecyclerView.Adapter<ViewHolder>() {
     var collection: List<CollectionWIthFilms> = listOf()

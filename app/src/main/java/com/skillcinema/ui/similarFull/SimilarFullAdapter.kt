@@ -1,21 +1,16 @@
 package com.skillcinema.ui.similarFull
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.SimilarFullFilmViewBinding
 import com.skillcinema.entity.FilmSimilarsDto
 import com.skillcinema.entity.FilmSimilarsItemDto
-import javax.inject.Inject
 
-class SimilarFullAdapter @Inject constructor(
-    val context: Context,
+class SimilarFullAdapter (
+    val onClickYear: (Int) -> Unit
 
 ) : RecyclerView.Adapter<SimilarFullAdapter.SimilarViewHolder>() {
     private var images: List <FilmSimilarsItemDto> = listOf()
@@ -23,12 +18,8 @@ class SimilarFullAdapter @Inject constructor(
 
     inner class SimilarViewHolder( val binding: SimilarFullFilmViewBinding) :
         RecyclerView.ViewHolder(binding.root){
-        private val bundle = bundleOf()
         init {
-            binding.root.setOnClickListener{
-                bundle.putInt("kinopoiskId",kinopoiskId)
-                binding.root.findNavController().navigate(R.id.action_similarFullFragment_to_filmFragment,bundle)
-            }
+            binding.root.setOnClickListener{onClickYear(kinopoiskId)}
         }
 fun bind(result: FilmSimilarsItemDto) {
     binding.filmNameTextView.text = result.nameRu ?: (result.nameEn ?: "")
@@ -45,7 +36,7 @@ fun bind(result: FilmSimilarsItemDto) {
             parent,
             false
         )
-        val displayMetrics = context.resources.displayMetrics
+        val displayMetrics = view.root.context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         view.root.layoutParams.width = screenWidth / 2-20
 
@@ -62,7 +53,7 @@ fun bind(result: FilmSimilarsItemDto) {
     }
     @SuppressLint("NotifyDataSetChanged")
     fun addData(info: FilmSimilarsDto, filmId:Int){
-        this.images = info.items!!
+        info.items?.let { this.images = it }
         this.kinopoiskId = filmId
         notifyDataSetChanged()
     }

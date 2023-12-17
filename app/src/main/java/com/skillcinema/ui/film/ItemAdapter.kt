@@ -14,11 +14,9 @@ import com.skillcinema.entity.FilmInfo
 
 
 class ItemAdapter(
-
     private val filmInfo: FilmInfo,
     private val onClickAddToCollection: (Pair<String,Boolean>) -> Unit,
     private val onClickCreateCollection: () -> Unit
-
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var collections : List<CollectionData> = ArrayList()
 

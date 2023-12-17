@@ -49,7 +49,6 @@ class ProfileFragment : Fragment() {
     }
     private fun setUpViews() {
         watchedListParentAdapter = ParentFilmListAdapter(
-            requireContext(),
             onClickOpenFullCollection = {collection -> onClickOpenCollection(collection = collection)},
             onClickCLeanCollection = {cleanCollection -> onClickCleanCollection(cleanCollection)},
             onClickFilm = {film -> onClickOpenFilm(film) }
@@ -62,7 +61,6 @@ class ProfileFragment : Fragment() {
         )
 
         historyListParentAdapter = ParentFilmListAdapter(
-            requireContext(),
             onClickOpenFullCollection = {collection -> onClickOpenCollection(collection = collection)},
             onClickCLeanCollection = {cleanCollection -> onClickCleanCollection(cleanCollection)},
             onClickFilm = {film -> onClickOpenFilm(film) }

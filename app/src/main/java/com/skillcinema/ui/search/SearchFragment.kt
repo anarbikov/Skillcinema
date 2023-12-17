@@ -41,7 +41,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pagedFilteredFilmAdapter = PagedFilteredFilmAdapter ({ film -> onItemClick(film) },requireContext())
+        val pagedFilteredFilmAdapter = PagedFilteredFilmAdapter { film -> onItemClick(film) }
         pagedFilteredFilmAdapter.addLoadStateListener {
             if (it.source.refresh is LoadState.NotLoading && it.append.endOfPaginationReached){
                 binding.notFound.visibility = if (pagedFilteredFilmAdapter.itemCount<1) View.VISIBLE else View.GONE

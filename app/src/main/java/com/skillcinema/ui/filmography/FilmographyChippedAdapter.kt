@@ -1,7 +1,6 @@
 package com.skillcinema.ui.filmography
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,8 @@ import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmographyFilmViewBinding
 import com.skillcinema.entity.FilmInfo
-import javax.inject.Inject
 
-class FilmographyChippedAdapter @Inject constructor(
-    val context: Context,
-) :
+class FilmographyChippedAdapter :
     RecyclerView.Adapter<FilmographyChippedAdapter.DataViewHolder>() {
     private var filmList: MutableList<FilmInfo> = ArrayList()
 

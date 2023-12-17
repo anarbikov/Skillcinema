@@ -53,7 +53,7 @@ class SeasonsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chipGroup = binding.chipGroup
-        seasonsChippedAdapter = SeasonsChippedAdapter(requireContext())
+        seasonsChippedAdapter = SeasonsChippedAdapter()
         binding.chippedRecyclerView.adapter = seasonsChippedAdapter
         doObserveWork()
     }

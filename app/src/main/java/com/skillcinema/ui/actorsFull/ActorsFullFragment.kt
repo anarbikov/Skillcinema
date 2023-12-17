@@ -50,7 +50,7 @@ class ActorsFullFragment : Fragment() {
         doObserveWork()
     }
     private fun setUpViews() {
-        actorsAdapter = ActorsAdapter(requireContext())
+        actorsAdapter = ActorsAdapter()
         binding.recyclerView.adapter = actorsAdapter
     }
     private fun doObserveWork() {

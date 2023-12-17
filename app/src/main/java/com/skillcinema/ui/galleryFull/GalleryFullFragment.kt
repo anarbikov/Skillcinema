@@ -52,7 +52,7 @@ class GalleryFullFragment : Fragment() {
         kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         viewModel.kinopoiskId = kinopoiskId
         chipGroup = binding.chipGroup
-        galleryChippedAdapter = GalleryChippedAdapter({ item: FilmGalleryItemDto -> onItemClick(item) }, requireContext())
+        galleryChippedAdapter = GalleryChippedAdapter{ item: FilmGalleryItemDto -> onItemClick(item) }
         binding.chippedRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.chippedRecyclerView.adapter = galleryChippedAdapter.withLoadStateFooter(MyLoadStateAdapter())
         galleryChippedAdapter.addLoadStateListener {

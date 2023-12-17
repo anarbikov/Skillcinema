@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.data.FilterGenreDto
 import com.skillcinema.databinding.GenreSelectionGenreViewBinding
-import javax.inject.Inject
 
-class GenreSelectionAdapter @Inject constructor(
-var onClickGenre: (Int) -> Unit
+class GenreSelectionAdapter (
+val onClickGenre: (Int) -> Unit
 
 ):
 RecyclerView.Adapter<ViewHolder>() {

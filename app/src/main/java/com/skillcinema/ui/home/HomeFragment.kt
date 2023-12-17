@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -47,7 +48,11 @@ class HomeFragment : Fragment() {
 
     private fun setUpViews() {
         binding.parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-        parentFilmAdapter = ParentFilmAdapter(requireContext())
+        parentFilmAdapter = ParentFilmAdapter (
+            onChildItemClick = {kinopoiskId -> onClickChildItem(kinopoiskId = kinopoiskId)},
+            onParentItemClick = { filterId,description -> onClickParentItem(
+                filterId = filterId,category=description)}
+        )
         binding.parentRecyclerView.adapter = parentFilmAdapter
 
     }
@@ -106,8 +111,26 @@ class HomeFragment : Fragment() {
         parentFilmAdapter.notifyDataSetChanged()
     }
 
+    private fun onClickParentItem(filterId:Int, category:String ){
+        val bundle = bundleOf()
+        bundle.putInt(FILTER_ID_KEY,filterId)
+        bundle.putString(CATEGORY_DESCRIPTION_KEY,category)
+        findNavController().navigate(R.id.action_navigation_home_to_fullFilmList, bundle)
+
+
+    }
+    private fun onClickChildItem(kinopoiskId: Int) {
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY, kinopoiskId)
+        findNavController().navigate(R.id.action_navigation_home_to_filmFragment, bundle)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    companion object{
+        private const val FILTER_ID_KEY = "filterId"
+        private const val CATEGORY_DESCRIPTION_KEY = "description"
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
     }
 }

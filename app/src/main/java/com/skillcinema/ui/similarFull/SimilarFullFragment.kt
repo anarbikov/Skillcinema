@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -40,7 +41,7 @@ class SimilarFullFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+        kinopoiskId = arguments.let { it?.getInt(KINOPOISK_ID)?:5260016 }
         binding.header.text = requireContext().getString(R.string.similar_header)
         doObserveWork()
     }
@@ -79,7 +80,7 @@ class SimilarFullFragment : Fragment() {
         }
         else binding.loadingErrorPage.visibility = View.GONE
         val similar: FilmSimilarsDto = allInfo[1] as FilmSimilarsDto
-        similarFullAdapter = SimilarFullAdapter(requireContext())
+        similarFullAdapter = SimilarFullAdapter { onclickItem -> onClickSimilar(onclickItem)}
         binding.recyclerView.adapter = similarFullAdapter
         similarFullAdapter.addData(similar,kinopoiskId)
         binding.goUpButton.setOnClickListener{
@@ -87,8 +88,16 @@ class SimilarFullFragment : Fragment() {
         }
     }
 
+    private fun onClickSimilar(kinopoiskId:Int){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID,kinopoiskId)
+        findNavController().navigate(R.id.action_similarFullFragment_to_filmFragment,bundle)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    companion object{
+        private const val KINOPOISK_ID = "kinopoiskId"
     }
 }

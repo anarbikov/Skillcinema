@@ -1,7 +1,6 @@
 package com.skillcinema.ui.actor
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,8 @@ import com.skillcinema.R
 import com.skillcinema.databinding.ActorBestChildRvBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
-import javax.inject.Inject
 
-class ActorBestParentAdapter @Inject constructor(
-    val context: Context,
-) : RecyclerView.Adapter<ActorBestParentAdapter.ViewHolderGallery>() {
+class ActorBestParentAdapter : RecyclerView.Adapter<ActorBestParentAdapter.ViewHolderGallery>() {
     private lateinit var best: List<FilmInfo>
     private lateinit var generalInfo: ActorGeneralInfoDto
     inner class ViewHolderGallery(val binding: ActorBestChildRvBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -27,10 +23,10 @@ class ActorBestParentAdapter @Inject constructor(
                 childRecyclerViewBest.layoutManager =
                     GridLayoutManager(binding.root.context, 1, GridLayoutManager.HORIZONTAL, false)
                 actorBestAll.text =
-                    if (result.size > 10) "${context.getString(R.string.all)} >" else ""
+                    if (result.size > 10) "${root.context.getString(R.string.all)} >" else ""
                 actorBestAll.visibility =
                     if (result.isNotEmpty()) View.VISIBLE else View.GONE
-                val header = context.getString(R.string.best)
+                val header = root.context.getString(R.string.best)
                 actorBestHeader.text = if (result.isNotEmpty()) header else ""
                 actorBestHeader.visibility =
                     if (result.isNotEmpty()) View.VISIBLE else View.GONE

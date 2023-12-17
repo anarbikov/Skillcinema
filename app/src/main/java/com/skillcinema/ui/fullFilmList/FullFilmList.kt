@@ -37,7 +37,7 @@ class FullFilmList : Fragment() {
         val filterId = arguments.let { it?.getInt("filterId") }
         val filterDescription = arguments.let { it?.getString("description") }
         val pagedFilmAdapter =
-            PagedFilmAdapter({ film: Film -> onItemClick(film) }, requireContext())
+            PagedFilmAdapter{ film: Film -> onItemClick(film) }
         pagedFilmAdapter.addLoadStateListener {
             Log.d("mytag", "FULLFILMLIST ERROR LISTENER: ${it.refresh}")
             binding.recyclerView.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE

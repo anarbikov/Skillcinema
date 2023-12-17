@@ -1,7 +1,6 @@
 package com.skillcinema.ui.fullFilmList
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.databinding.FullFilmListFilmViewBinding
 import com.skillcinema.entity.FilmDto
-import javax.inject.Inject
 
-
-class PagedFilmAdapter @Inject constructor(
+class PagedFilmAdapter (
     private val onClick: (FilmDto) -> Unit,
-    val context: Context
 ) : PagingDataAdapter<FilmDto, FilmPagedViewHolder>(DiffUtilCallback()) {
 
 
@@ -27,7 +23,7 @@ class PagedFilmAdapter @Inject constructor(
                 false
             )
 
-        val displayMetrics = context.resources.displayMetrics
+        val displayMetrics = parent.context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         view.root.layoutParams.width = screenWidth / 2-20
         return FilmPagedViewHolder(view)

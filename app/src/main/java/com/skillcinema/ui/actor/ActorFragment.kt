@@ -98,8 +98,8 @@ class ActorFragment : Fragment() {
     }
     private fun setUpViews(){
         actorGeneralInfoAdapter = ActorGeneralInfoAdapter()
-        actorBestParentAdapter = ActorBestParentAdapter(requireContext())
-        filmographyAdapter = ActorFilmographyAdapter(requireContext())
+        actorBestParentAdapter = ActorBestParentAdapter()
+        filmographyAdapter = ActorFilmographyAdapter()
 
     }
 

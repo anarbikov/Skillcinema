@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.databinding.ActorGeneralInfoBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
-import javax.inject.Inject
 
-class ActorGeneralInfoAdapter @Inject constructor(
-) : RecyclerView.Adapter<ActorGeneralInfoAdapter.ViewHolder>() {
+class ActorGeneralInfoAdapter : RecyclerView.Adapter<ActorGeneralInfoAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ActorGeneralInfoBinding) :
         RecyclerView.ViewHolder(binding.root)
 

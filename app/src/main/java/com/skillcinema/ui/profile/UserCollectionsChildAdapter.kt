@@ -10,9 +10,8 @@ import com.skillcinema.R
 import com.skillcinema.databinding.FragmentProfileCollectionViewBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Collections
-import javax.inject.Inject
 
-class UserCollectionsChildAdapter @Inject constructor(
+class UserCollectionsChildAdapter (
     val context: Context,
     private val onClickCollection: (CollectionWIthFilms) -> Unit,
     private val onClickDeleteCollection: (String) -> Unit

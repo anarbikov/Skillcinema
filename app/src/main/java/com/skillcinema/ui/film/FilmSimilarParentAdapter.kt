@@ -1,7 +1,6 @@
 package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmSimilarChildRvBinding
 import com.skillcinema.entity.FilmSimilarsDto
-import javax.inject.Inject
 
-class FilmSimilarParentAdapter @Inject constructor(
-    val context: Context,
-) : RecyclerView.Adapter<FilmSimilarParentAdapter.ViewHolderSimilar>() {
+class FilmSimilarParentAdapter : RecyclerView.Adapter<FilmSimilarParentAdapter.ViewHolderSimilar>() {
     private lateinit var similarFilms: FilmSimilarsDto
     private var kinopoiskId = 0
     private val bundle = bundleOf()
@@ -27,7 +23,7 @@ class FilmSimilarParentAdapter @Inject constructor(
             binding.apply {
                 val takenImages = result.items?.shuffled()?.take(20)
                 similarChildRecyclerView.adapter =
-                    FilmSimilarChildAdapter(context = root.context, filmData = takenImages!!)
+                    FilmSimilarChildAdapter(filmData = takenImages!!)
                 similarChildRecyclerView.layoutManager =
                     GridLayoutManager(root.context, 1, GridLayoutManager.HORIZONTAL, false)
                 similarAll.text = if (result.items.size > 10) "${result.total} >" else ""
@@ -38,7 +34,7 @@ class FilmSimilarParentAdapter @Inject constructor(
                      root.findNavController()
                         .navigate(R.id.action_filmFragment_to_similarFullFragment, bundle)
                 }
-                val header = context.getString(R.string.similar_header)
+                val header = root.context.getString(R.string.similar_header)
                 similarHeader.text = if (result.items.isNotEmpty()) header else ""
                 similarHeader.visibility =
                     if (result.items.isNotEmpty()) View.VISIBLE else View.GONE

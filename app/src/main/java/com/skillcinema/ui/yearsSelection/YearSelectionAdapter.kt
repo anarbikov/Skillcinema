@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.databinding.FragmentYearSelectionYearViewBinding
-import javax.inject.Inject
 
-class YearSelectionAdapter @Inject constructor(
-var onClickYear: (Int) -> Unit
-
+class YearSelectionAdapter (
+val onClickYear: (Int) -> Unit
 ):
 RecyclerView.Adapter<ViewHolder>() {
     private var years: List<Int> = listOf()
@@ -19,13 +17,11 @@ RecyclerView.Adapter<ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         FragmentYearSelectionYearViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-
     @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = years[position]
         holder.binding.yearTextView.text = result.toString()
         holder.binding.yearTextView.setOnClickListener {
-
             selectedYear?.binding?.yearTextView?.setBackgroundColor(Color.WHITE)
             selectedYear = holder
             holder.binding.yearTextView.setBackgroundColor(Color.GRAY)

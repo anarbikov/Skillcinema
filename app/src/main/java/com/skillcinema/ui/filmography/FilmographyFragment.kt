@@ -54,7 +54,7 @@ class FilmographyFragment : Fragment() {
 //        val staffId = arguments.let { it?.getInt("staffId") }
  //       val staffId = 9144
         chipGroup = binding.chipGroup
-        filmographyChippedAdapter = FilmographyChippedAdapter(requireContext())
+        filmographyChippedAdapter = FilmographyChippedAdapter()
         binding.chippedRecyclerView.adapter = filmographyChippedAdapter
         doObserveWork()
     }

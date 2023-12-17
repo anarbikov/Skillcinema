@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.data.FilterCountryDto
 import com.skillcinema.databinding.CountrySelectionCountryViewBinding
-import javax.inject.Inject
 
-class CountrySelectionAdapter @Inject constructor(
-var onClickCountry: (Int) -> Unit
+class CountrySelectionAdapter (
+val onClickCountry: (Int) -> Unit
 
 ): RecyclerView.Adapter<ViewHolder>() {
     var countries: List<FilterCountryDto> = listOf()

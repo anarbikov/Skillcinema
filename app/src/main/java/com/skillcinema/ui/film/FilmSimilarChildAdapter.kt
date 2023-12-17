@@ -1,6 +1,5 @@
 package com.skillcinema.ui.film
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -10,11 +9,9 @@ import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmSimilarFilmViewBinding
 import com.skillcinema.entity.FilmSimilarsItemDto
-import javax.inject.Inject
 
-class FilmSimilarChildAdapter @Inject constructor(
+class FilmSimilarChildAdapter (
     filmData: List<FilmSimilarsItemDto>,
-    val context: Context
 ) :
     RecyclerView.Adapter<FilmSimilarChildAdapter.DataViewHolder>() {
     private var filmList: List<FilmSimilarsItemDto> = ArrayList()

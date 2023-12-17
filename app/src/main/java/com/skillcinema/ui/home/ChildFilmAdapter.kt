@@ -1,22 +1,17 @@
 package com.skillcinema.ui.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.HomeFilmViewBinding
 import com.skillcinema.entity.FilmDto
-import javax.inject.Inject
 
-class ChildFilmAdapter @Inject constructor(
+class ChildFilmAdapter (
     val category:String,
     filmData: List<FilmDto>,
-    val context: Context
+    val onCLickChildItem: (Int) -> Unit
 ) :
     RecyclerView.Adapter<ChildFilmAdapter.DataViewHolder>() {
     private var filmList: List<FilmDto> = ArrayList()
@@ -24,11 +19,9 @@ class ChildFilmAdapter @Inject constructor(
         this.filmList = filmData
     }
     inner class DataViewHolder(val binding:HomeFilmViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val bundle = bundleOf()
         init {
             itemView.setOnClickListener {
-                bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
-                itemView.findNavController().navigate(R.id.action_navigation_home_to_filmFragment,bundle)
+                filmList[bindingAdapterPosition].kinopoiskId?.let(onCLickChildItem)
             }
         }
 

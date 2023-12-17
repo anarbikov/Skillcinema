@@ -1,7 +1,6 @@
 package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmGalleryChildRvBinding
 import com.skillcinema.entity.FilmGalleryDto
-import javax.inject.Inject
 
-class FilmGalleryParentAdapter @Inject constructor(
-    val context: Context,
-) : RecyclerView.Adapter<FilmGalleryParentAdapter.ViewHolderGallery>() {
+class FilmGalleryParentAdapter : RecyclerView.Adapter<FilmGalleryParentAdapter.ViewHolderGallery>() {
     private lateinit var images: FilmGalleryDto
     private val bundle = bundleOf()
     private var kinopoiskId = 0
@@ -26,7 +22,7 @@ class FilmGalleryParentAdapter @Inject constructor(
             binding.apply {
                 val takenImages = result.items?.take(20)
                 childRecyclerView.adapter =
-                    FilmGalleryChildAdapter(root.context, takenImages!!)
+                    FilmGalleryChildAdapter(takenImages!!)
                 childRecyclerView.layoutManager =
                     GridLayoutManager(root.context, 1, GridLayoutManager.HORIZONTAL, false)
                 galleryAll.text = if (result.total!! > 4) "${result.total} >" else ""
@@ -37,7 +33,7 @@ class FilmGalleryParentAdapter @Inject constructor(
                     root.findNavController()
                         .navigate(R.id.action_filmFragment_to_galleryFullFragment, bundle)
                 }
-                val header = context.getString(R.string.gallery_header)
+                val header = root.context.getString(R.string.gallery_header)
                 galleryHeader.text = if (result.items.isNotEmpty()) header else ""
                 galleryHeader.visibility =
                     if (result.items.isNotEmpty()) View.VISIBLE else View.GONE

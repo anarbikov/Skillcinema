@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.databinding.FragmentProfileCreateCollectionBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Collections
-import javax.inject.Inject
 
-class UserCollectionsAdapter @Inject constructor(
+class UserCollectionsAdapter (
     val context: Context,
     private val onItemClick: (CollectionWIthFilms) -> Unit,
     private val onClickCreateCollection: () -> Unit,

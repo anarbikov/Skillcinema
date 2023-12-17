@@ -1,7 +1,6 @@
 package com.skillcinema.ui.search
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillcinema.databinding.FragmentSearchFilmViewBinding
 import com.skillcinema.entity.FilmDto
-import javax.inject.Inject
 
-
-class PagedFilteredFilmAdapter @Inject constructor(
+class PagedFilteredFilmAdapter (
     private val onItemClick: (FilmDto) -> Unit,
-    val context: Context
 ) : PagingDataAdapter<FilmDto, FilmPagedViewHolder>(DiffUtilCallback()) {
 
 
@@ -27,7 +23,7 @@ class PagedFilteredFilmAdapter @Inject constructor(
                 false
             )
 
-        val displayMetrics = context.resources.displayMetrics
+        val displayMetrics = view.root.context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         view.root.layoutParams.width = screenWidth / 2-20
 

@@ -63,17 +63,16 @@ class FilmFragment : Fragment() {
     }
     private fun setUpViews(){
         generalInfoAdapter = FilmGeneralInfoAdapter(
-            requireContext(),
             {film -> onClickWatched(film = film)},
             {film -> onClickLiked(film = film)},
             {film -> onClickToWatch(film = film)},
             {film -> addToHistory(film = film) },
             {film -> addToCollection(filmInfo = film) }
         )
-        filmSeasonsAdapter = FilmSeasonsAdapter(requireContext())
-        filmActorsParentAdapter = FilmActorsParentAdapter(requireContext())
-        filmGalleryParentAdapter = FilmGalleryParentAdapter(requireContext())
-        filmSimilarParentAdapter = FilmSimilarParentAdapter(requireContext())
+        filmSeasonsAdapter = FilmSeasonsAdapter()
+        filmActorsParentAdapter = FilmActorsParentAdapter()
+        filmGalleryParentAdapter = FilmGalleryParentAdapter()
+        filmSimilarParentAdapter = FilmSimilarParentAdapter()
     }
     private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {

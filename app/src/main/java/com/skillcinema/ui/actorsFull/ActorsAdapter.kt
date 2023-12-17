@@ -1,7 +1,6 @@
 package com.skillcinema.ui.actorsFull
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -11,11 +10,8 @@ import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.databinding.ActorsFullActorViewBinding
 import com.skillcinema.entity.ActorDto
-import javax.inject.Inject
 
-class ActorsAdapter @Inject constructor(
-    val context: Context,
-) : RecyclerView.Adapter<ActorsAdapter.ActorViewHolder>() {
+class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorViewHolder>() {
     private var actorsList: List<ActorDto> = listOf()
 
     inner class ActorViewHolder( val binding: ActorsFullActorViewBinding) :
@@ -35,7 +31,7 @@ class ActorsAdapter @Inject constructor(
             parent,
             false
         )
-        val displayMetrics = context.resources.displayMetrics
+        val displayMetrics = parent.context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         view.root.layoutParams.width = screenWidth / 2-20
         return ActorViewHolder(view)

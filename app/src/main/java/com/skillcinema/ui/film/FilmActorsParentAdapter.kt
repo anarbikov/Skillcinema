@@ -1,7 +1,6 @@
 package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmActorsChildRvBinding
 import com.skillcinema.entity.ActorDto
-import javax.inject.Inject
 
-class FilmActorsParentAdapter @Inject constructor(
-    val context: Context,
-) : RecyclerView.Adapter<FilmActorsParentAdapter.ViewHolderActors>() {
+class FilmActorsParentAdapter : RecyclerView.Adapter<FilmActorsParentAdapter.ViewHolderActors>() {
     private var actorsList: List<ActorDto> = listOf()
     private var otherStaff: List<ActorDto> = listOf()
     private var isSeries = false
@@ -50,10 +46,10 @@ class FilmActorsParentAdapter @Inject constructor(
                         .navigate(R.id.action_filmFragment_to_actorsFullFragment, bundle)
                 }
                 val header = when {
-                    position == 0 && isSeries -> context.getString(R.string.series_actors_header)
-                    position == 0 && !isSeries -> context.getString(R.string.actors_header)
-                    position == 1 && isSeries -> context.getString(R.string.series_other_staff_header)
-                    position == 1 && !isSeries -> context.getString(R.string.other_staff_header)
+                    position == 0 && isSeries -> root.context.getString(R.string.series_actors_header)
+                    position == 0 && !isSeries -> root.context.getString(R.string.actors_header)
+                    position == 1 && isSeries -> root.context.getString(R.string.series_other_staff_header)
+                    position == 1 && !isSeries -> root.context.getString(R.string.other_staff_header)
                     else -> ""
                 }
                 actorsHeader.text = if (result.isNotEmpty()) header else ""

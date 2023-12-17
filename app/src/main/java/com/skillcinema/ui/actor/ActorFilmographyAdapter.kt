@@ -1,7 +1,6 @@
 package com.skillcinema.ui.actor
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.ActorFilmographyViewBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
-import javax.inject.Inject
 
-class ActorFilmographyAdapter @Inject constructor(
-    val context: Context
-) : RecyclerView.Adapter<ActorFilmographyAdapter.ViewHolder>() {
+class ActorFilmographyAdapter : RecyclerView.Adapter<ActorFilmographyAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ActorFilmographyViewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -33,9 +29,9 @@ class ActorFilmographyAdapter @Inject constructor(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            filmographyHeader.text = if (filmsInfo.films?.size !=0) context.getString(R.string.filmography_header) else ""
+            filmographyHeader.text = if (filmsInfo.films?.size !=0) root.context.getString(R.string.filmography_header) else ""
             filmographyHeader.visibility = if (filmsInfo.films?.size !=0) View.VISIBLE else View.GONE
-            filmographyAll.text = if(filmsInfo.films?.size !=0) context.getString(R.string.filmography_all) else ""
+            filmographyAll.text = if(filmsInfo.films?.size !=0) root.context.getString(R.string.filmography_all) else ""
             filmographyAll.visibility = if (filmsInfo.films?.size !=0)View.VISIBLE else View.GONE
             val filmQty:String = if (filmsInfo.films?.size !=0) filmsInfo.films?.size.toString() else ""
             val film = when(filmsInfo.films!!.size%10){

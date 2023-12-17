@@ -1,7 +1,6 @@
 package com.skillcinema.ui.galleryFull
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -15,7 +14,6 @@ import com.skillcinema.entity.FilmGalleryItemDto
 
 class GalleryChippedAdapter (
     private val onClick: (FilmGalleryItemDto) -> Unit,
-    val context: Context
     ) : PagingDataAdapter<FilmGalleryItemDto, GalleryPagedViewHolder>(DiffUtilCallback()) {
     override fun getItemViewType(position: Int): Int {
         return when (position % 3) {
@@ -31,7 +29,7 @@ class GalleryChippedAdapter (
                 parent,
                 false
             ))
-        val displayMetrics = context.resources.displayMetrics
+        val displayMetrics = holder.binding.root.context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         holder.itemView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {

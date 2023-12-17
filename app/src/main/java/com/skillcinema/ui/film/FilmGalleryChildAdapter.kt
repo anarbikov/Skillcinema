@@ -1,7 +1,6 @@
 package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,10 +10,8 @@ import com.bumptech.glide.Glide
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmGalleryImageViewBinding
 import com.skillcinema.entity.FilmGalleryItemDto
-import javax.inject.Inject
 
-class FilmGalleryChildAdapter @Inject constructor(
-    val context: Context,
+class FilmGalleryChildAdapter (
     images: List<FilmGalleryItemDto>
 ) : RecyclerView.Adapter<FilmGalleryChildAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmGalleryImageViewBinding) :

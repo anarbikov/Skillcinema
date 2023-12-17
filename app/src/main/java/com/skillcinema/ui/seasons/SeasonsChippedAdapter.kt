@@ -1,7 +1,6 @@
 package com.skillcinema.ui.seasons
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -12,21 +11,13 @@ import com.skillcinema.databinding.SeasonsSeasonViewBinding
 import com.skillcinema.entity.Episode
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-class SeasonsChippedAdapter @Inject constructor(
-    val context: Context,
+class SeasonsChippedAdapter (
 ) :
     RecyclerView.Adapter<SeasonsChippedAdapter.DataViewHolder>() {
     private var episodeList: MutableList<Episode> = ArrayList()
 
     inner class DataViewHolder(val binding:SeasonsSeasonViewBinding) : RecyclerView.ViewHolder(binding.root) {
-//        private val bundle = bundleOf()
-//        init {
-//            itemView.setOnClickListener {
-//                itemView.findNavController().navigate(R.id. ,bundle)
-//            }
-//        }
 
         @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")

@@ -25,7 +25,7 @@ class OnboardingFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = OnboardingAdapter(requireContext())
+        adapter = OnboardingAdapter()
         viewPager = binding.pager
         viewPager.adapter = adapter
         binding.onBoardingTextViewSkip.setOnClickListener{

@@ -11,9 +11,8 @@ import com.skillcinema.R
 import com.skillcinema.databinding.ActorBestFilmViewBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
-import javax.inject.Inject
 
-class ActorBestChildAdapter @Inject constructor(
+class ActorBestChildAdapter (
     filmData: List<FilmInfo>,
     general: ActorGeneralInfoDto
 ) :

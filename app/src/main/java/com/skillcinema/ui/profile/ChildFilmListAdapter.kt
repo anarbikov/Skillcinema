@@ -1,7 +1,6 @@
 package com.skillcinema.ui.profile
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,12 @@ import com.skillcinema.databinding.FragmentProfileChildFilmAdapterFilmViewBindin
 import com.skillcinema.databinding.FragmentProfileFooterViewBinding
 import com.skillcinema.room.CollectionWIthFilms
 import com.skillcinema.room.Film
-import javax.inject.Inject
 
-class ChildFilmListAdapter @Inject constructor(
+
+class ChildFilmListAdapter (
     filmData: List<CollectionWIthFilms>,
-    val context: Context,
-    var onClickCleanHistory: (String) -> Unit,
-    var onClickFilm: (Film) -> Unit
+    val onClickCleanHistory: (String) -> Unit,
+    val onClickFilm: (Film) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var filmList: MutableList<Film> = mutableListOf()
