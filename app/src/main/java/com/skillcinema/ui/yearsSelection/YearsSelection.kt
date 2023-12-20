@@ -58,4 +58,8 @@ class YearsSelection : Fragment() {
     private fun onClickYearTo(onclickYear:Int){
         yearTo = onclickYear
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
