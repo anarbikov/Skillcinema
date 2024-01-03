@@ -82,15 +82,15 @@ class SimilarFullFragment : Fragment() {
         val similar: FilmSimilarsDto = allInfo[1] as FilmSimilarsDto
         similarFullAdapter = SimilarFullAdapter { onclickItem -> onClickSimilar(onclickItem)}
         binding.recyclerView.adapter = similarFullAdapter
-        similarFullAdapter.addData(similar,kinopoiskId)
+        similarFullAdapter.addData(similar)
         binding.goUpButton.setOnClickListener{
             binding.recyclerView.scrollToPosition(0)
         }
     }
 
-    private fun onClickSimilar(kinopoiskId:Int){
+    private fun onClickSimilar(filmId:Int){
         val bundle = bundleOf()
-        bundle.putInt(KINOPOISK_ID,kinopoiskId)
+        bundle.putInt(KINOPOISK_ID,filmId)
         findNavController().navigate(R.id.action_similarFullFragment_to_filmFragment,bundle)
     }
     override fun onDestroyView() {
