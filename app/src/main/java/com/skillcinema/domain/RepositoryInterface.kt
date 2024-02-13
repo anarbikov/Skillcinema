@@ -17,7 +17,7 @@ interface RepositoryInterface
     fun getOnBoardingFlag(): Int
 
     fun getDataFromSharedPreference(): Int
-    fun saveOnboardingFlag()
+    fun saveOnboardingFlag():Boolean
     suspend fun getPremieres(page: Int): FilmsDto
     suspend fun getPopular(): FilmsDto
     suspend fun getPopularPaged(page:Int): FilmsDto

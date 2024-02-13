@@ -8,6 +8,7 @@ import com.skillcinema.domain.GetActorInfoByKinopoiskIdUseCase
 import com.skillcinema.domain.GetCollectionFilmIdsUseCase
 import com.skillcinema.domain.GetFilmInfoByKinopoiskIdUseCase
 import com.skillcinema.entity.FilmInfo
+import com.skillcinema.room.Collections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +43,7 @@ class ActorViewModel @Inject constructor(
     @Suppress("UNCHECKED_CAST")
     fun checkWatched() {
         viewModelScope.launch(Dispatchers.IO) {
-            watchedIds = getCollectionFilmIdsUseCase.execute ("watchedList")
+            watchedIds = getCollectionFilmIdsUseCase.execute (Collections.WATCHED_LIST.rusName)
             for (item in allInfo[2] as List<FilmInfo>) {
                 item.isWatched = (item.kinopoiskId in watchedIds)
             }

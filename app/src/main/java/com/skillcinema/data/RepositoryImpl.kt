@@ -28,9 +28,7 @@ class RepositoryImpl @Inject constructor(
     override fun getOnBoardingFlag(): Int {
 
         return when {
-            onboardingShown == 1 -> {
-                1
-            }
+            onboardingShown == 1 -> 1
 
             getDataFromSharedPreference() == 1 -> {
                 onboardingShown = 1
@@ -48,12 +46,13 @@ class RepositoryImpl @Inject constructor(
         return prefs.getInt(KEY_INT_NAME, 0)
 
     }
-    override fun saveOnboardingFlag() {
+    override fun saveOnboardingFlag():Boolean {
         onboardingShown = 1
         prefs = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor:SharedPreferences.Editor = prefs.edit()
         editor.putInt(KEY_INT_NAME,1)
         editor.apply()
+        return true
     }
 
     override suspend fun getPremieres(page: Int): FilmsDto {
@@ -138,7 +137,6 @@ class RepositoryImpl @Inject constructor(
     }
     override suspend fun deleteFilmFromCollection (filmId: Int, collection: String) {
         collectionDao.deleteFilmFromCollection(filmId = filmId, collectionName = collection)
-//        collectionDao.deleteFilmFromFilm(filmId)
     }
     override suspend fun cleanCollection(collectionName: String){
         collectionDao.cleanCollection(collectionName = collectionName)
