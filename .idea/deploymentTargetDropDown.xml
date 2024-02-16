@@ -2,7 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="MainActivityInstrumentedTest">
+        <State />
+      </entry>
+      <entry key="RepositoryImplInstrumentedTest">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="check()">
+        <State />
+      </entry>
+      <entry key="clickHomeButton()">
         <State />
       </entry>
     </value>

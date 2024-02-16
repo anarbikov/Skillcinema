@@ -20,7 +20,7 @@ android {
         versionName "1.0"
 
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.CustomTestRunner"
     }
 
     buildTypes {
@@ -47,6 +47,7 @@ android {
     namespace 'com.skillcinema'
 }
 
+
 dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:32.7.0')
@@ -56,6 +57,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'
     implementation 'androidx.test:core-ktx:1.5.0'
+    implementation 'com.google.ar:core:1.41.0'
     ksp "androidx.room:room-compiler:2.6.1"
     implementation 'androidx.room:room-rxjava2:2.6.1'
 
@@ -104,4 +106,13 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
     testImplementation "androidx.arch.core:core-testing:2.2.0"
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+    debugImplementation("androidx.fragment:fragment-ktx:1.6.2")
+    debugImplementation("androidx.test:core:1.5.0")
+//    debugImplementation("androidx.test:rules:1.5.0")
+    debugImplementation("androidx.test:runner:1.5.2")
 }

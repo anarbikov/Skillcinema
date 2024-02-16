@@ -9,7 +9,6 @@ import com.skillcinema.domain.InsertCollectionUseCase
 import com.skillcinema.room.CollectionWIthFilms
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -68,7 +67,6 @@ class ProfileViewModelTest {
         val collectionMock = mock<List<CollectionWIthFilms>>()
         Mockito.`when`(getFullCollectionsUseCaseMock.execute()).thenReturn(collectionMock)
         viewModel.getCollectionsList()
-        delay(5000)
         val actual = viewModel.collections.value
         Assertions.assertEquals(collectionMock, actual)
     }
