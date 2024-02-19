@@ -2,10 +2,9 @@ package com.skillcinema.ui.profile
 
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.skillcinema.domain.CleanCollectionUseCase
-import com.skillcinema.domain.DeleteCollectionUseCase
 import com.skillcinema.domain.GetFullCollectionsUseCase
 import com.skillcinema.domain.InsertCollectionUseCase
+import com.skillcinema.room.Collection
 import com.skillcinema.room.CollectionWIthFilms
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,53 +21,64 @@ import org.junit.jupiter.api.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ProfileViewModelTest {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+
+    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 
     @get:Rule
     val mainDispatcherRule: TestRule = InstantTaskExecutorRule()
+
     private lateinit var getFullCollectionsUseCaseMock: GetFullCollectionsUseCase
-    private lateinit var cleanCollectionUseCaseMock: CleanCollectionUseCase
-    private lateinit var insertCollectionUseCaseMock: InsertCollectionUseCase
-    private lateinit var deleteCollectionUseCaseMock: DeleteCollectionUseCase
+    private lateinit var insertCollectionUseCase: InsertCollectionUseCase
     private lateinit var viewModel: ProfileViewModel
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     @BeforeEach
-    fun setup() = runTest {
+    fun setup() {
         Dispatchers.setMain(testDispatcher)
-        getFullCollectionsUseCaseMock = mock<GetFullCollectionsUseCase>()
-        cleanCollectionUseCaseMock = mock<CleanCollectionUseCase>()
-        insertCollectionUseCaseMock = mock<InsertCollectionUseCase>()
-        deleteCollectionUseCaseMock = mock<DeleteCollectionUseCase>()
+        getFullCollectionsUseCaseMock = mock()
+        insertCollectionUseCase = mock()
         viewModel = ProfileViewModel(
             getFullCollectionsUseCaseMock,
-            cleanCollectionUseCaseMock,
-            insertCollectionUseCaseMock,
-            deleteCollectionUseCaseMock
+            mock(),
+            insertCollectionUseCase = insertCollectionUseCase,
+            mock()
         )
+        viewModel.createCollection("collection")
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     @AfterEach
     fun resetData() {
         Dispatchers.resetMain()
         Mockito.reset(getFullCollectionsUseCaseMock)
-        Mockito.reset(cleanCollectionUseCaseMock)
-        Mockito.reset(insertCollectionUseCaseMock)
-        Mockito.reset(deleteCollectionUseCaseMock)
+        Mockito.reset(insertCollectionUseCase)
     }
 
     @Test
     fun `function load all should return data class by state`() = runTest {
-        val collectionMock = mock<List<CollectionWIthFilms>>()
-        Mockito.`when`(getFullCollectionsUseCaseMock.execute()).thenReturn(collectionMock)
-        viewModel.getCollectionsList()
-        val actual = viewModel.collections.value
-        Assertions.assertEquals(collectionMock, actual)
-    }
+        val collectionMock = CollectionWIthFilms(
+            collection = mockCollection,
+            films = emptyList()
+        )
+//        whenever(getFullCollectionsUseCaseMock.execute()).thenReturn(listOf(collectionMock))
+        Mockito.`when`(getFullCollectionsUseCaseMock.execute()).thenReturn(listOf(collectionMock))
 
+        viewModel.getCollectionsList()
+
+        verify(insertCollectionUseCase).execute(mockCollection)
+        verifyNoMoreInteractions(insertCollectionUseCase)
+
+
+        val actual = viewModel.collections.value
+        Assertions.assertEquals(listOf(collectionMock), actual)
+    }
+    companion object {
+        val mockCollection = Collection("collection")
+    }
 }

@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [SingletonComponent::class]
+    replaces = [RepositoryModule::class]
 )
 class FakeRepositoryModule {
 
