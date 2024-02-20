@@ -3,20 +3,21 @@ package com.skillcinema.data
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.testing.EmptyFragmentActivity.Companion.THEME_EXTRAS_BUNDLE_KEY
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.skillcinema.HiltTestActivity
 import com.skillcinema.R
+import com.skillcinema.ui.MainActivity
 import com.skillcinema.ui.home.HomeFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -29,12 +30,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @HiltAndroidTest
 class RepositoryImplInstrumentedTest {
-    //    @JvmField
-//    @Rule
-//    val activityTestRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
-    @get:Rule
+
+    @get:Rule (order = 0)
     var hiltRule = HiltAndroidRule(this)
 
+    @get:Rule (order = 1)
+    val activityTestRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
     @Before
     fun init() {
         hiltRule.inject()
@@ -42,33 +43,48 @@ class RepositoryImplInstrumentedTest {
 
     @Test
     fun clickHomeButton() {
+        val activityScenario: ActivityScenario<MainActivity> = launchActivity()
+        activityScenario.onActivity {
+            val homeFragment: Fragment = it.supportFragmentManager.fragmentFactory.instantiate(
+                Preconditions.checkNotNull(HomeFragment::class.java.classLoader) as ClassLoader,
+                HomeFragment::class.java.name
+            )
+
+            it.supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, homeFragment, "")
+                .commitNow()
+
+        }
+
+
 //        val homeFragment = HomeFragment()
 
-        launchActivity<HiltTestActivity>()
+//        launchActivity<HiltTestActivity>()
 
 
-        launchFragmentInHiltContainer<HomeFragment>()
-        onView(withId(R.id.homeTextViewSkillCinema)).perform(click()).check(matches(isDisplayed()))
+//         launchFragmentInHiltContainer<HomeFragment>()
+        Espresso.onView(withId(R.id.homeTextViewSkillCinema)).check(matches(ViewMatchers.withText("")))
 
     }
 
-    private inline fun <reified T : Fragment> launchFragmentInHiltContainer(
+    inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
-        themeResId: Int = R.style.Theme_SkillCinema,
-        fragmentFactory: FragmentFactory? = null,
-        crossinline action: T.() -> Unit = {}
+        @StyleRes themeResId: Int = R.style.Theme_SkillCinema,
+        crossinline action: Fragment.() -> Unit = {}
     ) {
-        val mainActivityIntent = Intent.makeMainActivity(
+        val startActivityIntent = Intent.makeMainActivity(
             ComponentName(
                 ApplicationProvider.getApplicationContext(),
                 HiltTestActivity::class.java
             )
-        ).putExtra(THEME_EXTRAS_BUNDLE_KEY, themeResId)
+        ).putExtra(
+            "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
+            themeResId
+        )
 
-        ActivityScenario.launch<HiltTestActivity>(mainActivityIntent).onActivity { activity ->
-            fragmentFactory?.let { activity.supportFragmentManager.fragmentFactory = it }
-            val fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
-                checkNotNull(T::class.java.classLoader),
+        ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
+            val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
+                Preconditions.checkNotNull(T::class.java.classLoader) as ClassLoader,
                 T::class.java.name
             )
             fragment.arguments = fragmentArgs
@@ -77,7 +93,7 @@ class RepositoryImplInstrumentedTest {
                 .add(android.R.id.content, fragment, "")
                 .commitNow()
 
-            (fragment as T).action()
+            fragment.action()
         }
     }
 }
