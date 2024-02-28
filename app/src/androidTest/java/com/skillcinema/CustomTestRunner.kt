@@ -1,4 +1,4 @@
-package com
+package com.skillcinema
 
 import android.app.Application
 import android.content.Context
