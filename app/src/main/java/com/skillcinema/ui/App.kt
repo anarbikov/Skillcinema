@@ -10,6 +10,8 @@ class App:Application(){
     private lateinit var db: AppDatabase
     override fun onCreate() {
         super.onCreate()
+
+
         db = Room
             .inMemoryDatabaseBuilder(
                 applicationContext,

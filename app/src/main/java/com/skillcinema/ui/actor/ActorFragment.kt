@@ -31,7 +31,7 @@ class ActorFragment : Fragment() {
     private lateinit var actorGeneralInfoAdapter: ActorGeneralInfoAdapter
     private lateinit var actorBestParentAdapter: ActorBestParentAdapter
     private lateinit var filmographyAdapter: ActorFilmographyAdapter
-    private lateinit var concatAdapter: ConcatAdapter
+    private var concatAdapter: ConcatAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,5 +106,6 @@ class ActorFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        concatAdapter = null
     }
 }

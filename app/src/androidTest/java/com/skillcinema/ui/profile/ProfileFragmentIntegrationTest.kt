@@ -36,8 +36,15 @@ class ProfileFragmentIntegrationTest {
 
     @Test
     fun clickHomeTextView() {
-
-
+        activityTestRule.scenario.onActivity {
+            it.supportFragmentManager.beginTransaction().replace(R.id.nav_view, SearchFragment())
+                .commit()
+        }
+        activityTestRule.scenario.onActivity {
+            it.supportFragmentManager.popBackStack()
+        }
+    }
+}
 //        onData(withId(R.id.concatRecyclerView))
 //            .atPosition(1)
 //            .onChildView(
@@ -48,14 +55,3 @@ class ProfileFragmentIntegrationTest {
 
 
 //        onView(withId(R.id.concatRecyclerView)).perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        activityTestRule.scenario.onActivity {
-            it.supportFragmentManager.beginTransaction().replace(R.id.nav_view, SearchFragment())
-                .commit()
-        }
-        activityTestRule.scenario.onActivity {
-            it.supportFragmentManager.popBackStack()
-        }
-    }
-
-
-}

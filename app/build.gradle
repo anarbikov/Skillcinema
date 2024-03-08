@@ -1,3 +1,5 @@
+
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -22,10 +24,24 @@ android {
 //        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.skillcinema.CustomTestRunner"
     }
+    splits{
+//        density{
+//            enable true
+//            exclude "ldpi","xxhdpi","xxxhdpi"
+//            compatibleScreens 'small','normal','large','xlarge'
+//        }
+        abi{
+            enable true
+            reset()
+            include "x86","x86_64"
+            universalApk false
+        }
+    }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -117,4 +133,6 @@ dependencies {
     debugImplementation("androidx.test:core:1.5.0")
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation( "androidx.test.espresso:espresso-contrib:3.5.1")
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:3.0-alpha-1'
 }

@@ -39,12 +39,12 @@ class FilmFragment : Fragment() {
     private var kinopoiskId = 0
     private val viewModel: FilmViewModel by viewModels()
 
-    private lateinit var generalInfoAdapter: FilmGeneralInfoAdapter
-    private lateinit var filmSeasonsAdapter: FilmSeasonsAdapter
-    private lateinit var filmActorsParentAdapter: FilmActorsParentAdapter
-    private lateinit var filmGalleryParentAdapter: FilmGalleryParentAdapter
-    private lateinit var filmSimilarParentAdapter: FilmSimilarParentAdapter
-    private lateinit var concatAdapter: ConcatAdapter
+    private var generalInfoAdapter: FilmGeneralInfoAdapter? = null
+    private var filmSeasonsAdapter: FilmSeasonsAdapter? = null
+    private var filmActorsParentAdapter: FilmActorsParentAdapter? = null
+    private var filmGalleryParentAdapter: FilmGalleryParentAdapter? = null
+    private var filmSimilarParentAdapter: FilmSimilarParentAdapter? = null
+    private var concatAdapter: ConcatAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,16 +120,16 @@ class FilmFragment : Fragment() {
         viewModel.checkToWatch()
         val generalInfo: FilmInfo = allInfo[1] as FilmInfo
         val isSeries = generalInfo.serial
-        generalInfoAdapter.addData(generalInfo)
+        generalInfoAdapter?.addData(generalInfo)
         val seasons: FilmSeasonsDto = allInfo[2] as FilmSeasonsDto
-        filmSeasonsAdapter.addData(seasons, kinopoiskId = kinopoiskId, filmName = (generalInfo.nameRu?:generalInfo.nameEn?:"") as String)
+        filmSeasonsAdapter?.addData(seasons, kinopoiskId = kinopoiskId, filmName = (generalInfo.nameRu?:generalInfo.nameEn?:"") as String)
         val actorInfo: List<ActorDto> = allInfo[3] as List<ActorDto>
         val otherStaff: List<ActorDto> = allInfo[4] as List<ActorDto>
-        filmActorsParentAdapter.addData(actorInfo,otherStaff, isSeries!!,generalInfo.kinopoiskId!!)
+        filmActorsParentAdapter?.addData(actorInfo,otherStaff, isSeries!!,generalInfo.kinopoiskId!!)
         val gallery: FilmGalleryDto = allInfo[5] as FilmGalleryDto
-        filmGalleryParentAdapter.addData(gallery,generalInfo.kinopoiskId)
+        generalInfo.kinopoiskId?.let { filmGalleryParentAdapter?.addData(gallery, it) }
         val similar: FilmSimilarsDto = allInfo[6] as FilmSimilarsDto
-        filmSimilarParentAdapter.addData(similar,generalInfo.kinopoiskId)
+        generalInfo.kinopoiskId?.let { filmSimilarParentAdapter?.addData(similar, it) }
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)
         }.build()
@@ -171,5 +171,12 @@ class FilmFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        generalInfoAdapter = null
+        filmSeasonsAdapter = null
+        filmActorsParentAdapter = null
+        filmGalleryParentAdapter = null
+        filmSimilarParentAdapter = null
+        concatAdapter = null
+
     }
 }

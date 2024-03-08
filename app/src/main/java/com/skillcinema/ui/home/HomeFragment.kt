@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding:FragmentHomeBinding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var parentFilmAdapter: ParentFilmAdapter
+    private var parentFilmAdapter: ParentFilmAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.checkForOnboarding()
-//        if (viewModel.onboardingShownFlag == 0) findNavController().navigate(R.id.action_navigation_home_to_numberFragment)
+        if (viewModel.onboardingShownFlag == 0) findNavController().navigate(R.id.action_navigation_home_to_numberFragment)
         setUpViews()
         doObserveWork()
     }
@@ -107,8 +107,8 @@ class HomeFragment : Fragment() {
     private fun renderFilmsList(films: List<FilmsDto>) {
         if (films.isEmpty())return
         viewModel.checkWatched()
-        parentFilmAdapter.addData(films)
-        parentFilmAdapter.notifyDataSetChanged()
+        parentFilmAdapter?.addData(films)
+        parentFilmAdapter?.notifyDataSetChanged()
     }
 
     private fun onClickParentItem(filterId:Int, category:String ){
@@ -127,6 +127,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        parentFilmAdapter = null
     }
     companion object{
         private const val FILTER_ID_KEY = "filterId"

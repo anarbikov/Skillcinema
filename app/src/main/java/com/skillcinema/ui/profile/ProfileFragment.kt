@@ -27,10 +27,10 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val viewModel: ProfileViewModel by viewModels()
     private val binding get() = _binding!!
-    private lateinit var watchedListParentAdapter: ParentFilmListAdapter
-    private lateinit var historyListParentAdapter: ParentFilmListAdapter
-    private lateinit var userCollectionsAdapter: UserCollectionsAdapter
-    private lateinit var concatAdapter: ConcatAdapter
+    private var watchedListParentAdapter: ParentFilmListAdapter? = null
+    private var historyListParentAdapter: ParentFilmListAdapter? = null
+    private var userCollectionsAdapter: UserCollectionsAdapter? = null
+    private var concatAdapter: ConcatAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,9 +76,9 @@ class ProfileFragment : Fragment() {
         if (collections.isEmpty())return
         val watchedList = collections.filter { it.collection.name == Collections.WATCHED_LIST.rusName }
         val historyList = collections.filter { it.collection.name == Collections.HISTORY.rusName }
-        watchedListParentAdapter.addData(watchedList)
-        userCollectionsAdapter.addData(collections)
-        historyListParentAdapter.addData(historyList)
+        watchedListParentAdapter?.addData(watchedList)
+        userCollectionsAdapter?.addData(collections)
+        historyListParentAdapter?.addData(historyList)
 
         val config = ConcatAdapter.Config.Builder().apply {
             setIsolateViewTypes(true)
@@ -106,11 +106,11 @@ class ProfileFragment : Fragment() {
             val text = binding.editText.text.toString()
             binding.editText.setText("")
             viewModel.createCollection(text)
-            userCollectionsAdapter.addCollection(
+            userCollectionsAdapter?.addCollection(
                 CollectionWIthFilms(
-                collection = Collection(text),
-                films = mutableListOf()
-            )
+                    collection = Collection(text),
+                    films = mutableListOf()
+                )
             )
             binding.createCollectionLayout.visibility = View.GONE
         }
@@ -121,5 +121,9 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        watchedListParentAdapter = null
+        historyListParentAdapter = null
+        userCollectionsAdapter = null
+        concatAdapter = null
     }
 }
