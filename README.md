@@ -1,6 +1,8 @@
 All films and connected information in one app  
-Please check photos and video which show application at work  
+Please check photos and video which show the application at work  
 **Used technologies:**  
+Kotlin, XML, Room, Hilt,  Clean Architecture, Flow, MVVM, Coroutines, Retrofit, REST, Unit Testing, Mockito, Espresso  
+Screenshots:  
 
 <img src="https://github.com/anarbikov/Skillcinema/assets/87697163/24ea675a-3874-4b0d-9814-a6f0050aa557" width=15% height=15%>
 <img src="https://github.com/anarbikov/Skillcinema/assets/87697163/4d8d3471-711e-42d2-9338-edfcab78b1c4" width=15% height=15%>
@@ -19,3 +21,4 @@ Please check photos and video which show application at work
 <img src="https://github.com/anarbikov/Skillcinema/assets/87697163/eabdf986-1932-4895-b08b-5ae52defd8e5" width=15% height=15%>
 <img src="https://github.com/anarbikov/Skillcinema/assets/87697163/d805c58c-2d83-418f-96eb-4e8d09b3a72c" width=15% height=15%>
 <img src="https://github.com/anarbikov/Skillcinema/assets/87697163/e0dd1f88-aab7-4739-b7dd-4f03d1ad366a" width=15% height=15%>
+Video overview:  
