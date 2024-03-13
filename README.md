@@ -4,22 +4,24 @@ Please check photos and video which show the application at work
 Kotlin, XML, Room, Hilt,  Clean Architecture, Flow, MVVM, Coroutines, Retrofit, REST, Unit Testing, Mockito, Espresso  
 Screenshots:  
 
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/24ea675a-3874-4b0d-9814-a6f0050aa557" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/4d8d3471-711e-42d2-9338-edfcab78b1c4" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/f4b813f2-8db3-47c5-a784-753fbe242639" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/7a6e273b-2bed-4069-b481-7920e87e4c29" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/fe122efe-b03a-4808-9055-7a1d23791d5a" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/62b1f04c-00e9-4d2f-9c4f-6befe304360c" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/6abf0126-04f1-4627-8d61-db4899d4e426" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/c8b45225-6a06-4324-83de-ba23f2486c55" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/3e7daa4b-35c5-434e-bc7f-b4b4bd7fc1bc" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/1272eb80-38eb-44a9-957c-cdb67a10a39f" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/4b239657-3546-4982-9d8e-275edd6ee810" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/67883087-247b-400d-8086-aeac2e4bf7af" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/9022c8be-8c56-4e66-b684-116e16ff60e4" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/02dd7135-c9b2-45ef-aa6b-0d6e718ae597" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/eabdf986-1932-4895-b08b-5ae52defd8e5" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/d805c58c-2d83-418f-96eb-4e8d09b3a72c" width=15% height=15%>
-<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/e0dd1f88-aab7-4739-b7dd-4f03d1ad366a" width=15% height=15%>    
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/324722f8-5a87-4c98-b0a6-7b6c1a7d1155" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/78d2fe00-a59c-4ed1-904b-7b63e0fc24b1" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/3dfc8dd2-df5c-485f-a891-427166c3b7fb" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/0ae9f414-965e-41be-b52e-5006ac9d6369" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/ce1e4435-1af7-4fef-bfed-ebf686042da7" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/b542bf48-1d51-4b38-a911-4c4a10140297" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/96dab486-9195-43a9-b3a4-d81da426216d" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/2acf1444-b39c-493b-aeb1-7e522b1ecebe" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/3525bf8e-13a3-4247-8d47-532792b53910" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/0e2287c3-6637-4282-9971-7f0b00883cc5" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/2b41a648-1c64-429a-a792-676548154591" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/04873311-26c1-429d-9f5b-571815bc7889" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/e89c7edd-a113-43b7-92f0-db8a5ab80084" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/12e4b006-1e1c-4ef4-9f04-7d87b6897303" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/22e5d465-36b8-43f4-b5c0-f08cca97db65" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/7d63a50a-ee7e-4782-a747-99fd5966e7a3" width=15% height=15%>  
+<img src="https://github.com/anarbikov/Skillcinema/assets/87697163/740a5408-004a-4bf1-b174-d44474dc34ba" width=15% height=15%>  
+
+
 
 Video overview:  
