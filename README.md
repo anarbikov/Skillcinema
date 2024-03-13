@@ -25,3 +25,6 @@ Screenshots:
 
 
 Video overview:  
+
+https://github.com/anarbikov/Skillcinema/assets/87697163/1c69fa49-b758-4a63-a586-573838962aa8
+
