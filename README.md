@@ -1,4 +1,4 @@
-All films and related information in one app  
+All films and related information in one app  (more than 20 screens)  
 Please check screenshots and video below which show the application at work  
 **Used technologies:**  
 Kotlin, XML, Room, Hilt,  Clean Architecture, Flow, MVVM, Coroutines, Retrofit, REST, Unit Testing, Mockito, Espresso, Firebase  
