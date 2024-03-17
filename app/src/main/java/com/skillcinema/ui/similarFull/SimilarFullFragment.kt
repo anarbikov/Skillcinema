@@ -28,7 +28,7 @@ class SimilarFullFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: SimilarFullViewModel by viewModels()
     private var kinopoiskId = 0
-    private lateinit var similarFullAdapter: SimilarFullAdapter
+    private var similarFullAdapter: SimilarFullAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +82,7 @@ class SimilarFullFragment : Fragment() {
         val similar: FilmSimilarsDto = allInfo[1] as FilmSimilarsDto
         similarFullAdapter = SimilarFullAdapter { onclickItem -> onClickSimilar(onclickItem)}
         binding.recyclerView.adapter = similarFullAdapter
-        similarFullAdapter.addData(similar)
+        similarFullAdapter?.addData(similar)
         binding.goUpButton.setOnClickListener{
             binding.recyclerView.scrollToPosition(0)
         }
@@ -96,6 +96,7 @@ class SimilarFullFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        similarFullAdapter = null
     }
     companion object{
         private const val KINOPOISK_ID = "kinopoiskId"

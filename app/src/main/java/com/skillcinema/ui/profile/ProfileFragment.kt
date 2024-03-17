@@ -1,7 +1,6 @@
 package com.skillcinema.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,14 +86,17 @@ class ProfileFragment : Fragment() {
         binding.concatRecyclerView.adapter = concatAdapter
     }
     private fun onClickOpenCollection(collection: CollectionWIthFilms){
-        findNavController().navigate(R.id.action_profileFragment_to_fullCollectionFragment, bundleOf("collectionName" to collection.collection.name))
-        Log.d("mytag","onClickOpenCollection- $collection")
+        val bundle = bundleOf()
+        bundle.putString(COLLECTION_NAME_KEY,collection.collection.name)
+        findNavController().navigate(R.id.action_profileFragment_to_fullCollectionFragment, bundle)
     }
     private fun onClickCleanCollection(collection:String){
         viewModel.cleanCollectionHistory (collection)
     }
     private fun onClickOpenFilm (film:Film){
-        findNavController().navigate(R.id.action_profileFragment_to_filmFragment, bundleOf("kinopoiskId" to film.kinopoiskId))
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY, film.kinopoiskId)
+        findNavController().navigate(R.id.action_profileFragment_to_filmFragment, bundle)
     }
     private fun onClickCreateCollection(){
         binding.createCollectionLayout.visibility = View.VISIBLE
@@ -125,5 +127,9 @@ class ProfileFragment : Fragment() {
         historyListParentAdapter = null
         userCollectionsAdapter = null
         concatAdapter = null
+    }
+    companion object{
+        private const val COLLECTION_NAME_KEY = "collectionName"
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
     }
 }

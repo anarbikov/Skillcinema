@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -37,7 +38,7 @@ class FilmographyFragment : Fragment() {
     private val viewModel: FilmographyViewModel by viewModels()
     private lateinit var chipGroup: ChipGroup
     private val chipList = mutableMapOf<Chip,String>()
-    private lateinit var filmographyChippedAdapter: FilmographyChippedAdapter
+    private var filmographyChippedAdapter: FilmographyChippedAdapter? = null
     private lateinit var generalInfo: ActorGeneralInfoDto
 
     override fun onCreateView(
@@ -51,10 +52,10 @@ class FilmographyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val staffId = arguments.let { it?.getInt("staffId") }
- //       val staffId = 9144
         chipGroup = binding.chipGroup
-        filmographyChippedAdapter = FilmographyChippedAdapter()
+        filmographyChippedAdapter = FilmographyChippedAdapter(
+            onItemClick = {filmId:Int -> onItemClick(kinopoiskId = filmId) }
+        )
         binding.chippedRecyclerView.adapter = filmographyChippedAdapter
         doObserveWork()
     }
@@ -121,7 +122,7 @@ class FilmographyFragment : Fragment() {
             else {
                 for (i in chipList.keys)i.chipBackgroundColor = ColorStateList.valueOf(
                     requireContext().getColor(R.color.grey))
-                filmographyChippedAdapter.removeData()
+                filmographyChippedAdapter?.removeData()
             }
         }
     }
@@ -190,11 +191,20 @@ class FilmographyFragment : Fragment() {
         }
         else {binding.loadingErrorPage.visibility = View.GONE}
         val chippedFilms: List<FilmInfo> = allFilms[1] as List<FilmInfo>
-        filmographyChippedAdapter.removeData()
-        filmographyChippedAdapter.addData(chippedFilms)
+        filmographyChippedAdapter?.removeData()
+        filmographyChippedAdapter?.addData(chippedFilms)
+    }
+    private fun onItemClick(kinopoiskId:Int){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY,kinopoiskId)
+        findNavController().navigate(R.id.action_filmographyFragment_to_filmFragment ,bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        filmographyChippedAdapter = null
+    }
+    companion object{
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
     }
 }

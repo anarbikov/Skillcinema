@@ -28,6 +28,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel:SearchViewModel by viewModels()
+    private var pagedFilteredFilmAdapter: PagedFilteredFilmAdapter? = null
 
 
     override fun onCreateView(
@@ -41,24 +42,24 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pagedFilteredFilmAdapter = PagedFilteredFilmAdapter { film -> onItemClick(film) }
-        pagedFilteredFilmAdapter.addLoadStateListener {
+        pagedFilteredFilmAdapter = PagedFilteredFilmAdapter { film -> onItemClick(film) }
+        pagedFilteredFilmAdapter?.addLoadStateListener {
             if (it.source.refresh is LoadState.NotLoading && it.append.endOfPaginationReached){
-                binding.notFound.visibility = if (pagedFilteredFilmAdapter.itemCount<1) View.VISIBLE else View.GONE
+                binding.notFound.visibility = if (pagedFilteredFilmAdapter?.itemCount!! <1) View.VISIBLE else View.GONE
             }else {binding.notFound.visibility = View.GONE}
             Log.d("mytag", "SEARCH ERROR LISTENER: ${it.refresh}")
             binding.recyclerView.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
             binding.goUpButton.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
             binding.loadingErrorPage.visibility = if (it.refresh is LoadState.Error)  View.VISIBLE else View.GONE
         }
-        binding.recyclerView.adapter = pagedFilteredFilmAdapter.withLoadStateFooter(MyLoadStateAdapter())
+        binding.recyclerView.adapter = pagedFilteredFilmAdapter?.withLoadStateFooter(MyLoadStateAdapter())
         binding.recyclerView.addItemDecoration(RecyclerItemDecoration(2, 5, includeEdge = true))
         binding.goUpButton.setOnClickListener {
             binding.recyclerView.scrollToPosition(0)
         }
-        pagedFilteredFilmAdapter.submitData(lifecycle,PagingData.empty())
+        pagedFilteredFilmAdapter?.submitData(lifecycle,PagingData.empty())
         viewModel.pagedFilm.onEach {
-            pagedFilteredFilmAdapter.submitData(it)
+            pagedFilteredFilmAdapter?.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         binding.editText.setText(SearchSettings.keyword)
         binding.editText.addTextChangedListener(object : TextWatcher{
@@ -66,9 +67,9 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
                     SearchSettings.keyword = p0.toString()
-                    pagedFilteredFilmAdapter.submitData(lifecycle,PagingData.empty())
+                    pagedFilteredFilmAdapter?.submitData(lifecycle,PagingData.empty())
                     viewModel.pagedFilm.onEach {
-                        pagedFilteredFilmAdapter.submitData(it)
+                        pagedFilteredFilmAdapter?.submitData(it)
                     }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
         })
@@ -77,12 +78,16 @@ class SearchFragment : Fragment() {
         }
     }
     private fun onItemClick(item: FilmDto) {
-        val kinopoiskId = bundleOf("kinopoiskId" to item.kinopoiskId)
+        val kinopoiskId = bundleOf(KINOPOISK_ID_KEY to item.kinopoiskId)
         findNavController().navigate(R.id.action_searchFragment_to_filmFragment, kinopoiskId)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        pagedFilteredFilmAdapter = null
+    }
+    companion object{
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
     }
 }

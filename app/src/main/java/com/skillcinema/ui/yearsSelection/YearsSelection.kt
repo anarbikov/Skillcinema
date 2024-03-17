@@ -22,6 +22,8 @@ class YearsSelection : Fragment() {
     private val binding get() = _binding!!
     private var yearFrom = 1000
     private var yearTo = 3000
+    private  var adapterFrom: YearSelectionAdapter? = null
+    private var adapterTo: YearSelectionAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,13 +36,13 @@ class YearsSelection : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.goBack.setOnClickListener { findNavController().popBackStack() }
-        val adapterFrom = YearSelectionAdapter{onclickYear -> onClickYearFrom(onclickYear)}
-        val adapterTo = YearSelectionAdapter{onclickYear -> onClickYearTo(onclickYear)}
+        adapterFrom = YearSelectionAdapter{onclickYear -> onClickYearFrom(onclickYear)}
+        adapterTo = YearSelectionAdapter{onclickYear -> onClickYearTo(onclickYear)}
         binding.rvFrom.adapter = adapterFrom
         binding.rvTo.adapter = adapterTo
         val list = (1980..Calendar.getInstance().get(Calendar.YEAR)).toList()
-        adapterFrom.addData(list)
-        adapterTo.addData(list)
+        adapterFrom?.addData(list)
+        adapterTo?.addData(list)
 
         binding.selectionButton.setOnClickListener {
             if (yearTo>=yearFrom) {
@@ -61,5 +63,7 @@ class YearsSelection : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        adapterFrom = null
+        adapterTo = null
     }
 }

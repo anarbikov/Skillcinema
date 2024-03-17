@@ -20,6 +20,7 @@ class GenreSelection : Fragment() {
     private var _binding: FragmentGenreSelectionBinding? = null
     private val binding get() = _binding!!
     private var currentCountries:List<FilterGenreDto> = listOf()
+    private var adapter:GenreSelectionAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,18 +32,18 @@ class GenreSelection : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = GenreSelectionAdapter{genreId -> onClickGenre(genreId = genreId)}
+        adapter = GenreSelectionAdapter{genreId -> onClickGenre(genreId = genreId)}
         binding.recyclerView.adapter = adapter
         val genres = FilmFilters.getAllGenres().filter { it.genre != "" }.sortedBy { it.genre }
-        adapter.addData(genres)
+        adapter?.addData(genres)
         binding.goBack.setOnClickListener { findNavController().popBackStack() }
         binding.editText.addTextChangedListener ( object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
                 currentCountries = genres.filter { p0.toString().lowercase() in it.genre!!.lowercase() }.sortedBy { it.genre }
-                adapter.clearData()
-                adapter.addData(currentCountries)
+                adapter?.clearData()
+                adapter?.addData(currentCountries)
             }
         } )
     }
@@ -50,5 +51,11 @@ class GenreSelection : Fragment() {
     private fun onClickGenre(genreId:Int){
         SearchSettings.genres = listOf(genreId)
         findNavController().popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        adapter = null
     }
 }

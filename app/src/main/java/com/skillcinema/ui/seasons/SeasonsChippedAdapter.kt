@@ -12,8 +12,7 @@ import com.skillcinema.entity.Episode
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class SeasonsChippedAdapter (
-) :
+class SeasonsChippedAdapter :
     RecyclerView.Adapter<SeasonsChippedAdapter.DataViewHolder>() {
     private var episodeList: MutableList<Episode> = ArrayList()
 

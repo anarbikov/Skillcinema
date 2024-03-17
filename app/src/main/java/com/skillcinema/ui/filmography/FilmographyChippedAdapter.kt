@@ -4,24 +4,21 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.FilmographyFilmViewBinding
 import com.skillcinema.entity.FilmInfo
 
-class FilmographyChippedAdapter :
+class FilmographyChippedAdapter(
+    val onItemClick: (Int) -> Unit
+) :
     RecyclerView.Adapter<FilmographyChippedAdapter.DataViewHolder>() {
     private var filmList: MutableList<FilmInfo> = ArrayList()
 
     inner class DataViewHolder(val binding:FilmographyFilmViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val bundle = bundleOf()
         init {
              binding.root.setOnClickListener {
-                bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
-                binding.root.findNavController().navigate(R.id.action_filmographyFragment_to_filmFragment ,bundle)
+                 filmList[bindingAdapterPosition].kinopoiskId?.let { id -> onItemClick(id) }
             }
         }
 

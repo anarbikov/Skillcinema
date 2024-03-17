@@ -25,7 +25,7 @@ class FullCollectionFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FullCollectionViewModel by viewModels()
     private var collectionName = ""
-    private lateinit var userCollectionAdapter: UserCollectionAdapter
+    private var userCollectionAdapter: UserCollectionAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,15 +62,26 @@ class FullCollectionFragment : Fragment() {
 
     private fun renderView(collection: List<CollectionWIthFilms>){
         if (collection.isEmpty())return
-        userCollectionAdapter.addData(collection)
+        userCollectionAdapter?.addData(collection)
         binding.recyclerView.adapter = userCollectionAdapter
         binding.cleanCollectionButton.setOnClickListener {
             viewModel.cleanCollectionHistory(collectionName = collectionName)
-            userCollectionAdapter.removeData()
+            userCollectionAdapter?.removeData()
         }
     }
 
     private fun onClickOpenFilm (film: Film){
-        findNavController().navigate(R.id.action_fullCollectionFragment_to_filmFragment, bundleOf("kinopoiskId" to film.kinopoiskId))
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY, film.kinopoiskId)
+        findNavController().navigate(R.id.action_fullCollectionFragment_to_filmFragment, bundle)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        userCollectionAdapter = null
+    }
+    companion object{
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
     }
 }

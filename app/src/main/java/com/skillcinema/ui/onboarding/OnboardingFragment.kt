@@ -13,7 +13,7 @@ class OnboardingFragment : Fragment() {
 
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: OnboardingAdapter
+    private var adapter: OnboardingAdapter? = null
     private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
@@ -36,5 +36,6 @@ class OnboardingFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        adapter = null
     }
 }

@@ -37,7 +37,7 @@ class GalleryFullFragment : Fragment() {
     private var kinopoiskId = 0
     private lateinit var chipGroup: ChipGroup
     private val chipList = mutableMapOf<Chip,String>()
-    private lateinit var galleryChippedAdapter: GalleryChippedAdapter
+    private var galleryChippedAdapter: GalleryChippedAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,13 +49,13 @@ class GalleryFullFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+        kinopoiskId = arguments.let { it?.getInt(KINOPOISK_ID_KEY)?:5260016 }
         viewModel.kinopoiskId = kinopoiskId
         chipGroup = binding.chipGroup
         galleryChippedAdapter = GalleryChippedAdapter{ item: FilmGalleryItemDto -> onItemClick(item) }
         binding.chippedRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.chippedRecyclerView.adapter = galleryChippedAdapter.withLoadStateFooter(MyLoadStateAdapter())
-        galleryChippedAdapter.addLoadStateListener {
+        binding.chippedRecyclerView.adapter = galleryChippedAdapter?.withLoadStateFooter(MyLoadStateAdapter())
+        galleryChippedAdapter?.addLoadStateListener {
             binding.chippedRecyclerView.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
             binding.goUpButton.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
             binding.chipGroup.visibility = if (it.refresh is LoadState.Error)  View.GONE else View.VISIBLE
@@ -148,16 +148,16 @@ class GalleryFullFragment : Fragment() {
             chipInitial.chipBackgroundColor =
                 ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
             viewModel.filterId = chipList.getValue(chipInitial)
-            galleryChippedAdapter.submitData(lifecycle, PagingData.empty())
+            galleryChippedAdapter?.submitData(lifecycle, PagingData.empty())
             viewModel.pagedImages.onEach {
-                galleryChippedAdapter.submitData(it)
+                galleryChippedAdapter?.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
         else {
             viewModel.filterId =
                 chipList.getValue((chipGroup.findViewById(chipGroup.checkedChipId)))
             viewModel.pagedImages.onEach {
-                galleryChippedAdapter.submitData(it)
+                galleryChippedAdapter?.submitData(it)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
     }
@@ -174,23 +174,28 @@ class GalleryFullFragment : Fragment() {
                     ColorStateList.valueOf(requireContext().getColor(R.color.teal_200))
                 viewModel.filterId = chipList.getValue((chipGroup.findViewById(checkedIds[0])))
                 viewModel.pagedImages.onEach {
-                    galleryChippedAdapter.submitData(it)
+                    galleryChippedAdapter?.submitData(it)
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
             else {
                 for (i in chipList.keys)i.chipBackgroundColor = ColorStateList.valueOf(
                     requireContext().getColor(R.color.grey))
-                    galleryChippedAdapter.submitData(lifecycle, PagingData.empty())
+                    galleryChippedAdapter?.submitData(lifecycle, PagingData.empty())
             }
         }
     }
     private fun onItemClick(item: FilmGalleryItemDto) {
         val bundle = Bundle()
-        bundle.putString("imageUrl", item.imageUrl!!)
+        item.imageUrl?.let {bundle.putString(IMAGE_URL_KEY, it)  }
         findNavController().navigate(R.id.action_galleryFullFragment_to_galleryFullScreenFragment, bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        galleryChippedAdapter = null
+    }
+    companion object{
+        private const val IMAGE_URL_KEY = "imageUrl"
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
     }
 }

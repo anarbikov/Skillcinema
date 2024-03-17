@@ -36,7 +36,7 @@ class SeasonsFragment : Fragment() {
     private val viewModel: SeasonsViewModel by viewModels()
     private lateinit var chipGroup: ChipGroup
     private val chipList = mutableMapOf<Chip,String>()
-    private lateinit var seasonsChippedAdapter: SeasonsChippedAdapter
+    private var seasonsChippedAdapter: SeasonsChippedAdapter? = null
     private lateinit var seasonsInfo: FilmSeasonsDto
 
     override fun onCreateView(
@@ -45,8 +45,8 @@ class SeasonsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSeasonsBinding.inflate(inflater, container, false)
-        kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
-        seriesName = arguments.let { it?.getString("seriesName")?:"" }
+        kinopoiskId = arguments.let { it?.getInt(KINOPOISK_ID_KEY)?:5260016 }
+        seriesName = arguments.let { it?.getString(SERIES_NAME_KEY)?:"" }
         return binding.root
     }
 
@@ -113,14 +113,14 @@ class SeasonsFragment : Fragment() {
                 val seriesText = getSeriesText(season)
                 val seasonTitle = "${season.number} сезон, ${season.episodes!!.size} $seriesText"
                 binding.seasonTitleTextView.text = seasonTitle
-                seasonsChippedAdapter.addData(season.episodes)
+                seasonsChippedAdapter?.addData(season.episodes)
 
             }
             else {
                 for (i in chipList.keys)i.chipBackgroundColor = ColorStateList.valueOf(
                     requireContext().getColor(R.color.grey))
                 binding.seasonTitleTextView.text = ""
-                seasonsChippedAdapter.removeData()
+                seasonsChippedAdapter?.removeData()
             }
         }
     }
@@ -153,13 +153,13 @@ class SeasonsFragment : Fragment() {
             val seriesText = getSeriesText(seasonsInfo.items[0])
             val seasonTitle = "1 сезон, ${seasonsInfo.items[0].episodes!!.size} $seriesText"
             binding.seasonTitleTextView.text = seasonTitle
-            seasonsChippedAdapter.addData(seasonsInfo.items[0].episodes!!)
+            seasonsChippedAdapter?.addData(seasonsInfo.items[0].episodes!!)
         } else {
             val season = seasonsInfo.items[chipGroup.checkedChipId-1]
             val seriesText = getSeriesText(season)
             val seasonTitle = "${season.number} сезон, ${season.episodes!!.size} $seriesText"
             binding.seasonTitleTextView.text = seasonTitle
-            seasonsChippedAdapter.addData(season.episodes)
+            seasonsChippedAdapter?.addData(season.episodes)
         }
     }
     private fun getSeriesText(season:Item):String{
@@ -174,5 +174,10 @@ class SeasonsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        seasonsChippedAdapter = null
+    }
+    companion object{
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
+        private const val SERIES_NAME_KEY = "seriesName"
     }
 }
