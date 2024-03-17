@@ -11,7 +11,9 @@ import com.skillcinema.databinding.ActorBestChildRvBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
 
-class ActorBestParentAdapter : RecyclerView.Adapter<ActorBestParentAdapter.ViewHolderGallery>() {
+class ActorBestParentAdapter(
+    val onItemParentClick: (Int) -> Unit
+) : RecyclerView.Adapter<ActorBestParentAdapter.ViewHolderGallery>() {
     private lateinit var best: List<FilmInfo>
     private lateinit var generalInfo: ActorGeneralInfoDto
     inner class ViewHolderGallery(val binding: ActorBestChildRvBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -19,7 +21,10 @@ class ActorBestParentAdapter : RecyclerView.Adapter<ActorBestParentAdapter.ViewH
         fun bind(result:List< FilmInfo>,holder:ViewHolderGallery) {
             holder.binding.apply {
                 childRecyclerViewBest.adapter =
-                    ActorBestChildAdapter(best, generalInfo)
+                    ActorBestChildAdapter(
+                        onItemClick = {filmId -> onItemParentClick(filmId)},
+                        filmData = best,
+                        general = generalInfo)
                 childRecyclerViewBest.layoutManager =
                     GridLayoutManager(binding.root.context, 1, GridLayoutManager.HORIZONTAL, false)
                 actorBestAll.text =

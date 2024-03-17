@@ -41,7 +41,7 @@ class DialogViewModel @Inject constructor(
         started = SharingStarted.Eagerly,
         initialValue = _collection.value
     )
-    private var filmInfo: FilmInfo = state["filmInfo"]!!
+    private var filmInfo: FilmInfo = state[FILM_INFO_KEY]!!
 
     init {
         getCollectionsList()
@@ -117,5 +117,8 @@ class DialogViewModel @Inject constructor(
                 }, onFailure = {Log.d("mytag", it.message.toString())}
             )
         }
+    }
+    companion object{
+        private const val FILM_INFO_KEY = "filmInfo"
     }
 }

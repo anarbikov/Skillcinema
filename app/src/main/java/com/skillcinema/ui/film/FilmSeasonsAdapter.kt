@@ -4,22 +4,21 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmSeasonsViewBinding
 import com.skillcinema.entity.FilmSeasonsDto
 import kotlin.properties.Delegates
 
-class FilmSeasonsAdapter : RecyclerView.Adapter<FilmSeasonsAdapter.ViewHolder>() {
+class FilmSeasonsAdapter(
+    val onItemClick: (Int,String) -> Unit
+) : RecyclerView.Adapter<FilmSeasonsAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmSeasonsViewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private lateinit var seasonsInfo: FilmSeasonsDto
     private var filmId by Delegates.notNull<Int>()
     private var seriesName by Delegates.notNull<String>()
-    private val bundle = bundleOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
             FilmSeasonsViewBinding.inflate(
@@ -36,11 +35,7 @@ class FilmSeasonsAdapter : RecyclerView.Adapter<FilmSeasonsAdapter.ViewHolder>()
             this.seasonsHeader.visibility = if (seasonsInfo.items.isNotEmpty()) View.VISIBLE else View.GONE
             this.seasonsAll.text = if(seasonsInfo.items.isNotEmpty()) root.context.getString(R.string.all) else ""
             this.seasonsAll.visibility = if (seasonsInfo.items.isNotEmpty())View.VISIBLE else View.GONE
-            this.seasonsAll.setOnClickListener{
-                bundle.putInt("kinopoiskId",filmId)
-                bundle.putString("seriesName",seriesName)
-                this.root.findNavController().navigate(R.id.action_filmFragment_to_seasonsFragment,bundle)
-            }
+            this.seasonsAll.setOnClickListener{onItemClick(filmId,seriesName)}
             val seasonsQty:String = if (seasonsInfo.total != 0) seasonsInfo.total.toString() else ""
             var seriesCounter = 0
             if(seasonsInfo.items.isNotEmpty()) for (season in seasonsInfo.items) seriesCounter+= season.episodes!!.size

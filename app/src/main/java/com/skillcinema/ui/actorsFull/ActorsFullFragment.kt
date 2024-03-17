@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -27,7 +28,7 @@ class ActorsFullFragment : Fragment() {
     private var _binding: FragmentActorsFullBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ActorsFullViewModel by viewModels()
-    private lateinit var actorsAdapter: ActorsAdapter
+    private var actorsAdapter: ActorsAdapter? = null
     private var isActor by Delegates.notNull<Boolean>()
     private var isSeries by Delegates.notNull<Boolean>()
 
@@ -42,7 +43,6 @@ class ActorsFullFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
         isActor = arguments.let { it!!.getBoolean("isActor") }
         isSeries = arguments.let { it!!.getBoolean("isSeries") }
 
@@ -50,7 +50,9 @@ class ActorsFullFragment : Fragment() {
         doObserveWork()
     }
     private fun setUpViews() {
-        actorsAdapter = ActorsAdapter()
+        actorsAdapter = ActorsAdapter(
+            onItemClick = {id -> onItemClickActor(actorId = id)}
+        )
         binding.recyclerView.adapter = actorsAdapter
     }
     private fun doObserveWork() {
@@ -98,11 +100,20 @@ class ActorsFullFragment : Fragment() {
         val actorInfo: List<ActorDto> = allInfo[1] as List<ActorDto>
         val otherStaff: List<ActorDto> = allInfo[2] as List<ActorDto>
         val staff = if (isActor) actorInfo else otherStaff
-        actorsAdapter.addData(staff)
+        actorsAdapter?.addData(staff)
+    }
+    private fun  onItemClickActor(actorId: Int){
+        val bundle = bundleOf()
+        bundle.putInt(STAFF_ID_KEY,actorId)
+        findNavController().navigate(R.id.action_actorsFullFragment_to_actorFragment,bundle)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        actorsAdapter = null
+    }
+    companion object{
+        private const val STAFF_ID_KEY = "staffId"
     }
 }

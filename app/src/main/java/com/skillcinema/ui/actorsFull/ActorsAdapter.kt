@@ -3,24 +3,22 @@ package com.skillcinema.ui.actorsFull
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.ActorsFullActorViewBinding
 import com.skillcinema.entity.ActorDto
 
-class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorViewHolder>() {
+class ActorsAdapter(
+    val onItemClick: (Int) -> Unit
+) : RecyclerView.Adapter<ActorsAdapter.ActorViewHolder>() {
     private var actorsList: List<ActorDto> = listOf()
 
     inner class ActorViewHolder( val binding: ActorsFullActorViewBinding) :
         RecyclerView.ViewHolder(binding.root){
-        private val bundle = bundleOf()
         init {
              binding.root.setOnClickListener{
-                bundle.putInt("staffId",actorsList[bindingAdapterPosition].staffId!!)
-                binding.root.findNavController().navigate(R.id.action_actorsFullFragment_to_actorFragment,bundle)
+                 actorsList[bindingAdapterPosition].staffId?.let { id -> onItemClick(id)
+                 }
             }
         }
     }

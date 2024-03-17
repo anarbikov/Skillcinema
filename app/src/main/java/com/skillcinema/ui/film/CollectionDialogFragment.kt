@@ -18,8 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-const val ARG_FILM_INFO = "filmInfo"
-
 
 @AndroidEntryPoint
 class CollectionDialogFragment : BottomSheetDialogFragment() {
@@ -27,7 +25,7 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private val viewModel: DialogViewModel by viewModels()
     private lateinit var filmInfo: FilmInfo
-    private lateinit var adapter: ItemAdapter
+    private var adapter: ItemAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,8 +70,8 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
     private fun renderView(collections: List<CollectionData>){
         if (collections.isEmpty()) return
         else {
-            adapter.removeData()
-            adapter.addData(collections)
+            adapter?.removeData()
+            adapter?.addData(collections)
         }
     }
 
@@ -95,5 +93,14 @@ class CollectionDialogFragment : BottomSheetDialogFragment() {
     override fun onStop() {
         super.onStop()
         parentFragmentManager.setFragmentResult("update", bundleOf())
+    }
+    companion object{
+        const val ARG_FILM_INFO = "filmInfo"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        adapter = null
     }
 }

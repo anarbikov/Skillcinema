@@ -2,7 +2,6 @@ package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,12 +51,11 @@ class FilmFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilmBinding.inflate(inflater, container, false)
-        kinopoiskId = arguments.let { it?.getInt("kinopoiskId")?:5260016 }
+        kinopoiskId = arguments.let { it?.getInt(KINOPOISK_ID_KEY)?:5260016 }
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-  //      kinopoiskId = 77044
         setUpViews()
         doObserveWork()
     }
@@ -69,7 +67,10 @@ class FilmFragment : Fragment() {
             {film -> addToHistory(film = film) },
             {film -> addToCollection(filmInfo = film) }
         )
-        filmSeasonsAdapter = FilmSeasonsAdapter()
+        filmSeasonsAdapter = FilmSeasonsAdapter(
+            onItemClick = {filmId:Int,seriesName:String->
+                onItemClickSeason(filmId = filmId, seriesName = seriesName)}
+        )
         filmActorsParentAdapter = FilmActorsParentAdapter()
         filmGalleryParentAdapter = FilmGalleryParentAdapter()
         filmSimilarParentAdapter = FilmSimilarParentAdapter()
@@ -96,7 +97,7 @@ class FilmFragment : Fragment() {
         }
         viewModel.movieInfo.onEach {
             setupAndRenderView(it)
-            setFragmentResultListener("update"){ _, _ ->
+            setFragmentResultListener(UPDATE_KEY){ _, _ ->
                 viewModel.checkLiked()
                 viewModel.checkWatched()
                 viewModel.checkToWatch()
@@ -145,7 +146,6 @@ class FilmFragment : Fragment() {
         }
     }
     private fun onClickLiked (film:Film) {
-        Log.d("mytag",film.toString())
         if (film.isLiked == false) {
             viewModel.deleteFilmFromCollection(filmId = film.kinopoiskId, collection = Collections.LIKED.rusName)
         }else {
@@ -164,9 +164,15 @@ class FilmFragment : Fragment() {
     }
     private fun addToCollection(filmInfo: FilmInfo) {
         val bundle = bundleOf()
-        bundle.putParcelable("filmInfo",filmInfo)
-        childFragmentManager.setFragmentResult("key",bundle)
+        bundle.putParcelable(FILM_INFO_KEY,filmInfo)
+        childFragmentManager.setFragmentResult(BOTTOM_SHEET_KEY,bundle)
         findNavController().navigate(R.id.action_filmFragment_to_collectionDialogFragment, bundle)
+    }
+    private fun onItemClickSeason(filmId:Int,seriesName:String){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY,filmId)
+        bundle.putString(SERIES_NAME_KEY,seriesName)
+        findNavController().navigate(R.id.action_filmFragment_to_seasonsFragment,bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -177,6 +183,12 @@ class FilmFragment : Fragment() {
         filmGalleryParentAdapter = null
         filmSimilarParentAdapter = null
         concatAdapter = null
-
+    }
+    companion object{
+        private const val KINOPOISK_ID_KEY = "kinopoiskId"
+        private const val SERIES_NAME_KEY = "seriesName"
+        private const val FILM_INFO_KEY = "filmInfo"
+        private const val BOTTOM_SHEET_KEY = "key"
+        private const val UPDATE_KEY = "update"
     }
 }

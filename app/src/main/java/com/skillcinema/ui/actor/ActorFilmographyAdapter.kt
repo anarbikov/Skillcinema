@@ -4,19 +4,21 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.ActorFilmographyViewBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
 
-class ActorFilmographyAdapter : RecyclerView.Adapter<ActorFilmographyAdapter.ViewHolder>() {
+class ActorFilmographyAdapter (
+    val onItemClick: (Int) -> Unit,
+): RecyclerView.Adapter<ActorFilmographyAdapter.ViewHolder>()
+ {
+
     inner class ViewHolder(val binding: ActorFilmographyViewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private lateinit var filmsInfo: ActorGeneralInfoDto
-    private val bundle = bundleOf()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
             ActorFilmographyViewBinding.inflate(
@@ -44,8 +46,8 @@ class ActorFilmographyAdapter : RecyclerView.Adapter<ActorFilmographyAdapter.Vie
             filmographyDescription.text = if (filmsInfo.films?.size !=0) description else ""
             filmographyDescription.visibility= if (filmsInfo.films?.size !=0) View.VISIBLE else View.GONE
             filmographyAll.setOnClickListener {
-                bundle.putInt("staffId",filmsInfo.personId!!)
-                it.findNavController().navigate(R.id.action_actorFragment_to_filmographyFragment,bundle)
+                filmsInfo.personId?.let { personId->
+                    onItemClick(personId) }
             }
         }
     }

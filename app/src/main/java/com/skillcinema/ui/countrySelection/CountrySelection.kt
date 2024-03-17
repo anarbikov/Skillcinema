@@ -21,7 +21,7 @@ class CountrySelection : Fragment() {
     private val binding get() = _binding!!
     private var countries:List<FilterCountryDto> = listOf()
     private var currentCountries:List<FilterCountryDto> = listOf()
-    private lateinit var adapter: CountrySelectionAdapter
+    private var adapter: CountrySelectionAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,20 +36,26 @@ class CountrySelection : Fragment() {
         adapter = CountrySelectionAdapter{countryId -> onClickCountry(countryId = countryId)}
         binding.recyclerView.adapter = adapter
         countries = FilmFilters.getAllCountries().filter { it.country != "" }.sortedBy { it.country }
-        adapter.addData(countries)
+        adapter?.addData(countries)
         binding.goBack.setOnClickListener { findNavController().popBackStack() }
         binding.editText.addTextChangedListener ( object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
                 currentCountries = countries.filter { p0.toString().lowercase() in it.country!!.lowercase() }.sortedBy { it.country }
-                adapter.clearData()
-                adapter.addData(currentCountries)
+                adapter?.clearData()
+                adapter?.addData(currentCountries)
             }
         } )
     }
     private fun onClickCountry(countryId:Int){
         SearchSettings.countries = listOf(countryId)
         findNavController().popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        adapter = null
     }
 }

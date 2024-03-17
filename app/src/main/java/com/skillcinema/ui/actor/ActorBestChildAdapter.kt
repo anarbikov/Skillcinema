@@ -3,16 +3,14 @@ package com.skillcinema.ui.actor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.ActorBestFilmViewBinding
 import com.skillcinema.entity.ActorGeneralInfoDto
 import com.skillcinema.entity.FilmInfo
 
 class ActorBestChildAdapter (
+    val onItemClick: (Int) -> Unit,
     filmData: List<FilmInfo>,
     general: ActorGeneralInfoDto
 ) :
@@ -24,11 +22,10 @@ class ActorBestChildAdapter (
         this.generalInfo = general
     }
     inner class DataViewHolder(val binding:ActorBestFilmViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val bundle = bundleOf()
         init {
             itemView.setOnClickListener {
-                bundle.putInt("kinopoiskId",filmList[bindingAdapterPosition].kinopoiskId!!)
-                itemView.findNavController().navigate(R.id.action_actorFragment_to_filmFragment,bundle)
+                filmList[bindingAdapterPosition].kinopoiskId?.let{ id ->
+                    onItemClick(id)}
             }
         }
 
