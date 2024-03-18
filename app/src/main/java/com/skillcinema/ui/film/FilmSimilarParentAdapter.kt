@@ -4,18 +4,19 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmSimilarChildRvBinding
 import com.skillcinema.entity.FilmSimilarsDto
 
-class FilmSimilarParentAdapter : RecyclerView.Adapter<FilmSimilarParentAdapter.ViewHolderSimilar>() {
+class FilmSimilarParentAdapter(
+    val onItemClickSimilarParent:(Int) -> Unit,
+    val onItemClickSimilarChild: (Int) -> Unit
+) : RecyclerView.Adapter<FilmSimilarParentAdapter.ViewHolderSimilar>() {
     private lateinit var similarFilms: FilmSimilarsDto
     private var kinopoiskId = 0
-    private val bundle = bundleOf()
+
     inner class ViewHolderSimilar(val binding:FilmSimilarChildRvBinding) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -23,17 +24,15 @@ class FilmSimilarParentAdapter : RecyclerView.Adapter<FilmSimilarParentAdapter.V
             binding.apply {
                 val takenImages = result.items?.shuffled()?.take(20)
                 similarChildRecyclerView.adapter =
-                    FilmSimilarChildAdapter(filmData = takenImages!!)
+                    FilmSimilarChildAdapter(
+                        onItemClickSimilarChild = {id -> onItemClickSimilarChild(id)},
+                        filmData = takenImages!!)
                 similarChildRecyclerView.layoutManager =
                     GridLayoutManager(root.context, 1, GridLayoutManager.HORIZONTAL, false)
                 similarAll.text = if (result.items.size > 10) "${result.total} >" else ""
                 similarAll.visibility =
                     if (result.items.isNotEmpty()) View.VISIBLE else View.GONE
-                similarAll.setOnClickListener {
-                    bundle.putInt("kinopoiskId", kinopoiskId)
-                     root.findNavController()
-                        .navigate(R.id.action_filmFragment_to_similarFullFragment, bundle)
-                }
+                similarAll.setOnClickListener {onItemClickSimilarParent(kinopoiskId)}
                 val header = root.context.getString(R.string.similar_header)
                 similarHeader.text = if (result.items.isNotEmpty()) header else ""
                 similarHeader.visibility =

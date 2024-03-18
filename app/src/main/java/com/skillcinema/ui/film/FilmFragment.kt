@@ -71,9 +71,20 @@ class FilmFragment : Fragment() {
             onItemClick = {filmId:Int,seriesName:String->
                 onItemClickSeason(filmId = filmId, seriesName = seriesName)}
         )
-        filmActorsParentAdapter = FilmActorsParentAdapter()
-        filmGalleryParentAdapter = FilmGalleryParentAdapter()
-        filmSimilarParentAdapter = FilmSimilarParentAdapter()
+        filmActorsParentAdapter = FilmActorsParentAdapter(
+            onItemClickChildActor = {staffId:Int -> onItemClickActorChild(staffId = staffId)},
+            onItemClickActorParent = {filmId:Int,isActor:Boolean,isSeries:Boolean ->
+                onItemClickActorParent(kinopoiskId = filmId, isActor = isActor, isSeries = isSeries)}
+        )
+        filmGalleryParentAdapter = FilmGalleryParentAdapter(
+            onItemClickGalleryParent = {kinopoiskId ->
+                onItemClickGalleryParent(kinopoiskId = kinopoiskId)},
+            onItemClickGalleryChild = {url -> onItemClickGalleryChild(url = url)}
+        )
+        filmSimilarParentAdapter = FilmSimilarParentAdapter(
+            onItemClickSimilarParent = {filmId -> onItemClickSimilarParent(kinopoiskId = filmId)},
+            onItemClickSimilarChild = {filmId -> onItemClickSimilarChild(kinopoiskId = filmId)}
+        )
     }
     private fun doObserveWork() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -174,6 +185,38 @@ class FilmFragment : Fragment() {
         bundle.putString(SERIES_NAME_KEY,seriesName)
         findNavController().navigate(R.id.action_filmFragment_to_seasonsFragment,bundle)
     }
+    private fun onItemClickActorChild(staffId:Int){
+        val bundle = bundleOf()
+        bundle.putInt(STAFF_ID_KEY,staffId)
+        findNavController().navigate(R.id.action_filmFragment_to_actorFragment,bundle)
+    }
+    private fun onItemClickActorParent(kinopoiskId:Int,isActor:Boolean,isSeries: Boolean){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY, kinopoiskId)
+        bundle.putBoolean(IS_ACTOR_KEY, isActor)
+        bundle.putBoolean(IS_SERIES_KEY, isSeries)
+        findNavController().navigate(R.id.action_filmFragment_to_actorsFullFragment, bundle)
+    }
+    private fun onItemClickGalleryParent(kinopoiskId: Int){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY,kinopoiskId)
+        findNavController().navigate(R.id.action_filmFragment_to_galleryFullFragment, bundle)
+    }
+    private fun onItemClickGalleryChild(url: String){
+        val bundle = bundleOf()
+        bundle.putString(IMAGE_URL_KEY, url)
+        findNavController().navigate(R.id.action_filmFragment_to_galleryFullScreenFragment,bundle)
+    }
+    private fun onItemClickSimilarParent(kinopoiskId: Int){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY,kinopoiskId)
+        findNavController().navigate(R.id.action_filmFragment_to_similarFullFragment, bundle)
+    }
+    private fun onItemClickSimilarChild(kinopoiskId: Int){
+        val bundle = bundleOf()
+        bundle.putInt(KINOPOISK_ID_KEY,kinopoiskId)
+        findNavController().navigate(R.id.action_filmFragment_self,bundle)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -190,5 +233,9 @@ class FilmFragment : Fragment() {
         private const val FILM_INFO_KEY = "filmInfo"
         private const val BOTTOM_SHEET_KEY = "key"
         private const val UPDATE_KEY = "update"
+        private const val STAFF_ID_KEY = "staffId"
+        private const val IS_ACTOR_KEY = "isActor"
+        private const val IS_SERIES_KEY = "isSeries"
+        private const val IMAGE_URL_KEY = "imageUrl"
     }
 }

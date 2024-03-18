@@ -4,19 +4,19 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skillcinema.R
 import com.skillcinema.databinding.FilmActorsChildRvBinding
 import com.skillcinema.entity.ActorDto
 
-class FilmActorsParentAdapter : RecyclerView.Adapter<FilmActorsParentAdapter.ViewHolderActors>() {
+class FilmActorsParentAdapter(
+    val onItemClickChildActor: (Int) -> Unit,
+    val onItemClickActorParent: (Int,Boolean,Boolean) -> Unit
+) : RecyclerView.Adapter<FilmActorsParentAdapter.ViewHolderActors>() {
     private var actorsList: List<ActorDto> = listOf()
     private var otherStaff: List<ActorDto> = listOf()
     private var isSeries = false
-    private val bundle = bundleOf()
     private var kinopoiskFilmId = 0
 
     inner class ViewHolderActors(val binding:FilmActorsChildRvBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -26,7 +26,10 @@ class FilmActorsParentAdapter : RecyclerView.Adapter<FilmActorsParentAdapter.Vie
                 val takeSize = if (position == 0) 12 else 6
                 val takenStaff = result.take(takeSize)
                 childRecyclerView.adapter =
-                    FilmActorsChildAdapter(takenStaff)
+                    FilmActorsChildAdapter(
+                        onItemClick = {staffId:Int -> onItemClickChildActor(staffId)},
+                        info =  takenStaff
+                    )
                 val spanCount = if (position == 0) 4 else 2
                 val spanCountActual = when {
                     result.isEmpty() -> 1
@@ -39,11 +42,7 @@ class FilmActorsParentAdapter : RecyclerView.Adapter<FilmActorsParentAdapter.Vie
                     if (takenStaff.size < result.size) "${result.size} >" else ""
                 actorsAll.visibility = if (result.isNotEmpty()) View.VISIBLE else View.GONE
                 actorsAll.setOnClickListener {
-                    bundle.putInt("kinopoiskId", kinopoiskFilmId)
-                    bundle.putBoolean("isActor", position == 0)
-                    bundle.putBoolean("isSeries", isSeries)
-                    it.findNavController()
-                        .navigate(R.id.action_filmFragment_to_actorsFullFragment, bundle)
+                    onItemClickActorParent(kinopoiskFilmId,position==0,isSeries)
                 }
                 val header = when {
                     position == 0 && isSeries -> root.context.getString(R.string.series_actors_header)

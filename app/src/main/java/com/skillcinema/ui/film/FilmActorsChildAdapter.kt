@@ -3,16 +3,14 @@ package com.skillcinema.ui.film
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.FilmActorsViewBinding
 import com.skillcinema.entity.ActorDto
 import javax.inject.Inject
 
 class FilmActorsChildAdapter @Inject constructor(
+    val onItemClick: (Int) -> Unit,
     info: List<ActorDto>
 ) : RecyclerView.Adapter<FilmActorsChildAdapter.ActorViewHolder>() {
     private var actorsList: List<ActorDto>
@@ -21,11 +19,9 @@ class FilmActorsChildAdapter @Inject constructor(
     }
     inner class ActorViewHolder(val binding:FilmActorsViewBinding) :
         RecyclerView.ViewHolder(binding.root){
-        private val bundle = bundleOf()
             init {
                 itemView.setOnClickListener{
-                    bundle.putInt("staffId",actorsList[bindingAdapterPosition].staffId!!)
-                    itemView.findNavController().navigate(R.id.action_filmFragment_to_actorFragment,bundle)
+                    actorsList[bindingAdapterPosition].staffId?.let { staffId:Int -> onItemClick(staffId) }
                 }
             }
     }

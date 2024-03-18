@@ -1,17 +1,15 @@
 package com.skillcinema.ui.film
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skillcinema.R
 import com.skillcinema.databinding.FilmGalleryImageViewBinding
 import com.skillcinema.entity.FilmGalleryItemDto
 
 class FilmGalleryChildAdapter (
+    val onItemClickChild:(String) -> Unit,
     images: List<FilmGalleryItemDto>
 ) : RecyclerView.Adapter<FilmGalleryChildAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: FilmGalleryImageViewBinding) :
@@ -40,9 +38,7 @@ class FilmGalleryChildAdapter (
                 .into(galleryImageView)
         }
         holder.binding.root.setOnClickListener{
-            val bundle = Bundle()
-            bundle.putString("imageUrl", imagesList[position].imageUrl)
-            holder.binding.root.findNavController().navigate(R.id.action_filmFragment_to_galleryFullScreenFragment,bundle)
+            imagesList[position].imageUrl?.let { url -> onItemClickChild(url) }
         }
     }
     override fun getItemCount(): Int {
